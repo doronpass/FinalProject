@@ -6,26 +6,20 @@
 //
 // Created by Doron_Passal on 23/08/2018.
 //
-#import "main.h"
-typedef struct Node Node;
+#import "Strucjs_builder.h"
 
-void push_first(Node **head_refr,Comamand *p_data){
+void add_last(Doubly_linked_list *dll, Comamand *node_data){
     Node* new_node =(Node*)malloc(sizeof(Node));
-    new_node->data = p_data;
-    new_node->next = *head_refr;
-    new_node->prev = Null;
-    if (*head_refr != NULL)
-        *head_refr->prev = new_node;
-    *head_refr = new_node;
-}
-
-void push_last(Node **tail_refr, Command *p_data){
-    Node* new_node =(Node*)malloc(sizeof(Node));
-    new_node->data = p_data;
+    new_node->data = node_data;
     new_node->next = NULL;
-    new_node->prev = *tail_refr;
-    if (*tail_refr !=NULL){
-        *tail_refr->next = new_node;
+    new_node->prev = dll->last;
+    if (dll->first == NULL)
+    {dll->first = new_node;}
+    if (dll->last !=NULL){
+        dll->last = new_node;
     }
-    *tail_refr = new_node;
+    dll->last = new_node;
+    dll->doubly_linked_list_size++;
+
 }
+
