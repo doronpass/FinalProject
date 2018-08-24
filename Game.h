@@ -13,7 +13,7 @@ typedef struct
     int m_block_rows;
     int n_block_cols;
     int m_mult_n; // for conv
-    Doubly_linked_list *p_Doubley_linked_list;
+    Doubly_linked_list *Doubly_linked_list;
 } Game;
 
 #endif //FINALPROJECT_GAME_H
