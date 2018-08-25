@@ -31,4 +31,5 @@ typedef struct
 
 } Command;
 
+*Command create_new_command(enum command_name name ,int *args_arr ;
 #endif //FINALPROJECT_COMMMAND_H

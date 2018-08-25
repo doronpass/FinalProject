@@ -1,9 +1,8 @@
 //
 // Created by Doron_Passal on 24/08/2018.
 //
-#import "Game.h"
-#include "Game_baord.h"
-
+#include <stdio.h>
+#include "Game_board.h"
 
 /*tests whether calloc failed
  * if so, alert the user and terminate program*/

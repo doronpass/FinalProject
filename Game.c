@@ -2,8 +2,12 @@
 // Created by Doron_Passal on 24/08/2018.
 //
 
+#include <stdio.h>
+#include "Commmand.h"
+#include "Dll.h"
+#include "Game_board.h"
 #include "Game.h"
-#import "Dll.h"
+
 Game* create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_error,int mode,int m_block_rows, int n_block_cols,Doubly_linked_list *dll){
     Game new_game = (*Game)malloc(sizeof(Game));
     if (new_game == NULL){

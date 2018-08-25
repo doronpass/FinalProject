@@ -1,6 +1,7 @@
 //
 // Created by Doron_Passal on 23/08/2018.
 //
+#include "Commmand.h"
 
 #ifndef FINALPROJECT_DLL_H
 #define FINALPROJECT_DLL_H
@@ -18,7 +19,7 @@ typedef struct Node {
 
 } Node;
 
-void add_last(Doubly_linked_list *dll, Comamand *node_data);
-*Doubly_linked_list create_new_dll();
-
+void add_last(Doubly_linked_list *dll,Command *node_data); /* add command to redo-undo list*/
+*Doubly_linked_list create_new_dll(); /* create new list, where all pointers set to NULL and num of args set to 0 */
+void remove_last(Doubly_linked_list *dll);
 #endif //FINALPROJECT_DLL_H
