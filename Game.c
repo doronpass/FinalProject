@@ -17,6 +17,7 @@ Game* create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_
     new_game->solved_game_board = solved_game_board;
     new_game->mode = mode;
     new_game->mark_error = mark_error;
-    new_game->Doubly_linked_list = create_new_dll(); // to add this function !!
+    new_game->Doubly_linked_list = create_new_dll();
+    return new_game;
 }
 

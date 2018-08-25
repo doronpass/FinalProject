@@ -26,7 +26,7 @@ void add_last(Doubly_linked_list *dll, Comamand *node_data){
 *Doubly_linked_list create_new_dll(){
     Doubly_linked_list *new_dll = (Doubly_linked_list*)malloc(sizeof(Doubly_linked_list));
     if (new_dll == NULL){
-        fprintf("to say ther is an errorrr becuase of malloc . at memory allocation");
+        fprintf("to say  ther's an errro , probably malloc . at memory allocation");
     }
     new_dll->doubly_linked_list_size = 0;
     new_dll->first = NULL;

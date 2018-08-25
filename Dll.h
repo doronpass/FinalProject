@@ -19,5 +19,6 @@ typedef struct Node {
 } Node;
 
 void add_last(Doubly_linked_list *dll, Comamand *node_data);
+*Doubly_linked_list create_new_dll();
 
 #endif //FINALPROJECT_DLL_H
