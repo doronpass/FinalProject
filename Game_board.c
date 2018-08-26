@@ -33,5 +33,6 @@ void check_memory2(Cell** point){
         }
         return arr;
     }
+    void print_board(Game game) {
 
-}
+    }
