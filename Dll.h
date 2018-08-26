@@ -4,6 +4,8 @@
 
 #ifndef FINALPROJECT_DLL_H
 #define FINALPROJECT_DLL_H
+#include "Command.h"
+
 typedef struct
 {
     struct Node *first;
@@ -18,7 +20,7 @@ typedef struct Node {
 
 } Node;
 
-void add_last(Doubly_linked_list *dll, Comamand *node_data);
-*Doubly_linked_list create_new_dll();
+void add_last(Doubly_linked_list *dll, Command *node_data);
+Doubly_linked_list* create_new_dll();
 
-#endif //FINALPROJECT_DLL_H
+#endif FINALPROJECT_DLL_H

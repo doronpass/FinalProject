@@ -1,10 +1,9 @@
 #include <stdio.h>
-#include <stdio.h>
-typedef struct Node Node;
+#include <stdlib.h>
+#include "Game.h"
 
 int main() {
-    int x;
-    x=6;
+
     printf("Hello, World!\n");
 
     return 0;
