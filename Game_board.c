@@ -4,6 +4,7 @@
 #include "Game_board.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "Game.h"
 
 /*tests whether calloc failed
  * if so, alert the user and terminate program*/
@@ -28,11 +29,12 @@ void check_memory2(Cell** point){
 /*allocates dynamic memory space for a game board based on size N*N */
 Cell** create_new_board(Game *game){
     int i;
+    int size = game ->m_mult_n;
     Cell** arr;
-    arr = (Cell**)calloc(game->m_mult_n,sizeof(*Cell));
+    arr = (Cell**)calloc(size, sizeof(Cell*));
     check_memory2(arr);
-    for (i=0; i<game->m_mult_n; i++){
-        arr[i] = (Cell*) calloc (game.m_mult_n,sizeof(cell));
+    for (i=0; i<size; i++){
+        arr[i] = (Cell*)calloc(size,sizeof(Cell));
         check_memory(arr[i]);
     }
     return arr;
@@ -40,13 +42,13 @@ Cell** create_new_board(Game *game){
 
 void print_board(Game *game){
     int i;
-    int size = 4*game->m_mult_n+game->m_block_rows+1;
-    char sep_raw[] = (char*)malloc(size);
-    for (i = 0; i < size ; ++i) {
-        strcat(sep_raw,"-");
-    }
-    printf("%s\n", sep_raw);
-
+//    int size = 4*game->m_mult_n+game->m_block_rows+1;
+//    char sep_raw[] = (char*)malloc(size);
+//    for (i = 0; i < size ; ++i) {
+//        strcat(sep_raw,"-");
+//    }
+//    printf("%s\n", sep_raw);
+//
 }
 
 Cell* create_new_cell(int value ,int is_fix, int is_error){
@@ -59,16 +61,16 @@ Cell* create_new_cell(int value ,int is_fix, int is_error){
     }
 
 void print_cell(Cell *cell){
-     char *arr =" ";
-     char *str[8];
-     itoa(cell->value,str,10);
-     strcat(arr,str);
-     if (cell->is_fix){
-         strcat(arr,".");
-     }
-     if (cell->is_error){
-         strcat(arr,"*");
-     }
-     printf("%s\n", arr);
+//     char *arr =" ";
+//     char *str[8];
+//     itoa(cell->value,str,10);
+//     strcat(arr,str);
+//     if (cell->is_fix){
+//         strcat(arr,".");
+//     }
+//     if (cell->is_error){
+//         strcat(arr,"*");
+//     }
+//     printf("%s\n", arr);
     }
 

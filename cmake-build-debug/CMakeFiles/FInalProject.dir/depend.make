@@ -14,6 +14,9 @@ CMakeFiles/FInalProject.dir/Game.c.obj: ../Game.c
 CMakeFiles/FInalProject.dir/Game.c.obj: ../Game.h
 CMakeFiles/FInalProject.dir/Game.c.obj: ../Game_board.h
 
+CMakeFiles/FInalProject.dir/Game_board.c.obj: ../Command.h
+CMakeFiles/FInalProject.dir/Game_board.c.obj: ../Dll.h
+CMakeFiles/FInalProject.dir/Game_board.c.obj: ../Game.h
 CMakeFiles/FInalProject.dir/Game_board.c.obj: ../Game_board.c
 CMakeFiles/FInalProject.dir/Game_board.c.obj: ../Game_board.h
 
