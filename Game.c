@@ -3,7 +3,7 @@
 //
 
 #include <stdio.h>
-#include "Commmand.h"
+#include "Command.h"
 #include "Dll.h"
 #include "Game_board.h"
 #include "Game.h"

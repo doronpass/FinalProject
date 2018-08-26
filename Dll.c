@@ -3,7 +3,7 @@
 //
 
 #include <stdio.h>
-#include "Commmand.h"
+#include "Command.h"
 #include "Dll.h"
 
 #include <stdlib.h>
