@@ -4,6 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "C:/Users/itai zur/CLionProjects/FinalProject/Commmand.c" "C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/CMakeFiles/FInalProject.dir/Commmand.c.obj"
+  "C:/Users/itai zur/CLionProjects/FinalProject/Functionality.c" "C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/CMakeFiles/FInalProject.dir/Functionality.c.obj"
+  "C:/Users/itai zur/CLionProjects/FinalProject/Game.c" "C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/CMakeFiles/FInalProject.dir/Game.c.obj"
+  "C:/Users/itai zur/CLionProjects/FinalProject/Game_board.c" "C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/CMakeFiles/FInalProject.dir/Game_board.c.obj"
   "C:/Users/itai zur/CLionProjects/FinalProject/main.c" "C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/CMakeFiles/FInalProject.dir/main.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")

@@ -110,17 +110,125 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named FInalProject
+# Target rules for targets named FinalProject
 
 # Build rule for target.
-FInalProject: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 FInalProject
-.PHONY : FInalProject
+FinalProject: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 FinalProject
+.PHONY : FinalProject
 
 # fast build rule for target.
-FInalProject/fast:
-	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/build
-.PHONY : FInalProject/fast
+FinalProject/fast:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/build
+.PHONY : FinalProject/fast
+
+Commmand.obj: Commmand.c.obj
+
+.PHONY : Commmand.obj
+
+# target to build an object file
+Commmand.c.obj:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Commmand.c.obj
+.PHONY : Commmand.c.obj
+
+Commmand.i: Commmand.c.i
+
+.PHONY : Commmand.i
+
+# target to preprocess a source file
+Commmand.c.i:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Commmand.c.i
+.PHONY : Commmand.c.i
+
+Commmand.s: Commmand.c.s
+
+.PHONY : Commmand.s
+
+# target to generate assembly for a file
+Commmand.c.s:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Commmand.c.s
+.PHONY : Commmand.c.s
+
+Functionality.obj: Functionality.c.obj
+
+.PHONY : Functionality.obj
+
+# target to build an object file
+Functionality.c.obj:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Functionality.c.obj
+.PHONY : Functionality.c.obj
+
+Functionality.i: Functionality.c.i
+
+.PHONY : Functionality.i
+
+# target to preprocess a source file
+Functionality.c.i:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Functionality.c.i
+.PHONY : Functionality.c.i
+
+Functionality.s: Functionality.c.s
+
+.PHONY : Functionality.s
+
+# target to generate assembly for a file
+Functionality.c.s:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Functionality.c.s
+.PHONY : Functionality.c.s
+
+Game.obj: Game.c.obj
+
+.PHONY : Game.obj
+
+# target to build an object file
+Game.c.obj:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Game.c.obj
+.PHONY : Game.c.obj
+
+Game.i: Game.c.i
+
+.PHONY : Game.i
+
+# target to preprocess a source file
+Game.c.i:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Game.c.i
+.PHONY : Game.c.i
+
+Game.s: Game.c.s
+
+.PHONY : Game.s
+
+# target to generate assembly for a file
+Game.c.s:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Game.c.s
+.PHONY : Game.c.s
+
+Game_board.obj: Game_board.c.obj
+
+.PHONY : Game_board.obj
+
+# target to build an object file
+Game_board.c.obj:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Game_board.c.obj
+.PHONY : Game_board.c.obj
+
+Game_board.i: Game_board.c.i
+
+.PHONY : Game_board.i
+
+# target to preprocess a source file
+Game_board.c.i:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Game_board.c.i
+.PHONY : Game_board.c.i
+
+Game_board.s: Game_board.c.s
+
+.PHONY : Game_board.s
+
+# target to generate assembly for a file
+Game_board.c.s:
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/Game_board.c.s
+.PHONY : Game_board.c.s
 
 main.obj: main.c.obj
 
@@ -128,7 +236,7 @@ main.obj: main.c.obj
 
 # target to build an object file
 main.c.obj:
-	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/main.c.obj
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/main.c.obj
 .PHONY : main.c.obj
 
 main.i: main.c.i
@@ -137,7 +245,7 @@ main.i: main.c.i
 
 # target to preprocess a source file
 main.c.i:
-	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/main.c.i
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/main.c.i
 .PHONY : main.c.i
 
 main.s: main.c.s
@@ -146,7 +254,7 @@ main.s: main.c.s
 
 # target to generate assembly for a file
 main.c.s:
-	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/main.c.s
+	$(MAKE) -f CMakeFiles\FinalProject.dir\build.make CMakeFiles/FinalProject.dir/main.c.s
 .PHONY : main.c.s
 
 # Help Target
@@ -155,9 +263,21 @@ help:
 	@echo ... all (the default if no target is provided)
 	@echo ... clean
 	@echo ... depend
-	@echo ... FInalProject
+	@echo ... FinalProject
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... Commmand.obj
+	@echo ... Commmand.i
+	@echo ... Commmand.s
+	@echo ... Functionality.obj
+	@echo ... Functionality.i
+	@echo ... Functionality.s
+	@echo ... Game.obj
+	@echo ... Game.i
+	@echo ... Game.s
+	@echo ... Game_board.obj
+	@echo ... Game_board.i
+	@echo ... Game_board.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

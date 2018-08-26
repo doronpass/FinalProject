@@ -1,17 +1,13 @@
-
-#include "Functionality.h"
-#include <stdio.h>
 #include <assert.h>
 #include <ctype.h>
-#include "Commmand.h"
-#include "Dll.h"
-#include "Game_board.h"
-#include "Game.h"
+#include <stdio.h>
+#include "Functionality.h"
+
 
 
 
 /* the function used when the user enters the "save" command*/
-void save_game(game *my_game, char *path){
+void save_game(Game *my_game, char *path){
     int m = my_game->m_block_rows;
     int n = my_game->n_block_cols;
     int N = n*m;
@@ -34,16 +30,6 @@ void save_game(game *my_game, char *path){
         return;
     }
 
-/*
-    //make all non-empty cells fixed
-    for (int i=0; i<N; i++) {
-        for (int j=0; j<N; j++) {
-            if (my_game->user_game_board[i][j].value != 0){
-                my_game->user_game_board[i][j].is_fix = 1;
-            }
-        }
-    }
-    */
     if (save_to_file(my_game, path)==0){
         printf("Error: File cannot be created or modified\n");
     } else{
@@ -162,8 +148,7 @@ int load_from_file(game *my_game, char *path){
     my_game->n_block_cols = value;
 
     /*read matrix values
-     * no need to test for EOF, since files are guaranteed to be correct
-     * IM ASSUMING that i get a game with the matrix cells are initialized and set to 0 - CHECK LATER!@#!%@!@%!@ */
+     * no need to test for EOF, since files are guaranteed to be correct */
     N = my_game->n_block_cols * my_game->m_block_rows;
     for (int i=0; i<N; i++) {
         for (int j = 0; j < N; j++) {
@@ -182,4 +167,41 @@ int load_from_file(game *my_game, char *path){
             my_game->user_game_board[j][i].value = value;
         }
     }
+}
+
+
+
+/*returns 1 if the number z is valid for cell (x,y)
+ *returns 0 if the number isn't valid for the cell - based on the current solution */
+int is_valid(game *my_game,int x, int y, int z) {
+    int i, j, block_first_row, block_first_col;
+    int m = my_game->m_block_rows;
+    int n = my_game->n_block_cols;
+    int N = n*m;
+
+    if (my_game->user_game_board[x][y] == z){
+        return 1;
+    }
+    /* search col (col is x) */
+    for (i=0 ; i<N ; i++){
+        if ( (i!=y) && (my_game->user_game_board[x][i] == z)){
+            return 0;
+        }
+    }
+    /* search row (row is y)*/
+    for (j=0 ; j <N ; j++ ){
+        if ((j != x) &&  (my_game->user_game_board[j][y] == z) )
+            return 0;
+    }
+    /* search in block - dividing ints returns the floor value of the actual division */
+    block_first_col = (x/n) * n;
+    block_first_row = (y/m) * m;
+    for (i=block_first_row; i<(block_first_row+m); i++){
+        for (j=block_first_col; j<(block_first_col+n); j++) {
+            if (my_game->user_game_board[j][i] == z && (i!=y || j !=x)){
+                return 0;
+            }
+        }
+    }
+    return 1;
 }

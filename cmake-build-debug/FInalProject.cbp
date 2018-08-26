@@ -17,8 +17,8 @@
 					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="FInalProject">
-				<Option output="C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/FInalProject.exe" prefix_auto="0" extension_auto="0"/>
+			<Target title="FinalProject">
+				<Option output="C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/FinalProject.exe" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -30,14 +30,14 @@
 					<Add directory="C:/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/5.1.0/../../../../x86_64-w64-mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 FInalProject"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 FinalProject"/>
 					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="FInalProject/fast">
-				<Option output="C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/FInalProject.exe" prefix_auto="0" extension_auto="0"/>
+			<Target title="FinalProject/fast">
+				<Option output="C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/FinalProject.exe" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -49,7 +49,7 @@
 					<Add directory="C:/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/5.1.0/../../../../x86_64-w64-mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 FInalProject/fast"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 FinalProject/fast"/>
 					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/itai zur/CLionProjects/FinalProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
@@ -76,8 +76,32 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/itai zur/CLionProjects/FinalProject/Commmand.c">
+			<Option target="FinalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/itai zur/CLionProjects/FinalProject/Commmand.h">
+			<Option target="FinalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/itai zur/CLionProjects/FinalProject/Functionality.c">
+			<Option target="FinalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/itai zur/CLionProjects/FinalProject/Functionality.h">
+			<Option target="FinalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/itai zur/CLionProjects/FinalProject/Game.c">
+			<Option target="FinalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/itai zur/CLionProjects/FinalProject/Game.h">
+			<Option target="FinalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/itai zur/CLionProjects/FinalProject/Game_board.c">
+			<Option target="FinalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/itai zur/CLionProjects/FinalProject/Game_board.h">
+			<Option target="FinalProject"/>
+		</Unit>
 		<Unit filename="C:/Users/itai zur/CLionProjects/FinalProject/main.c">
-			<Option target="FInalProject"/>
+			<Option target="FinalProject"/>
 		</Unit>
 		<Unit filename="C:/Users/itai zur/CLionProjects/FinalProject/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>

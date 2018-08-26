@@ -3,4 +3,4 @@ project(FInalProject C)
 
 set(CMAKE_C_STANDARD 90)
 
-add_executable(FInalProject main.c Command.c Game.c Game_board.c Functionality.c)
+add_executable(FinalProject main.c Commmand.c Game.c Game_board.c Functionality.c)

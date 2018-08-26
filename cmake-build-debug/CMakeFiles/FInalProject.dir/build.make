@@ -48,52 +48,112 @@ CMAKE_SOURCE_DIR = "C:\Users\itai zur\CLionProjects\FinalProject"
 CMAKE_BINARY_DIR = "C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug"
 
 # Include any dependencies generated for this target.
-include CMakeFiles/FInalProject.dir/depend.make
+include CMakeFiles/FinalProject.dir/depend.make
 
 # Include the progress variables for this target.
-include CMakeFiles/FInalProject.dir/progress.make
+include CMakeFiles/FinalProject.dir/progress.make
 
 # Include the compile flags for this target's objects.
-include CMakeFiles/FInalProject.dir/flags.make
+include CMakeFiles/FinalProject.dir/flags.make
 
-CMakeFiles/FInalProject.dir/main.c.obj: CMakeFiles/FInalProject.dir/flags.make
-CMakeFiles/FInalProject.dir/main.c.obj: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/FInalProject.dir/main.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\FInalProject.dir\main.c.obj   -c "C:\Users\itai zur\CLionProjects\FinalProject\main.c"
+CMakeFiles/FinalProject.dir/main.c.obj: CMakeFiles/FinalProject.dir/flags.make
+CMakeFiles/FinalProject.dir/main.c.obj: ../main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/FinalProject.dir/main.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\FinalProject.dir\main.c.obj   -c "C:\Users\itai zur\CLionProjects\FinalProject\main.c"
 
-CMakeFiles/FInalProject.dir/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/FInalProject.dir/main.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "C:\Users\itai zur\CLionProjects\FinalProject\main.c" > CMakeFiles\FInalProject.dir\main.c.i
+CMakeFiles/FinalProject.dir/main.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/FinalProject.dir/main.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "C:\Users\itai zur\CLionProjects\FinalProject\main.c" > CMakeFiles\FinalProject.dir\main.c.i
 
-CMakeFiles/FInalProject.dir/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/FInalProject.dir/main.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "C:\Users\itai zur\CLionProjects\FinalProject\main.c" -o CMakeFiles\FInalProject.dir\main.c.s
+CMakeFiles/FinalProject.dir/main.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/FinalProject.dir/main.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "C:\Users\itai zur\CLionProjects\FinalProject\main.c" -o CMakeFiles\FinalProject.dir\main.c.s
 
-# Object files for target FInalProject
-FInalProject_OBJECTS = \
-"CMakeFiles/FInalProject.dir/main.c.obj"
+CMakeFiles/FinalProject.dir/Commmand.c.obj: CMakeFiles/FinalProject.dir/flags.make
+CMakeFiles/FinalProject.dir/Commmand.c.obj: ../Commmand.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/FinalProject.dir/Commmand.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\FinalProject.dir\Commmand.c.obj   -c "C:\Users\itai zur\CLionProjects\FinalProject\Commmand.c"
 
-# External object files for target FInalProject
-FInalProject_EXTERNAL_OBJECTS =
+CMakeFiles/FinalProject.dir/Commmand.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/FinalProject.dir/Commmand.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "C:\Users\itai zur\CLionProjects\FinalProject\Commmand.c" > CMakeFiles\FinalProject.dir\Commmand.c.i
 
-FInalProject.exe: CMakeFiles/FInalProject.dir/main.c.obj
-FInalProject.exe: CMakeFiles/FInalProject.dir/build.make
-FInalProject.exe: CMakeFiles/FInalProject.dir/linklibs.rsp
-FInalProject.exe: CMakeFiles/FInalProject.dir/objects1.rsp
-FInalProject.exe: CMakeFiles/FInalProject.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable FInalProject.exe"
-	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\FInalProject.dir\link.txt --verbose=$(VERBOSE)
+CMakeFiles/FinalProject.dir/Commmand.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/FinalProject.dir/Commmand.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "C:\Users\itai zur\CLionProjects\FinalProject\Commmand.c" -o CMakeFiles\FinalProject.dir\Commmand.c.s
+
+CMakeFiles/FinalProject.dir/Game.c.obj: CMakeFiles/FinalProject.dir/flags.make
+CMakeFiles/FinalProject.dir/Game.c.obj: ../Game.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/FinalProject.dir/Game.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\FinalProject.dir\Game.c.obj   -c "C:\Users\itai zur\CLionProjects\FinalProject\Game.c"
+
+CMakeFiles/FinalProject.dir/Game.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/FinalProject.dir/Game.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "C:\Users\itai zur\CLionProjects\FinalProject\Game.c" > CMakeFiles\FinalProject.dir\Game.c.i
+
+CMakeFiles/FinalProject.dir/Game.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/FinalProject.dir/Game.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "C:\Users\itai zur\CLionProjects\FinalProject\Game.c" -o CMakeFiles\FinalProject.dir\Game.c.s
+
+CMakeFiles/FinalProject.dir/Game_board.c.obj: CMakeFiles/FinalProject.dir/flags.make
+CMakeFiles/FinalProject.dir/Game_board.c.obj: ../Game_board.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/FinalProject.dir/Game_board.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\FinalProject.dir\Game_board.c.obj   -c "C:\Users\itai zur\CLionProjects\FinalProject\Game_board.c"
+
+CMakeFiles/FinalProject.dir/Game_board.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/FinalProject.dir/Game_board.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "C:\Users\itai zur\CLionProjects\FinalProject\Game_board.c" > CMakeFiles\FinalProject.dir\Game_board.c.i
+
+CMakeFiles/FinalProject.dir/Game_board.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/FinalProject.dir/Game_board.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "C:\Users\itai zur\CLionProjects\FinalProject\Game_board.c" -o CMakeFiles\FinalProject.dir\Game_board.c.s
+
+CMakeFiles/FinalProject.dir/Functionality.c.obj: CMakeFiles/FinalProject.dir/flags.make
+CMakeFiles/FinalProject.dir/Functionality.c.obj: ../Functionality.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/FinalProject.dir/Functionality.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\FinalProject.dir\Functionality.c.obj   -c "C:\Users\itai zur\CLionProjects\FinalProject\Functionality.c"
+
+CMakeFiles/FinalProject.dir/Functionality.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/FinalProject.dir/Functionality.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "C:\Users\itai zur\CLionProjects\FinalProject\Functionality.c" > CMakeFiles\FinalProject.dir\Functionality.c.i
+
+CMakeFiles/FinalProject.dir/Functionality.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/FinalProject.dir/Functionality.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "C:\Users\itai zur\CLionProjects\FinalProject\Functionality.c" -o CMakeFiles\FinalProject.dir\Functionality.c.s
+
+# Object files for target FinalProject
+FinalProject_OBJECTS = \
+"CMakeFiles/FinalProject.dir/main.c.obj" \
+"CMakeFiles/FinalProject.dir/Commmand.c.obj" \
+"CMakeFiles/FinalProject.dir/Game.c.obj" \
+"CMakeFiles/FinalProject.dir/Game_board.c.obj" \
+"CMakeFiles/FinalProject.dir/Functionality.c.obj"
+
+# External object files for target FinalProject
+FinalProject_EXTERNAL_OBJECTS =
+
+FinalProject.exe: CMakeFiles/FinalProject.dir/main.c.obj
+FinalProject.exe: CMakeFiles/FinalProject.dir/Commmand.c.obj
+FinalProject.exe: CMakeFiles/FinalProject.dir/Game.c.obj
+FinalProject.exe: CMakeFiles/FinalProject.dir/Game_board.c.obj
+FinalProject.exe: CMakeFiles/FinalProject.dir/Functionality.c.obj
+FinalProject.exe: CMakeFiles/FinalProject.dir/build.make
+FinalProject.exe: CMakeFiles/FinalProject.dir/linklibs.rsp
+FinalProject.exe: CMakeFiles/FinalProject.dir/objects1.rsp
+FinalProject.exe: CMakeFiles/FinalProject.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable FinalProject.exe"
+	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\FinalProject.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/FInalProject.dir/build: FInalProject.exe
+CMakeFiles/FinalProject.dir/build: FinalProject.exe
 
-.PHONY : CMakeFiles/FInalProject.dir/build
+.PHONY : CMakeFiles/FinalProject.dir/build
 
-CMakeFiles/FInalProject.dir/clean:
-	$(CMAKE_COMMAND) -P CMakeFiles\FInalProject.dir\cmake_clean.cmake
-.PHONY : CMakeFiles/FInalProject.dir/clean
+CMakeFiles/FinalProject.dir/clean:
+	$(CMAKE_COMMAND) -P CMakeFiles\FinalProject.dir\cmake_clean.cmake
+.PHONY : CMakeFiles/FinalProject.dir/clean
 
-CMakeFiles/FInalProject.dir/depend:
+CMakeFiles/FinalProject.dir/depend:
 	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" "C:\Users\itai zur\CLionProjects\FinalProject" "C:\Users\itai zur\CLionProjects\FinalProject" "C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug" "C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug" "C:\Users\itai zur\CLionProjects\FinalProject\cmake-build-debug\CMakeFiles\FInalProject.dir\DependInfo.cmake" --color=$(COLOR)
-.PHONY : CMakeFiles/FInalProject.dir/depend
+.PHONY : CMakeFiles/FinalProject.dir/depend
 
