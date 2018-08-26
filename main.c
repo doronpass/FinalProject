@@ -4,13 +4,14 @@
 #include "Game_board.h"
 
 int main() {
+    int x;
+    x=14;
     Cell *new_cell;
     new_cell = create_new_cell(23,1,0);
     print_cell(new_cell);
     printf("\nHello, World!\n");
 
 
-    printf("Hello, World!\n");
 
     return 0;
 }
