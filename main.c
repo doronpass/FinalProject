@@ -4,11 +4,8 @@
 #include "Game_board.h"
 
 int main() {
-    int value= 12;
-    int is_fix = 1;
-    int is_error =0;
     Cell *new_cell;
-    new_cell = create_new_cell(value,is_fix,is_error);
+    new_cell = create_new_cell(23,1,0);
 //    print_cell(new_cell);
     printf("Hello, World!\n");
 
