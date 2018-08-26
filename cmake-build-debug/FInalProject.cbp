@@ -76,6 +76,30 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/dpass/CLionProjects/FInalProject/Command.c">
+			<Option target="FInalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/dpass/CLionProjects/FInalProject/Command.h">
+			<Option target="FInalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/dpass/CLionProjects/FInalProject/Dll.c">
+			<Option target="FInalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/dpass/CLionProjects/FInalProject/Dll.h">
+			<Option target="FInalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/dpass/CLionProjects/FInalProject/Game.c">
+			<Option target="FInalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/dpass/CLionProjects/FInalProject/Game.h">
+			<Option target="FInalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/dpass/CLionProjects/FInalProject/Game_board.c">
+			<Option target="FInalProject"/>
+		</Unit>
+		<Unit filename="C:/Users/dpass/CLionProjects/FInalProject/Game_board.h">
+			<Option target="FInalProject"/>
+		</Unit>
 		<Unit filename="C:/Users/dpass/CLionProjects/FInalProject/main.c">
 			<Option target="FInalProject"/>
 		</Unit>

@@ -2,10 +2,9 @@
 // Created by Doron_Passal on 24/08/2018.
 //
 
-#ifndef FINALPROJECT_GAME_BAORD_H
-#define FINALPROJECT_GAME_BAORD_H
+#ifndef FINALPROJECT_GAME_BOARD_H
+#define FINALPROJECT_GAME_BOARD_H
 #include "Game.h"
-
 
 typedef struct
 {
@@ -21,4 +20,4 @@ void print_board(Game game);
 
 
 
-#endif //FINALPROJECT_GAME_BAORD_H
+#endif //FINALPROJECT_GAME_BOARD_H

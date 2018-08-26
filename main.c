@@ -1,13 +1,13 @@
 #include <stdio.h>
-
-
-
-
-
-typedef struct Node Node;
+#include <stdlib.h>
+#include "Game.h"
+#include "Game_board.h"
 
 int main() {
-    printf("Hello, World!\n");
+    Cell *new_cell;
+    new_cell = create_new_cell(23,1,0);
+    print_cell(new_cell);
+    printf("\nHello, World!\n");
 
     return 0;
 }

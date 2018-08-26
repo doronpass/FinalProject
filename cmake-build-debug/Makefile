@@ -122,6 +122,114 @@ FInalProject/fast:
 	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/build
 .PHONY : FInalProject/fast
 
+Command.obj: Command.c.obj
+
+.PHONY : Command.obj
+
+# target to build an object file
+Command.c.obj:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Command.c.obj
+.PHONY : Command.c.obj
+
+Command.i: Command.c.i
+
+.PHONY : Command.i
+
+# target to preprocess a source file
+Command.c.i:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Command.c.i
+.PHONY : Command.c.i
+
+Command.s: Command.c.s
+
+.PHONY : Command.s
+
+# target to generate assembly for a file
+Command.c.s:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Command.c.s
+.PHONY : Command.c.s
+
+Dll.obj: Dll.c.obj
+
+.PHONY : Dll.obj
+
+# target to build an object file
+Dll.c.obj:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Dll.c.obj
+.PHONY : Dll.c.obj
+
+Dll.i: Dll.c.i
+
+.PHONY : Dll.i
+
+# target to preprocess a source file
+Dll.c.i:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Dll.c.i
+.PHONY : Dll.c.i
+
+Dll.s: Dll.c.s
+
+.PHONY : Dll.s
+
+# target to generate assembly for a file
+Dll.c.s:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Dll.c.s
+.PHONY : Dll.c.s
+
+Game.obj: Game.c.obj
+
+.PHONY : Game.obj
+
+# target to build an object file
+Game.c.obj:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Game.c.obj
+.PHONY : Game.c.obj
+
+Game.i: Game.c.i
+
+.PHONY : Game.i
+
+# target to preprocess a source file
+Game.c.i:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Game.c.i
+.PHONY : Game.c.i
+
+Game.s: Game.c.s
+
+.PHONY : Game.s
+
+# target to generate assembly for a file
+Game.c.s:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Game.c.s
+.PHONY : Game.c.s
+
+Game_board.obj: Game_board.c.obj
+
+.PHONY : Game_board.obj
+
+# target to build an object file
+Game_board.c.obj:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Game_board.c.obj
+.PHONY : Game_board.c.obj
+
+Game_board.i: Game_board.c.i
+
+.PHONY : Game_board.i
+
+# target to preprocess a source file
+Game_board.c.i:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Game_board.c.i
+.PHONY : Game_board.c.i
+
+Game_board.s: Game_board.c.s
+
+.PHONY : Game_board.s
+
+# target to generate assembly for a file
+Game_board.c.s:
+	$(MAKE) -f CMakeFiles\FInalProject.dir\build.make CMakeFiles/FInalProject.dir/Game_board.c.s
+.PHONY : Game_board.c.s
+
 main.obj: main.c.obj
 
 .PHONY : main.obj
@@ -158,6 +266,18 @@ help:
 	@echo ... FInalProject
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... Command.obj
+	@echo ... Command.i
+	@echo ... Command.s
+	@echo ... Dll.obj
+	@echo ... Dll.i
+	@echo ... Dll.s
+	@echo ... Game.obj
+	@echo ... Game.i
+	@echo ... Game.s
+	@echo ... Game_board.obj
+	@echo ... Game_board.i
+	@echo ... Game_board.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

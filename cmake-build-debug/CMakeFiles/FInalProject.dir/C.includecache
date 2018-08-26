@@ -6,7 +6,34 @@
 
 #IncludeRegexTransform: 
 
+C:/Users/dpass/CLionProjects/FInalProject/Command.h
+stdio.h
+-
+<<<<<<< HEAD
+=======
+stdlib.h
+-
+
+C:/Users/dpass/CLionProjects/FInalProject/Dll.h
+Command.h
+C:/Users/dpass/CLionProjects/FInalProject/Command.h
+
+C:/Users/dpass/CLionProjects/FInalProject/Game.h
+Dll.h
+C:/Users/dpass/CLionProjects/FInalProject/Dll.h
+Game_board.h
+C:/Users/dpass/CLionProjects/FInalProject/Game_board.h
+
+C:/Users/dpass/CLionProjects/FInalProject/Game_board.h
+
 C:/Users/dpass/CLionProjects/FInalProject/main.c
 stdio.h
 -
+stdlib.h
+-
+Game.h
+C:/Users/dpass/CLionProjects/FInalProject/Game.h
+Game_board.h
+C:/Users/dpass/CLionProjects/FInalProject/Game_board.h
+>>>>>>> doron
 
