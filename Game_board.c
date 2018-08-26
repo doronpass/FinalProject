@@ -60,17 +60,14 @@ Cell* create_new_cell(int value ,int is_fix, int is_error){
     return new_cell;
     }
 
-void print_cell(Cell *cell){
-//     char *arr =" ";
-//     char *str[8];
-//     itoa(cell->value,str,10);
-//     strcat(arr,str);
-//     if (cell->is_fix){
-//         strcat(arr,".");
-//     }
-//     if (cell->is_error){
-//         strcat(arr,"*");
-//     }
-//     printf("%s\n", arr);
+void print_cell(Cell *cell) {
+    printf("%s", " ");
+    printf("%d", cell->value);
+    if (cell->is_error) {
+        printf("%s", "*");
+    }
+    if (cell->is_fix) {
+        printf("%s", ".");
     }
 
+}
