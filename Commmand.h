@@ -1,8 +1,4 @@
-//
-// Created by Doron_Passal on 24/08/2018.
-//
-
-#ifndef FINALPROJECT_COMMMAND_H
+ndef FINALPROJECT_COMMMAND_H
 #define FINALPROJECT_COMMMAND_H
 enum command_name {
     solve = 1 ,
