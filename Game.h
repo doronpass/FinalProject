@@ -6,7 +6,7 @@
 #include "Dll.h"
 #include "Game_board.h"
 
-typedef struct
+typedef struct Game
 {
     Cell **user_game_board;
     Cell **solved_game_board;
@@ -18,6 +18,6 @@ typedef struct
     Doubly_linked_list *doubly_linked_list;
 } Game;
 
-Game* create_new_game (Cell **user_game_board, Cell **solved_game_board, int mark_error,int mode ,int m_block_rows, int n_block_cols,Doubly_linked_list *dll);
+Game * create_new_game(Cell **user_game_board, Cell **solved_game_board, int mark_error,int mode ,int m_block_rows, int n_block_cols,Doubly_linked_list *dll);
 
-#endif FINALPROJECT_GAME_H
+#endif // FINALPROJECT_GAME_H

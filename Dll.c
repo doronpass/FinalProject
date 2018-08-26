@@ -3,10 +3,8 @@
 //
 
 #include "Dll.h"
-//
-// Created by Doron_Passal on 23/08/2018.
-//
-#import "Strucjs_builder.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 void add_last(Doubly_linked_list *dll, Comamand *node_data){
     Node* new_node =(Node*)malloc(sizeof(Node));
@@ -34,3 +32,13 @@ void add_last(Doubly_linked_list *dll, Comamand *node_data){
     return new_dll;
 }
 
+void remove_last (Doubly_linked_list *dll) {
+    if (dll == NULL || dll->first == NULL) { // if NULL passed to fun, return NULL ***OR MABYE ERROR??***
+        return NULL;
+    }
+    Node to_delete;
+    to_delete = dll->last;
+    dll->last->prev->next = NUIL;
+    dll->last = dll->last->prev;
+    free(to_delete);
+}

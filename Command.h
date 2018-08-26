@@ -4,6 +4,9 @@
 
 #ifndef FINALPROJECT_COMMAND_H
 #define FINALPROJECT_COMMAND_H
+#include <stdio.h>
+#include <stdlib.h>
+
 enum command_name {
     solve = 1 ,
     edit = 1,
@@ -31,5 +34,5 @@ typedef struct
 
 } Command;
 
-Command* create_new_command(enum command_name name ,int *args_arr );
-#endif FINALPROJECT_COMMAND_H
+Command* create_new_command(enum command_name name ,int *args_arr);
+#endif // FINALPROJECT_COMMAND_H

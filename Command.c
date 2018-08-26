@@ -1,6 +1,7 @@
 //
 // Created by Doron_Passal on 24/08/2018.
 //
+#include <stdio.h>
 #include <stdlib.h>
 #include "Command.h"
 
