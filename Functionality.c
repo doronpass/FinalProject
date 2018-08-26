@@ -7,7 +7,7 @@
 
 
 /* the function used when the user enters the "save" command*/
-void save_game(Game *my_game, char *path){
+void save_game(game *my_game, char *path){
     int m = my_game->m_block_rows;
     int n = my_game->n_block_cols;
     int N = n*m;
@@ -117,7 +117,7 @@ int has_erroneous_values(game *my_game) {
 
 /*getting matrix information (size and value) from a formatted file */
 
-//don't forget to point out errouos cells if needed - do this in the solve/edit functions
+//don't forget to point out erroneous cells if needed - do this in the solve/edit functions
 //need to resolve the board after load to get the solved_board for my_game
 
 int load_from_file(game *my_game, char *path){
@@ -204,4 +204,12 @@ int is_valid(game *my_game,int x, int y, int z) {
         }
     }
     return 1;
+}
+
+void mark_errors(game *my_game){
+    if (my_game->mark_error){
+        my_game->mark_error = 0;
+    } else{
+        my_game->mark_error = 1;
+    }
 }

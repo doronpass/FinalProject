@@ -10,5 +10,6 @@ void save_game(Game *my_game, char *path);
 int save_to_file(game *my_game, char *path);
 int has_erroneous_values(game *my_game);
 int load_from_file(game *my_game, char *path);
-
+int is_valid(game *my_game,int x, int y, int z);
+void mark_errors(game *my_game)
 #endif //FINALPROJECT_FUNCTIONALITY_H
