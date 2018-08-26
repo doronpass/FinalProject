@@ -10,7 +10,7 @@
 
 
 Game *create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_error,int mode,int m_block_rows, int n_block_cols,Doubly_linked_list *dll){
-    Game new_game = (*Game)malloc(sizeof(Game));
+    Game *new_game = (Game*)malloc(sizeof(Game));
     if (new_game == NULL){
         printf("Error: calloc has failed\n");
         exit(0);
@@ -22,7 +22,7 @@ Game *create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_
     new_game->solved_game_board = solved_game_board;
     new_game->mode = mode;
     new_game->mark_error = mark_error;
-    new_game->Doubly_linked_list = create_new_dll();
+    new_game->doubly_linked_list = create_new_dll();
     return new_game;
 }
 

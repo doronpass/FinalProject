@@ -28,7 +28,8 @@ void check_memory2(Cell** point){
 /*allocates dynamic memory space for a game board based on size N*N */
 Cell** create_new_board(Game *game){
     int i;
-    Cell** arr =(Cell**)calloc(game->m_mult_n,sizeof(*Cell));
+    Cell** arr;
+    arr = (Cell**)calloc(game->m_mult_n,sizeof(*Cell));
     check_memory2(arr);
     for (i=0; i<game->m_mult_n; i++){
         arr[i] = (Cell*) calloc (game.m_mult_n,sizeof(cell));

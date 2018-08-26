@@ -12,13 +12,13 @@ typedef struct {
     int is_error;
 }Cell;
 
- typedef struct Game Game;
+typedef struct Game Game;
 
 void check_memory2(Cell** point);
 void check_memory(Cell* point);
 void print_board(Game *game);
 Cell** create_new_board(Game *game);
-Cell* create_new_cell(int value ,int is_fix, int is_error) ;
+Cell* create_new_cell(int value ,int is_fix,int is_error);
 void print_cell(Cell *cell);
 
 
