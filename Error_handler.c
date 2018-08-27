@@ -21,3 +21,8 @@ void check_memory2(Cell** point) {
         exit(0);
     }
 }
+
+/* master developer error handling, Google come hire me */
+void invalid_command(){
+    printf("ERROR: invalid command\n");
+}
