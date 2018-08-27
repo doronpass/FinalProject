@@ -4,17 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Command.h"
-
-Command* create_new_command(enum command_name name ,int *args_arr )/* to check I took the enum value in the right way */
+#include <string.h>
+Command* create_new_command(char* command_name,int *args_arr,int num_of_args )/* to check I took the enum value in the right way */
 {
     int i;
-    int j=0;
     Command *new_command =(Command*)malloc(sizeof(Command));
-    new_command->name = name;
+    new_command->command_name = malloc(strlen(command_name)+1);
+    strcpy(new_command->command_name, command_name);
+    new_command->num_of_args = num_of_args;
     for (i = 0; i < 3; ++i) {
         new_command->arg_arr[i] = args_arr[i];
     }
-    new_command->num_of_args = 99999; // to take enum nueric value
     return new_command;
 }
 
