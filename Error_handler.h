@@ -8,5 +8,5 @@
 
 void check_memory(Cell* point);
 void check_memory2(Cell** point);
-void invalid_command();
+
 #endif //FINALPROJECT_ERROR_HANDLER_H
