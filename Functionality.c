@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 #include "Functionality.h"
 
 
@@ -117,14 +118,14 @@ int has_erroneous_values(Game *my_game) {
 //don't forget to point out erroneous cells if needed - do this in the solve/edit functions
 //need to resolve the board after load to get the solved_board for my_game
 
-int load_from_file(Game *my_game, char *path){
+int load_from_file(Game *my_game, char *path) {
     FILE *file;
-    int value, i,j;
+    int value, i, j;
     int N = my_game->m_mult_n;
     file = fopen(path, "r");
-    if (file == NULL){
+    if (file == NULL) {
         /*file cannot be opened*/
-        if (my_game->mode == 1){  /*solve mode*/
+        if (my_game->mode == 1) {  /*solve mode*/
             printf("Error: File doesn't exist or cannot be opened\n");
         } else {                    /*edit mode*/
             printf("Error: File cannot be opened\n");
@@ -132,39 +133,54 @@ int load_from_file(Game *my_game, char *path){
         return 0;
     }
     /* read m */
-    while ((value = getc(file)) != EOF){    /*note that error in getc returns an EOF*/
-        if (isspace(value)==0){
+    while ((value = getc(file)) != EOF) {    /*note that error in getc returns an EOF*/
+        if (isspace(value) == 0) {
             break;
         }
     }
-    if (ferror(file)){      /*test if error, if return 0)
-        printf("Error: File cannot be opened\n");
+    if (ferror(file)) {      /*test if error, if so return 0) */
+        printf("Error: Unable to read file\n"); /*custom comment as instructed in forum */
+        return 0;
     }
     my_game->m_block_rows = value;
 
     /* read n */
-    while ((value = getc(file)) != EOF){
-        if (isspace(value)==0){
+    while ((value = getc(file)) != EOF) {
+        if (isspace(value) == 0) {
             break;
         }
     }
+    if (ferror(file)) {      /*test if error, if so return 0) */
+        printf("Error: Unable to read file\n");
+        return 0;
+    }
     my_game->n_block_cols = value;
     my_game->m_mult_n = my_game->n_block_cols * my_game->m_block_rows;
+
+    /*-------------create empty new board here ----------------    */
+    /*don't forget, if path is empty - create empty 9x9 board */
+    /* ------ move the "make all fixed when load in edit mode" to loading! */
+
+
     /*read matrix values
      * no need to test for EOF, since files are guaranteed to be correct */
-    for (i=0; i<N; i++) {
+    for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
-            while (1){
-                value = getc(file);
+            while ((value = getc(file)) != EOF) {
+
                 /*if we get '.' - set last cell to fixed and continue to look for next cell's value */
                 if (value == '.') {
-                    my_game->user_game_board[j][i-1].is_fix = 1;
+                    my_game->user_game_board[j][i - 1].is_fix = 1;
                     continue;
                 }
                 /*if we read a whitespace char - keep reading */
-                if (isspace(value)==0){
+                if (isspace(value) == 0) {
                     break;
                 }
+            }
+            if (ferror(file)) {      /*test if error, if so return 0) */
+                printf("Error: Unable to read file\n");
+                return 0;
             }
             my_game->user_game_board[j][i].value = value;
         }
@@ -173,34 +189,35 @@ int load_from_file(Game *my_game, char *path){
 
 
 
+
 /*returns 1 if the number z is valid for cell (x,y)
  *returns 0 if the number isn't valid for the cell - based on the current solution */
-int is_valid(Game *my_game,int x, int y, int z) {
+int is_valid(Game *my_game, int x, int y, int z) {
     int i, j, block_first_row, block_first_col;
     int m = my_game->m_block_rows;
     int n = my_game->n_block_cols;
-    int N = n*m;
+    int N = n * m;
 
-    if (my_game->user_game_board[x][y].value == z){
+    if (my_game->user_game_board[x][y].value == z) {
         return 1;
     }
     /* search col (col is x) */
-    for (i=0 ; i<N ; i++){
-        if ( (i!=y) && (my_game->user_game_board[x][i].value == z)){
+    for (i = 0; i < N; i++) {
+        if ((i != y) && (my_game->user_game_board[x][i].value == z)) {
             return 0;
         }
     }
     /* search row (row is y)*/
-    for (j=0 ; j <N ; j++ ){
-        if ((j != x) &&  (my_game->user_game_board[j][y].value == z) )
+    for (j = 0; j < N; j++) {
+        if ((j != x) && (my_game->user_game_board[j][y].value == z))
             return 0;
     }
     /* search in block - dividing ints returns the floor value of the actual division */
-    block_first_col = (x/n) * n;
-    block_first_row = (y/m) * m;
-    for (i=block_first_row; i<(block_first_row+m); i++){
-        for (j=block_first_col; j<(block_first_col+n); j++) {
-            if (my_game->user_game_board[j][i].value == z && (i!=y || j !=x)){
+    block_first_col = (x / n) * n;
+    block_first_row = (y / m) * m;
+    for (i = block_first_row; i < (block_first_row + m); i++) {
+        for (j = block_first_col; j < (block_first_col + n); j++) {
+            if (my_game->user_game_board[j][i].value == z && (i != y || j != x)) {
                 return 0;
             }
         }
@@ -208,10 +225,10 @@ int is_valid(Game *my_game,int x, int y, int z) {
     return 1;
 }
 
-void mark_errors(Game *my_game){
-    if (my_game->mark_error){
+void mark_errors(Game *my_game) {
+    if (my_game->mark_error) {
         my_game->mark_error = 0;
-    } else{
+    } else {
         my_game->mark_error = 1;
     }
 }
@@ -220,11 +237,27 @@ void mark_errors(Game *my_game){
 /* the function is called after user used the solve/edit command
  * given the command and the path, create a new game and load the board from
  * the file in the path argument */
-Game init_game(char *command, char *path){
-    int assert;
-    Game *new_game = ;   //WILL TAKE THE COMMAND ARG TO USE AS MODE
-    assert = load_from_file(new_game, path);
-    if (assert==0){
 
+/* ---------- need to free previous game memory before creating new ----- */
+Game *init_game(char *command, char *path) {
+    int assert;
+    Game *new_game = (Game *) malloc(sizeof(Game));
+    if (new_game == NULL) {
+        printf("Error: malloc has failed\n");
+        exit(0);
     }
+    if (strcmp(command, "solve") == 0) {
+        new_game->mode = 1;
+    }
+    if (strcmp(command, "edit") == 0) {
+        new_game->mode = 0;
+    }
+    new_game->mark_error = 1; /*default value */
+    assert = load_from_file(new_game, path);
+    if (assert == 0) {
+        exit(1);
+    }
+
+    return new_game;
 }
+
