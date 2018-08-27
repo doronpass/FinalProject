@@ -6,8 +6,7 @@
 #define FINALPROJECT_GAME_BOARD_H
 #include "Game.h"
 
-typedef struct
-{
+typedef struct {
     int value;
     int is_fix;
     int is_error;

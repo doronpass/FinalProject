@@ -15,11 +15,12 @@ void check_memory(Cell* point){
 
 /*tests whether calloc failed
  * if so, alert the user and terminate program*/
-void check_memory2(Cell** point){
+void check_memory2(Cell** point) {
     if (point == NULL) {
         printf("Error: calloc has failed\n");
         exit(0);
     }
+}
 
 
 /*allocates dynamic memory space for a game board based on size N*N */
@@ -33,6 +34,26 @@ void check_memory2(Cell** point){
         }
         return arr;
     }
-    void print_board(Game game) {
 
+    void print_board(Game game) {
     }
+
+Cell* create_new_cell(int value ,int is_fix, int is_error){
+    Cell *new_cell;
+    new_cell = (Cell*)malloc(sizeof(Cell));
+    new_cell->is_error=is_error;
+    new_cell->is_fix=is_fix;
+    new_cell->value=value;
+    return new_cell;
+}
+
+void print_cell(Cell *cell) {
+    printf("%s", " ");
+    printf("%d", cell->value);
+    if (cell->is_error) {
+        printf("%s", "*");
+    }
+    if (cell->is_fix) {
+        printf("%s", ".");
+    }
+}
