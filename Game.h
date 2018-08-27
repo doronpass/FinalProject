@@ -5,7 +5,6 @@
 
 #include "Dll.h"
 #include "Game_board.h"
-
 typedef struct Game
 {
     Cell **user_game_board;
@@ -17,6 +16,7 @@ typedef struct Game
     int m_mult_n; // for conv
     Doubly_linked_list *doubly_linked_list;
 } Game;
+
 Game* create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_error,int mode,int m_block_rows, int n_block_cols,Doubly_linked_list *dll);
 
 

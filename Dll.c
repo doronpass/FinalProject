@@ -1,12 +1,11 @@
 //
 // Created by Doron_Passal on 23/08/2018.
 //
-
+#include <stdlib.h>
 #include <stdio.h>
 #include "Command.h"
 #include "Dll.h"
 
-#include <stdlib.h>
 
 void add_last(Doubly_linked_list *dll, Command *node_data){
     Node* new_node =(Node*)malloc(sizeof(Node));

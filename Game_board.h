@@ -4,7 +4,6 @@
 
 #ifndef FINALPROJECT_GAME_BOARD_H
 #define FINALPROJECT_GAME_BOARD_H
-#include "Game.h"
 
 typedef struct {
     int value;
@@ -12,10 +11,15 @@ typedef struct {
     int is_error;
 } Cell;
 
-void check_memory2(int** point);
-void check_memory(int* point);
+typedef struct  Game Game;
+
+void check_memory2(Cell** point);
+void check_memory(Cell* point);
 Cell** create_new_board(Game *game);
-void print_board(Game game);
+void print_board(Game *game);
+Cell* create_new_cell(int value ,int is_fix, int is_error);
+void print_cell(Cell *cell) ;
+
 
 
 

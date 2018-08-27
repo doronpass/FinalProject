@@ -2,7 +2,9 @@
 // Created by Doron_Passal on 24/08/2018.
 //
 #include <stdio.h>
+#include <stdlib.h>
 #include "Game_board.h"
+#include "Game.h"
 
 /*tests whether calloc failed
  * if so, alert the user and terminate program*/
@@ -26,16 +28,16 @@ void check_memory2(Cell** point) {
 /*allocates dynamic memory space for a game board based on size N*N */
     Cell** create_new_board(Game *game){
         int i;
-        Cell** arr =(Cell**)calloc(game->m_mult_n,sizeof(*Cell));
+        Cell** arr =(Cell**)calloc(game->m_mult_n,sizeof(Cell*));
         check_memory2(arr);
         for (i=0; i<game->m_mult_n; i++){
-            arr[i] = (Cell*) calloc (game.m_mult_n,sizeof(cell));
+            arr[i] = (Cell*) calloc (game->m_mult_n,sizeof(Cell));
             check_memory(arr[i]);
         }
         return arr;
     }
 
-    void print_board(Game game) {
+    void print_board(Game *game) {
     }
 
 Cell* create_new_cell(int value ,int is_fix, int is_error){
