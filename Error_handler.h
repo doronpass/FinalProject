@@ -8,5 +8,20 @@
 
 void check_memory(Cell* point);
 void check_memory2(Cell** point);
-void error_doesnt_exist();
+
+void invalid_command();
+
+
+void not_in_range(int N);
+
+void cell_is_fixed();
+
+void puzzle_solution_erroneus();
+
+void board_not_solvable();
+
+void validation_passed();
+
+
+
 #endif //FINALPROJECT_ERROR_HANDLER_H

@@ -21,3 +21,25 @@ void check_memory2(Cell** point) {
         exit(0);
     }
 }
+
+void invalid_command(){
+    printf("ERROR: invalid command\n");
+}
+
+void not_in_range(int N){
+    printf("Error: value not in range 0-%d\n",N);
+}
+void cell_is_fixed(){
+    printf("Error: cell is fixed\n");
+}
+void puzzle_solution_erroneus(){
+    printf("Error: board contains erroneous values\n");
+}
+void board_not_solvable(){
+    printf("Error: board is unsolvable\n");
+}
+void validation_passed(){
+    printf("Validation passed: board is solvable\n");
+}
+
+

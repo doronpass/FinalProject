@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "Game.h"
 
-Game *create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_error,int mode,int m_block_rows, int n_block_cols,Doubly_linked_list *dll){
+Game *create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_error,int mode,int m_block_rows, int n_block_cols){
     Game *new_game = (Game*)malloc(sizeof(Game));
     if (new_game == NULL){
         printf("Error: malloc has failed\n");
