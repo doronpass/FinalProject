@@ -20,12 +20,13 @@ void save_game(Game *my_game, char *path){
         return;
     }
 
-    /*make sure the board is valid before save in edit mode*/
-    if (!is_valid(my_game)){
+    /*make sure the board is valid before save in edit mode ------ NEED TO BUILD FUNCTION*/
+/*
+     if (!validate(my_game)){
         printf("Error: board validation failed\n");
         return;
     }
-
+*/
     if (save_to_file(my_game, path)==0){
         printf("Error: File cannot be created or modified\n");
     } else{
@@ -157,13 +158,10 @@ int load_from_file(Game *my_game, char *path) {
     my_game->n_block_cols = value;
     my_game->m_mult_n = my_game->n_block_cols * my_game->m_block_rows;
 
-    /*-------------create empty new board here ----------------    */
-    /*don't forget, if path is empty - create empty 9x9 board */
-    /* ------ move the "make all fixed when load in edit mode" to loading! */
+    /*create empty new board*/
+    my_game->user_game_board = create_new_board(my_game->m_block_rows, my_game->n_block_cols);
 
-
-    /*read matrix values
-     * no need to test for EOF, since files are guaranteed to be correct */
+    /*read matrix values */
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
             while ((value = getc(file)) != EOF) {
@@ -238,9 +236,9 @@ void mark_errors(Game *my_game) {
  * given the command and the path, create a new game and load the board from
  * the file in the path argument */
 
-/* ---------- need to free previous game memory before creating new ----- */
+/* ---------- need to free previous game memory before creating new, maybe another function ----- */
 Game *init_game(char *command, char *path) {
-    int assert;
+    int assert,i,j;
     Game *new_game = (Game *) malloc(sizeof(Game));
     if (new_game == NULL) {
         printf("Error: malloc has failed\n");
@@ -253,11 +251,25 @@ Game *init_game(char *command, char *path) {
         new_game->mode = 0;
     }
     new_game->mark_error = 1; /*default value */
-    assert = load_from_file(new_game, path);
-    if (assert == 0) {
-        exit(1);
-    }
+    if (path == NULL){
+        /* create 9X9 empty board (will only happen on edit, checked by another function */
+        new_game->user_game_board = create_new_board(3,3);
+    } else {
+        assert = load_from_file(new_game, path);
+        if (assert == 0) {
+            exit(1);
+        }
+        /* make all fixed on "edit" command */
+        if (new_game->mode == 0) {
+            for (i = 0; i < new_game->m_mult_n; i++) {
+                for (j = 0; j < new_game->m_mult_n; j++) {
+                    new_game->user_game_board[j][i].is_fix = 1;
+                }
+            }
+        }
 
+    }
+    /* ------------ need function to check all cells for is_error ----------------------------- */
     return new_game;
 }
 
