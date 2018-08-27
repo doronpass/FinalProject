@@ -55,6 +55,12 @@ void print_cell(Cell *cell,int mode) {
     void print_board(Cell **board) {
     }
 
-
+    void free_board(Cell **board,int size){
+        int i,j;
+        for ( i = 0; i <size ; ++i) {
+                free(board[i]);
+            }
+        free(board);
+        }
 
 
