@@ -21,3 +21,8 @@ void check_memory2(Cell** point) {
         exit(0);
     }
 }
+
+    void error_doesnt_exist(){
+        printf("Error: File doesn't exist or cannot be opened\n");
+    }
+

@@ -55,7 +55,7 @@ int save_to_file(Game *my_game, char *path){
         return 0;
     }
     for (i=0; i<N; i++) {
-        for (j=0; j<(N-1); j++) {
+        for (j=0; j<N; j++) {
             cell_value = my_game->user_game_board[i][j].value;
             if (my_game->mode == 0 || my_game->user_game_board[i][j].is_fix == 1){
                 assertion=fprintf(file, "%d. ", cell_value);
@@ -71,23 +71,6 @@ int save_to_file(Game *my_game, char *path){
                 }
             }
         }
-
-        /*last cell in the row, no space after it*/
-        cell_value = my_game->user_game_board[i][N-1].value;
-        if (my_game->mode == 0 || my_game->user_game_board[i][N-1].is_fix == 1){
-            assertion=fprintf(file, "%d.", cell_value);
-            if (assertion<0){
-                /*problem modifying file*/
-                return 0;
-            }
-        } else{
-            assertion = fprintf(file, "%d", cell_value);
-            if (assertion<0){
-                /*problem modifying file*/
-                return 0;
-            }
-        }
-
         /*end of row, new line*/
         assertion = fprintf(file, "\n");
         if (assertion<0){
@@ -122,7 +105,6 @@ int has_erroneous_values(Game *my_game) {
 int load_from_file(Game *my_game, char *path) {
     FILE *file;
     int value, i, j;
-    int N = my_game->m_mult_n;
     file = fopen(path, "r");
     if (file == NULL) {
         /*file cannot be opened*/
@@ -143,6 +125,7 @@ int load_from_file(Game *my_game, char *path) {
         printf("Error: Unable to read file\n"); /*custom comment as instructed in forum */
         return 0;
     }
+    value-= '0';
     my_game->m_block_rows = value;
 
     /* read n */
@@ -155,6 +138,7 @@ int load_from_file(Game *my_game, char *path) {
         printf("Error: Unable to read file\n");
         return 0;
     }
+    value-= '0';
     my_game->n_block_cols = value;
     my_game->m_mult_n = my_game->n_block_cols * my_game->m_block_rows;
 
@@ -162,13 +146,13 @@ int load_from_file(Game *my_game, char *path) {
     my_game->user_game_board = create_new_board(my_game->m_block_rows, my_game->n_block_cols);
 
     /*read matrix values */
-    for (i = 0; i < N; i++) {
-        for (j = 0; j < N; j++) {
+    for (i = 0; i < my_game->m_mult_n; i++) {
+        for (j = 0; j < my_game->m_mult_n; j++) {
             while ((value = getc(file)) != EOF) {
 
                 /*if we get '.' - set last cell to fixed and continue to look for next cell's value */
                 if (value == '.') {
-                    my_game->user_game_board[j][i - 1].is_fix = 1;
+                    my_game->user_game_board[i][j-1].is_fix = 1;
                     continue;
                 }
                 /*if we read a whitespace char - keep reading */
@@ -180,7 +164,8 @@ int load_from_file(Game *my_game, char *path) {
                 printf("Error: Unable to read file\n");
                 return 0;
             }
-            my_game->user_game_board[j][i].value = value;
+            value-= '0';
+            my_game->user_game_board[i][j].value = value;
         }
     }
 }
@@ -199,23 +184,23 @@ int is_valid(Game *my_game, int x, int y, int z) {
     if (my_game->user_game_board[x][y].value == z) {
         return 1;
     }
-    /* search col (col is x) */
+    /* search row (row is x) */
     for (i = 0; i < N; i++) {
         if ((i != y) && (my_game->user_game_board[x][i].value == z)) {
             return 0;
         }
     }
-    /* search row (row is y)*/
+    /* search col (col is y)*/
     for (j = 0; j < N; j++) {
         if ((j != x) && (my_game->user_game_board[j][y].value == z))
             return 0;
     }
     /* search in block - dividing ints returns the floor value of the actual division */
-    block_first_col = (x / n) * n;
-    block_first_row = (y / m) * m;
+    block_first_row = (x / m) * m;
+    block_first_col = (y / n) * n;
     for (i = block_first_row; i < (block_first_row + m); i++) {
         for (j = block_first_col; j < (block_first_col + n); j++) {
-            if (my_game->user_game_board[j][i].value == z && (i != y || j != x)) {
+            if (my_game->user_game_board[i][j].value == z && (j != y || i != x)) {
                 return 0;
             }
         }
@@ -237,7 +222,7 @@ void mark_errors(Game *my_game) {
  * the file in the path argument */
 
 /* ---------- need to free previous game memory before creating new, maybe another function ----- */
-Game *init_game(char *command, char *path) {
+Game * init_game(char *command, char *path) {
     int assert,i,j;
     Game *new_game = (Game *) malloc(sizeof(Game));
     if (new_game == NULL) {
@@ -253,17 +238,20 @@ Game *init_game(char *command, char *path) {
     new_game->mark_error = 1; /*default value */
     if (path == NULL){
         /* create 9X9 empty board (will only happen on edit, checked by another function */
+        new_game->n_block_cols = 3;
+        new_game->m_block_rows = 3;
+        new_game->m_mult_n = 9;
         new_game->user_game_board = create_new_board(3,3);
     } else {
         assert = load_from_file(new_game, path);
         if (assert == 0) {
             exit(1);
         }
-        /* make all fixed on "edit" command */
+        /* make all fixed on "edit" command ----------------TEST */
         if (new_game->mode == 0) {
             for (i = 0; i < new_game->m_mult_n; i++) {
                 for (j = 0; j < new_game->m_mult_n; j++) {
-                    new_game->user_game_board[j][i].is_fix = 1;
+                    new_game->user_game_board[i][j].is_fix = 1;
                 }
             }
         }
