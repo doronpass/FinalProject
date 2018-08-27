@@ -26,6 +26,7 @@ Doubly_linked_list* create_new_dll(){
     Doubly_linked_list *new_dll = (Doubly_linked_list*)malloc(sizeof(Doubly_linked_list));
     if (new_dll == NULL){
         printf("to say  ther's an errro , probably malloc . at memory allocation");
+        return NULL; // check its what seppuse to come back .. mabye exit?
     }
     new_dll->doubly_linked_list_size = 0;
     new_dll->first = NULL;
