@@ -39,7 +39,7 @@ void board_not_solvable(){
     printf("Error: board is unsolvable\n");
 }
 void validation_passed(){
-    printf("Validation passed: board is solvable\n")
+    printf("Validation passed: board is solvable\n");
 }
 
 

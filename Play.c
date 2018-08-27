@@ -9,5 +9,3 @@
 void start_play(){
     printf("Sudoku \n------\n");
 }
-
-v

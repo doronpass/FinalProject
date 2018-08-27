@@ -13,11 +13,12 @@ typedef struct {
 typedef struct  Game Game;
 
 Cell** create_new_board(int rows_size , int cols_size);
-void print_board(Cell **board);
 Cell* create_new_cell(int value ,int is_fix, int is_error);
 void print_cell(Cell *cell,int mode);
 void insert_zero_cells(Cell **arr,int size);
 void free_board(Cell **board,int size);
+void print_separator_row(int size,int m);
+void print_user_board(Game *game);
 
 
 
