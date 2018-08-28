@@ -28,32 +28,45 @@ int user_turn(Game *my_game) {
     if (strcmp(command_name, "save")==0) {
         if (token == NULL) {
             invalid_command();
+            return 0;
         } else {
             save_game(my_game,token);
+            return 1;
         }
     } else if (strcmp(command_name, "solve")==0) {
         if (token == NULL) {
             invalid_command();
+            return 0;
         } else {
             Game *new_game = init_game(command_name, token);
+            return 1;
         }
     } else if (strcmp(command_name, "edit")==0){
         Game *new_game = init_game(command_name, token);
+        return 1;
     }
     else {
         while (token != NULL && i < 3) {
-            if (is_number(token) == -1){
-                not_in_range(my_game->m_mult_n);
-                return 0;
-            }
             if (i == 0) {
-                x = token[0] - '0';
+                x = is_number(token);
+                if (x==-1){
+                    not_in_range(my_game->m_mult_n);
+                    return 0;
+                }
                 x--;
             } else if (i == 1) {
-                y = token[0] - '0';
+                y = is_number(token);
+                if (y==-1){
+                    not_in_range(my_game->m_mult_n);
+                    return 0;
+                }
                 y--;
             } else if (i == 2) {
-                z = token[0] - '0';
+                z = is_number(token);
+                if (z == -1){
+                    not_in_range(my_game->m_mult_n);
+                    return 0;
+                }
             }
             i++;
             token = strtok(NULL, delimiter);
@@ -65,14 +78,53 @@ int user_turn(Game *my_game) {
             mark_errors(my_game);
         } else {
             printf("Error: the value should be 0 or 1\n");
+            return 0;
         }
     } else if (strcmp(command_name, "print_board")==0){
         /* ----------------------- PRINT BOARD!!! -------------------------*/
     } else if (strcmp(command_name, "set")==0){
-        if ()
-    }
+        if (x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n){
 
-    return 0;
+            /*---------------- SET XYZ ------------------------------------*/
+        } else {
+            not_in_range(my_game->m_mult_n);
+            return 0;
+        }
+    } else if (strcmp(command_name, "validate")==0){
+        /*---------------- VALIDATE! ------------------------------------*/
+    } else if (strcmp(command_name, "generate")==0) {
+        if (x<= (my_game->m_mult_n * my_game->m_mult_n) && y <= (my_game->m_mult_n * my_game->m_mult_n)){
+            /* ------------------ GENERATE XY ---------------------------*/
+        } else {
+            not_in_range(my_game->m_mult_n*my_game->m_mult_n);
+            return 0;
+        }
+    } else if (strcmp(command_name, "undo")==0) {
+        /* ----------------------- UNDO --------------------------------*/
+    } else if (strcmp(command_name, "redo")==0) {
+        /* ----------------------- REDO --------------------------------*/
+    } else if (strcmp(command_name, "hint")==0) {
+        if (x<my_game->m_mult_n && y<my_game->m_mult_n){
+            /* ----------------------- HINT --------------------------------*/
+        } else {
+            not_in_range(my_game->m_mult_n);
+            return 0;
+        }
+    } else if (strcmp(command_name, "num_solutions")==0) {
+        /* ----------------------- NUM_SOLUTIONS --------------------------------*/
+    } else if (strcmp(command_name, "autofill")==0) {
+        /* ----------------------- AUTOFILL --------------------------------*/
+    } else if (strcmp(command_name, "reset")==0) {
+        /* ----------------------- RESET --------------------------------*/
+    } else if (strcmp(command_name, "exit")==0) {
+        /* ----------------------- EXIT --------------------------------*/
+    } else {
+        invalid_command();
+    }
+    command = create_new_command() //NEW FUNCTION
+
+
+     return 1;
 }
 
 /* returns the number typed by the user as int, or -1 if not a number */
@@ -81,12 +133,11 @@ int is_number(char *str){
     int mult = 1;
     int number = 0;
     for (i=(int) strlen(str) ; i>0 ;i--){
-        if (isdigit(str[i])==0) {
+        if (isdigit(str[i-1])==0) {
             return -1;
         }
         number += mult*(str[i] - '0');
         mult*=10;
     }
     return number;
-
 }
