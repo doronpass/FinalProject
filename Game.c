@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Game.h"
+#include "Parser.h"
 
 Game *create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_error,int mode,int m_block_rows, int n_block_cols){
     Game *new_game = (Game*)malloc(sizeof(Game));
@@ -25,14 +26,18 @@ Game *create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_
  * 0 during the game
  * 1 when the game is over (so the user will return to "init mode" = in the first loop)
  * 2 when the user enters "exit" command to exit program */
-void start_game(char **argv){
+void start_game(){
     int game_status = 0;
-    Game *my_game;
+    Game *my_game = (Game *) malloc(sizeof(Game));
+    if (my_game == NULL) {
+        printf("Error: malloc has failed\n");
+        exit(0);
+    }
     while (1){
         if (game_status==2) {
             break;
         }
-        game_status = init_user_turn(my_game,argv);
+        game_status = init_user_turn(my_game);
         if (game_status==2) {
             break;
         }

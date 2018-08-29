@@ -222,13 +222,8 @@ void mark_errors(Game *my_game) {
  * the file in the path argument */
 
 /* ---------- need to free previous game memory before creating new, maybe another function ----- */
-Game * init_game(char *command, char *path) {
+Game * init_game(char *command, char *path, Game *new_game) {
     int assert,i,j;
-    Game *new_game = (Game *) malloc(sizeof(Game));
-    if (new_game == NULL) {
-        printf("Error: malloc has failed\n");
-        exit(0);
-    }
     if (strcmp(command, "solve") == 0) {
         new_game->mode = 1;
     }

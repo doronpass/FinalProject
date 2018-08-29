@@ -4,8 +4,8 @@
 #include "Game_board.h"
 #include "Functionality.h"
 
-int main(int argc, char **argv) {
-    start_game(argv);
+int main() {
+    start_game();
     return 0;
 }
 

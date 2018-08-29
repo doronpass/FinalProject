@@ -13,7 +13,6 @@ int user_turn(Game *my_game) {
     char *token = NULL;
     char input[1024] = "";
     char delimiter[] = " \t\r\n";
-    Command *command;
     while (token == NULL) {
         printf("Enter your command:\n");
         fgets(input, 1024, stdin);
@@ -24,26 +23,26 @@ int user_turn(Game *my_game) {
     }
     command_name = token;
     token = strtok(NULL, delimiter);
-    /* the following commands take a string arg, the rest take ints*/
+    /* the following commands take a "string", the rest take ints*/
     if (strcmp(command_name, "save")==0) {
         if (token == NULL) {
             invalid_command();
             return 0;
         } else {
             save_game(my_game,token);
-            return 1;
+            return 0;
         }
     } else if (strcmp(command_name, "solve")==0) {
         if (token == NULL) {
             invalid_command();
             return 0;
         } else {
-            Game *new_game = init_game(command_name, token);
-            return 1;
+            init_game(command_name, token, my_game);
+            return 0;
         }
     } else if (strcmp(command_name, "edit")==0){
-        Game *new_game = init_game(command_name, token);
-        return 1;
+        init_game(command_name, token, my_game);
+        return 0;
     }
     else {
         while (token != NULL && i < 3) {
@@ -70,8 +69,7 @@ int user_turn(Game *my_game) {
             }
             i++;
             token = strtok(NULL, delimiter);
-        }
-        fflush(stdin);
+        } fflush(stdin);
     }
     if (strcmp(command_name, "mark_errors")==0){
         if (x == 0 || x ==1){
@@ -118,13 +116,12 @@ int user_turn(Game *my_game) {
         /* ----------------------- RESET --------------------------------*/
     } else if (strcmp(command_name, "exit")==0) {
         /* ----------------------- EXIT --------------------------------*/
+        return 2; //for exit
     } else {
         invalid_command();
     }
-    command = create_new_command() //NEW FUNCTION
-
-
-     return 1;
+    /* ----------------- test if game over, if so return 1, else return 0 --------------------*/
+     return 0;
 }
 
 /* returns the number typed by the user as int, or -1 if not a number */
@@ -140,4 +137,42 @@ int is_number(char *str){
         mult*=10;
     }
     return number;
+}
+
+
+/*takes user input while game is in "init mode"
+ * handles only "solve", "edit" or "exit" commands */
+int init_user_turn(Game *my_game){
+    char *command_name;
+    char *token = NULL;
+    char input[1024] = "";
+    char delimiter[] = " \t\r\n";
+    while (token == NULL) {
+        printf("Enter your command:\n");
+        fgets(input, 1024, stdin);
+        token = strtok(input, delimiter);
+    }
+    if (strlen(input) == 1) {       //Test if this works with both Enter, and spaces then Enter
+        user_turn(my_game);
+    }
+    command_name = token;
+    token = strtok(NULL, delimiter);
+    if (strcmp(command_name, "solve")==0) {
+        if (token == NULL) {
+            invalid_command();
+            return 0;
+        } else {
+            init_game(command_name, token, my_game);
+            return 0;
+        }
+    } else if (strcmp(command_name, "edit")==0){
+        init_game(command_name, token, my_game);
+        return 0;
+    } else if (strcmp(command_name, "exit")==0) {
+        /* ----------------------- EXIT --------------------------------*/
+        return 2; //for exit
+    } else {
+        invalid_command();
+    }
+    return 0;
 }
