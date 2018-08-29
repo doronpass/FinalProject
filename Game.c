@@ -47,7 +47,5 @@ void start_game(){
                 break;
             }
         }
-
     }
-
 }

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "Functionality.h"
+#include "Error_handler.h"
 
 
 /* the function used when the user enters the "save" command*/
@@ -256,3 +257,91 @@ Game * init_game(char *command, char *path, Game *new_game) {
     return new_game;
 }
 
+/* executes the set command, after making sure the input numbers are in range and cell is not fixed */
+void set(Game *my_game, int x, int y, int z){
+    int prev_val = my_game->user_game_board[x][y].value;
+    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n)) {
+        not_in_range(my_game->m_mult_n);
+        return;
+    }
+    if (my_game->user_game_board[x][y].is_fix == 1){
+        cell_is_fixed();
+        return;
+    }
+    /* ---------------- if dll not on last, delete all nodes after this one -------------- */
+    my_game->user_game_board[x][y].value = z;
+    my_game->user_game_board[x][y].is_error = 0;
+    unmark_erroneous_before_change(my_game, x, y, prev_val);
+    mark_erroneous_after_change(my_game, x, y, z);
+    /* ------------------------ build node ------------------------------------------------------- */
+    /* ------------------------ add node to list ------------------------------------------------- */
+}
+
+/* go over the board after a value was change, mark erroneous cells caused by the new value */
+void mark_erroneous_after_change(Game *my_game, int x, int y, int z){
+    int i, j, block_first_row, block_first_col;
+    int m = my_game->m_block_rows;
+    int n = my_game->n_block_cols;
+    int N = my_game->m_mult_n;
+    /* search row (row is x) */
+    for (i = 0; i < N; i++) {
+        if ((i != y) && (my_game->user_game_board[x][i].value == z)) {
+            my_game->user_game_board[x][i].is_error = 1;
+            my_game->user_game_board[x][y].is_error = 1;
+        }
+    }
+    /* search col (col is y)*/
+    for (j = 0; j < N; j++) {
+        if ((j != x) && (my_game->user_game_board[j][y].value == z)) {
+            my_game->user_game_board[j][y].is_error = 1;
+            my_game->user_game_board[x][y].is_error = 1;
+        }
+    }
+    /* search in block - dividing ints returns the floor value of the actual division */
+    block_first_row = (x / m) * m;
+    block_first_col = (y / n) * n;
+    for (i = block_first_row; i < (block_first_row + m); i++) {
+        for (j = block_first_col; j < (block_first_col + n); j++) {
+            if (my_game->user_game_board[i][j].value == z && (j != y || i != x)) {
+                my_game->user_game_board[x][y].is_error = 1;
+                my_game->user_game_board[i][j].is_error = 1;
+            }
+        }
+    }
+}
+
+/* go over the board before a value was change, unmark all cells that will not be erroneous after the change */
+void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){
+    int i, j, block_first_row, block_first_col;
+    int m = my_game->m_block_rows;
+    int n = my_game->n_block_cols;
+    int N = my_game->m_mult_n;
+    /* search row (row is x) */
+    for (i = 0; i < N; i++) {
+        if ((i != y) && (my_game->user_game_board[x][i].value == z)) {
+            if (is_valid(my_game, x, i, z)) {
+                my_game->user_game_board[x][i].is_error = 0;
+            }
+        }
+    }
+    /* search col (col is y)*/
+    for (j = 0; j < N; j++) {
+        if ((j != x) && (my_game->user_game_board[j][y].value == z)) {
+            if (is_valid(my_game, j, y, z)) {
+                my_game->user_game_board[j][y].is_error = 0;
+            }
+        }
+    }
+    /* search in block - dividing ints returns the floor value of the actual division */
+    block_first_row = (x / m) * m;
+    block_first_col = (y / n) * n;
+    for (i = block_first_row; i < (block_first_row + m); i++) {
+        for (j = block_first_col; j < (block_first_col + n); j++) {
+            if (my_game->user_game_board[i][j].value == z && (j != y || i != x)) {
+                if (is_valid(my_game, i, j, z)) {
+                    my_game->user_game_board[i][j].is_error = 0;
+                }
+            }
+        }
+    }
+}

@@ -11,5 +11,7 @@ int load_from_file(Game *my_game, char *path);
 int is_valid(Game *my_game,int x, int y, int z);
 void mark_errors(Game *my_game);
 Game * init_game(char *command, char *path, Game *new_game);
+void mark_erroneous_after_change(Game *my_game, int x, int y, int z);
+void unmark_erroneous_before_change(Game *my_game, int x, int y, int z);
 
 #endif //FINALPROJECT_FUNCTIONALITY_H
