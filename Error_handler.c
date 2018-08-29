@@ -42,4 +42,3 @@ void validation_passed(){
     printf("Validation passed: board is solvable\n");
 }
 
-
