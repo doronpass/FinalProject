@@ -33,7 +33,7 @@ typedef struct
     int doubly_linked_list_size;
 } Doubly_linked_list;
 
-
+Node * create_new_node();
 void add_last(Doubly_linked_list *dll, Command *node_data);
 Doubly_linked_list* create_new_dll();
 void remove_last (Doubly_linked_list *dll);

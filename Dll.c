@@ -26,7 +26,7 @@ Doubly_linked_list* create_new_dll(){
     new_dll->doubly_linked_list_size = 0;
     new_dll->first = NULL;
     new_dll->last = NULL;
-    new_dll->dll_pointer = NULL;
+    new_dll->dll_pointer = new_dll->last;
 
     return new_dll;
 }
