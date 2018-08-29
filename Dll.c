@@ -3,9 +3,7 @@
 //
 #include <stdlib.h>
 #include <stdio.h>
-#include "Command.h"
 #include "Dll.h"
-
 
 void add_last(Doubly_linked_list *dll, Command *node_data){
     Node* new_node =(Node*)malloc(sizeof(Node));
