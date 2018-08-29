@@ -1,7 +1,3 @@
-//
-// Created by Doron_Passal on 24/08/2018.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "Game.h"
@@ -23,3 +19,30 @@ Game *create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_
     return new_game;
 }
 
+/*starts the game and let user type commands
+ * first loop takes care if "init mode", inner loop takes care of the rest of the game
+ * game_status:
+ * 0 during the game
+ * 1 when the game is over (so the user will return to "init mode" = in the first loop)
+ * 2 when the user enters "exit" command to exit program */
+void start_game(char **argv){
+    int game_status = 0;
+    Game *my_game;
+    while (1){
+        if (game_status==2) {
+            break;
+        }
+        game_status = init_user_turn(my_game,argv);
+        if (game_status==2) {
+            break;
+        }
+        while(1){
+            game_status = user_turn(my_game);
+            if (game_status==1 || game_status == 2){
+                break;
+            }
+        }
+
+    }
+
+}
