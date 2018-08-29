@@ -29,6 +29,7 @@ typedef struct
 {
     struct Node *first;
     struct Node *last;
+    struct Node *dll_pointer;
     int doubly_linked_list_size;
 } Doubly_linked_list;
 
