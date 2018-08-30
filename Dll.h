@@ -17,7 +17,7 @@ typedef struct
     int autofill_counter;
 } Command;
 
-typedef struct Node {
+typedef struct Command {
     struct Node *next;
     struct Node *prev;
     Command *node_data;

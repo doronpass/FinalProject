@@ -24,21 +24,7 @@ void do_generate (char *x);
 
 void do_undo (Game *game ,int x, int y , int value , int pre_value);
 
-void do_redo (char *x){}
-
-void do_save (char *x){}
-
-void do_hint (char *x){}
-
-void do_num_soulutions (char *x){}
-
-void do_autofill (char *x){}
-
-void do_reset (char *x){}
-
-void do_exit (char *x){}
-
-
+void do_redo (Game *game ,int x, int y , int value , int pre_value );
 
 
 

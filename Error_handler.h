@@ -21,5 +21,6 @@ void board_not_solvable();
 
 void validation_passed();
 void nothing_to_undo();
+void nothing_to_redo();
 
 #endif //FINALPROJECT_ERROR_HANDLER_H
