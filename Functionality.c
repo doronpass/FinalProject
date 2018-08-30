@@ -273,11 +273,11 @@ void set(Game *my_game, int x, int y, int z){
     my_game->user_game_board[x][y].is_error = 0;
     unmark_erroneous_before_change(my_game, x, y, prev_val);
     mark_erroneous_after_change(my_game, x, y, z);
-    /* ------------------------ build node ------------------------------------------------------- */
-    /* ------------------------ add node to list ------------------------------------------------- */
+    /* ------------------------ build node + append it to list ---------------------------------------------------- */
 }
 
-/* go over the board after a value was change, mark erroneous cells caused by the new value */
+/* go over the board after a value was change, change is_error of all cells that are erroneous
+ *  after the change to 1 */
 void mark_erroneous_after_change(Game *my_game, int x, int y, int z){
     int i, j, block_first_row, block_first_col;
     int m = my_game->m_block_rows;
@@ -310,7 +310,8 @@ void mark_erroneous_after_change(Game *my_game, int x, int y, int z){
     }
 }
 
-/* go over the board before a value was change, unmark all cells that will not be erroneous after the change */
+/* go over the board before a value was change, change is_error of all cells that will not
+ * be erroneous after the change to 0 */
 void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){
     int i, j, block_first_row, block_first_col;
     int m = my_game->m_block_rows;
@@ -340,6 +341,33 @@ void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){
             if (my_game->user_game_board[i][j].value == z && (j != y || i != x)) {
                 if (is_valid(my_game, i, j, z)) {
                     my_game->user_game_board[i][j].is_error = 0;
+                }
+            }
+        }
+    }
+}
+
+
+/* fill cells with only 1 valid option */
+//NEED TO MAKE SURE that changing value to my_game (with set function) does not effect clone (otherwise, the function won't work properly)gg
+void autofill(Game *my_game) {
+    int i,j,k,num_of_valid_nums, new_val=0, node_counter=0;
+    Game *clone = (Game *) malloc(sizeof(Game));
+    memcpy(clone, my_game,my_game->m_mult_n*my_game->m_mult_n* sizeof(Cell) );
+    for (i=0;i<my_game->m_mult_n;i++){
+        for (j=0;j<my_game->m_mult_n;j++){
+            if (my_game->user_game_board[i][j].value==0){
+                num_of_valid_nums=0;
+                for (k=0;k<my_game->m_mult_n;k++){
+                    if (is_valid(clone,i,j,k)){
+                        num_of_valid_nums+=1;
+                        new_val = k;
+                    }
+                }
+                if (num_of_valid_nums==1) {
+                    set(my_game, i, j, new_val);
+/* ------------------------ build node + append it to list (with node_counter) ------------------------------------- */
+                    node_counter+=1;
                 }
             }
         }
