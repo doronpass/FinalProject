@@ -5,7 +5,7 @@
 #include "Functionality.h"
 
 int main() {
-    start_game();
+//    start_game();
     return 0;
 }
 

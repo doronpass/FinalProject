@@ -42,3 +42,10 @@ void validation_passed(){
     printf("Validation passed: board is solvable\n");
 }
 
+void nothing_to_undo(){
+    printf("Error: no moves to undo\n");
+}
+void nothing_to_redo(){
+    printf("Error: no moves to redo\n");
+}
+
