@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Game.h"
-#include "Parser.h"
+#include "Functionality.h"
 
 Game *create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_error,int mode,int m_block_rows, int n_block_cols){
     Game *new_game = (Game*)malloc(sizeof(Game));

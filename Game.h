@@ -3,6 +3,7 @@
 
 #include "Dll.h"
 #include "Game_board.h"
+#include "Parser.h"
 typedef struct Game
 {
     Cell **user_game_board;
