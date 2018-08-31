@@ -258,7 +258,8 @@ Game * init_game(char *command, char *path, Game *new_game) {
 }
 
 /* executes the set command, after making sure the input numbers are in range and cell is not fixed */
-void set(Game *my_game, int x, int y, int z){
+void set(Game *my_game, int x, int y, int z, Node *node){
+    Data *data;
     int prev_val = my_game->user_game_board[x][y].value;
     if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n)) {
         not_in_range(my_game->m_mult_n);
@@ -268,12 +269,14 @@ void set(Game *my_game, int x, int y, int z){
         cell_is_fixed();
         return;
     }
-    /* ---------------- if dll not on last, delete all nodes after this one -------------- */
     my_game->user_game_board[x][y].value = z;
     my_game->user_game_board[x][y].is_error = 0;
     unmark_erroneous_before_change(my_game, x, y, prev_val);
     mark_erroneous_after_change(my_game, x, y, z);
-    /* ------------------------ build node + append it to list ---------------------------------------------------- */
+
+    data = create_new_data (x ,y ,z, prev_val);
+    append_data_to_node(node, data);
+
 }
 
 /* go over the board after a value was change, change is_error of all cells that are erroneous
@@ -350,7 +353,7 @@ void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){
 
 /* fill cells with only 1 valid option */
 //NEED TO MAKE SURE that changing value to my_game (with set function) does not effect clone (otherwise, the function won't work properly)gg
-void autofill(Game *my_game) {
+void autofill(Game *my_game, Node *node) {
     int i,j,k,num_of_valid_nums, new_val=0, node_counter=0;
     Game *clone = (Game *) malloc(sizeof(Game));
     memcpy(clone, my_game,my_game->m_mult_n*my_game->m_mult_n* sizeof(Cell) );
@@ -365,11 +368,12 @@ void autofill(Game *my_game) {
                     }
                 }
                 if (num_of_valid_nums==1) {
-                    set(my_game, i, j, new_val);
-/* ------------------------ build node + append it to list (with node_counter) ------------------------------------- */
+                    set(my_game, i, j, new_val, node);
                     node_counter+=1;
                 }
             }
         }
     }
 }
+
+

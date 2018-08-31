@@ -30,18 +30,13 @@ typedef struct
 } Doubly_linked_list;
 
 
-Node * create_new_node(char* command_name);// crate now node ,node data array is empty
-Data* create_new_data (int row ,int col ,int value, int prev_value); /* create new quatro from this data and returned it */
-void append_node_to_list(Doubly_linked_list *dll, Node *node); /* add new node to the end of the linked list */
+Node * create_new_node(char* command_name);
+Data* create_new_data (int row ,int col ,int value, int prev_value);
+void append_node_to_list(Doubly_linked_list *dll, Node *node);
 void remove_last (Doubly_linked_list *dll); /* inside it remove node, with all the free necessery */
 void free_node(Node *node);
 void append_data_to_node(Node *node,Data *data);/* add new data to the data array in node*/
 
 
 Doubly_linked_list* create_new_dll();
-
-void free_dll();
-
-
-
 #endif // FINALPROJECT_DLL_H

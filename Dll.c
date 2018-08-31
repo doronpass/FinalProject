@@ -3,6 +3,7 @@
 #include <mem.h>
 #include "Dll.h"
 
+/*crate now dll node ,node data array is empty */
 Node * create_new_node(char* command_name){
     Node *node = (Node *) malloc(sizeof(Node));
     node->next = NULL;
@@ -12,7 +13,8 @@ Node * create_new_node(char* command_name){
     node->node_data_size = 0;
     return node;
 }
-/*(Data *) malloc(sizeof(Data)) */
+/* create new node data entry, which is the cell we change (row,col), the value after the change
+ * and the value before the change (prev_value) */
 Data* create_new_data (int row ,int col ,int value, int prev_value){
     Data *data = (Data *) malloc(sizeof(Data));
     data->row = row;
@@ -22,6 +24,8 @@ Data* create_new_data (int row ,int col ,int value, int prev_value){
     return data;
 }
 
+/* delete any node ahead of the node the dll_pointer points to,
+ * then append the input node to the end of the linked list  */
 void append_node_to_list(Doubly_linked_list *dll, Node *node){
     Node *prev_node = dll->dll_pointer;
 
@@ -39,6 +43,7 @@ void append_node_to_list(Doubly_linked_list *dll, Node *node){
     dll->doubly_linked_list_size++;
 }
 
+/* remove the last node in the dll */
 void remove_last (Doubly_linked_list *dll){
     Node *to_delete;
     to_delete = dll->last;
@@ -48,11 +53,13 @@ void remove_last (Doubly_linked_list *dll){
     free_node(to_delete);
 }
 
+/*free all memory space assigned to the input node */
 void free_node(Node *node){
     free(node->node_data);
     free(node);
 }
 
+/* add a new data entry ( (row,col) of the cell, new value, old value) to the node data array */
 void append_data_to_node(Node *node,Data *data){
     node->node_data_size++;
     node->node_data = (Data *) realloc(node->node_data, node->node_data_size* sizeof(Data));

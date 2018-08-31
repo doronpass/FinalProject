@@ -10,9 +10,8 @@
 int user_turn(Game *my_game) {
     int x = -1, y = -1, z = -1, i = 0;
     char *command_name;
-    char *token = NULL;
-    char input[1024] = "";
-    char delimiter[] = " \t\r\n";
+    char *token = NULL, input[1024] = "", delimiter[] = " \t\r\n";
+    Node *node;
     while (token == NULL) {
         printf("Enter your command:\n");
         fgets(input, 1024, stdin);
@@ -79,15 +78,12 @@ int user_turn(Game *my_game) {
             return 0;
         }
     } else if (strcmp(command_name, "print_board")==0){
-        /* ----------------------- PRINT BOARD!!! -------------------------*/
+        print_user_board(my_game);
     } else if (strcmp(command_name, "set")==0){
-        if (x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n){
-
-            /*---------------- SET XYZ ------------------------------------*/
-        } else {
-            not_in_range(my_game->m_mult_n);
-            return 0;
-        }
+        node = create_new_node("set");
+        set(my_game, x, y, z, node);
+        append_node_to_list(my_game->doubly_linked_list, node);
+        print_user_board(my_game);
     } else if (strcmp(command_name, "validate")==0){
         /*---------------- VALIDATE! ------------------------------------*/
     } else if (strcmp(command_name, "generate")==0) {
@@ -111,7 +107,10 @@ int user_turn(Game *my_game) {
     } else if (strcmp(command_name, "num_solutions")==0) {
         /* ----------------------- NUM_SOLUTIONS --------------------------------*/
     } else if (strcmp(command_name, "autofill")==0) {
-        /* ----------------------- AUTOFILL --------------------------------*/
+        node = create_new_node("autofill");
+        autofill(my_game, node);
+        append_node_to_list(my_game->doubly_linked_list, node);
+        print_user_board(my_game);
     } else if (strcmp(command_name, "reset")==0) {
         /* ----------------------- RESET --------------------------------*/
     } else if (strcmp(command_name, "exit")==0) {
