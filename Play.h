@@ -6,7 +6,7 @@
 #define FINALPROJECT_PLAY_H
 #include "Game.h"
 
-void undo_print(int x,int y,int pre_value,int value);
+void undo_print(Data *data);
 
 void do_solve (char *x);
 

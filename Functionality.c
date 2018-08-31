@@ -377,3 +377,11 @@ void autofill(Game *my_game, Node *node) {
 }
 
 
+void undo(Game *my_game){
+    if (my_game->doubly_linked_list->doubly_linked_list_size<2 || my_game->doubly_linked_list->dll_pointer->prev == NULL){
+        printf("Error: no moves to undo\n");
+        return;
+    }
+    my_game->doubly_linked_list->dll_pointer = my_game->doubly_linked_list->dll_pointer->prev;
+
+}
