@@ -17,7 +17,6 @@ typedef struct Node {
     char* command_name;
     Data *node_data;
     int node_data_size;
-
 } Node;
 
 
@@ -36,7 +35,5 @@ void append_node_to_list(Doubly_linked_list *dll, Node *node);
 void remove_last (Doubly_linked_list *dll); /* inside it remove node, with all the free necessery */
 void free_node(Node *node);
 void append_data_to_node(Node *node,Data *data);/* add new data to the data array in node*/
-
-
 Doubly_linked_list* create_new_dll();
 #endif // FINALPROJECT_DLL_H

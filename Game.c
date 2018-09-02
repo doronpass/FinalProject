@@ -3,23 +3,6 @@
 #include "Game.h"
 #include "Functionality.h"
 
-Game *create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_error,int mode,int m_block_rows, int n_block_cols){
-    Game *new_game = (Game*)malloc(sizeof(Game));
-    if (new_game == NULL){
-        printf("Error: malloc has failed\n");
-        exit(0);
-    }
-    new_game->n_block_cols = n_block_cols;
-    new_game->m_block_rows = m_block_rows;
-    new_game->m_mult_n= n_block_cols*m_block_rows;
-    new_game->user_game_board = user_game_board;
-    new_game->solved_game_board = solved_game_board;
-    new_game->mode = mode;
-    new_game->mark_error = mark_error;
-    new_game->doubly_linked_list = create_new_dll();
-    return new_game;
-}
-
 /*starts the game and let user type commands
  * first loop takes care if "init mode", inner loop takes care of the rest of the game
  * game_status:

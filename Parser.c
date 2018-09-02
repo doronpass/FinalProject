@@ -7,8 +7,9 @@
 #include "Error_handler.h"
 #include "Functionality.h"
 
+
 int user_turn(Game *my_game) {
-    int x = -1, y = -1, z = -1, i = 0;
+    int x = -1, y = -1, z = -1, i = 0,autofill_change=0;
     char *command_name;
     char *token = NULL, input[1024] = "", delimiter[] = " \t\r\n";
     Node *node;
@@ -71,12 +72,7 @@ int user_turn(Game *my_game) {
         } fflush(stdin);
     }
     if (strcmp(command_name, "mark_errors")==0){
-        if (x == 0 || x ==1){
-            mark_errors(my_game);
-        } else {
-            printf("Error: the value should be 0 or 1\n");
-            return 0;
-        }
+        mark_errors(my_game);
     } else if (strcmp(command_name, "print_board")==0){
         print_user_board(my_game);
     } else if (strcmp(command_name, "set")==0){
@@ -94,28 +90,33 @@ int user_turn(Game *my_game) {
             return 0;
         }
     } else if (strcmp(command_name, "undo")==0) {
-        /* ----------------------- UNDO --------------------------------*/
+        undo(my_game);
     } else if (strcmp(command_name, "redo")==0) {
-        /* ----------------------- REDO --------------------------------*/
+        redo(my_game);
     } else if (strcmp(command_name, "hint")==0) {
         if (x<my_game->m_mult_n && y<my_game->m_mult_n){
             /* ----------------------- HINT --------------------------------*/
         } else {
             not_in_range(my_game->m_mult_n);
-            return 0;
         }
     } else if (strcmp(command_name, "num_solutions")==0) {
         /* ----------------------- NUM_SOLUTIONS --------------------------------*/
     } else if (strcmp(command_name, "autofill")==0) {
         node = create_new_node("autofill");
-        autofill(my_game, node);
-        append_node_to_list(my_game->doubly_linked_list, node);
+        autofill_change=autofill(my_game, node);
+        /* according to forum, if autofill made no changes to the board, it should not be added to dll */
+        if (autofill_change==1){
+            append_node_to_list(my_game->doubly_linked_list, node);
+        } else {
+            free_node(node);
+        }
         print_user_board(my_game);
     } else if (strcmp(command_name, "reset")==0) {
-        /* ----------------------- RESET --------------------------------*/
+        reset(my_game);
     } else if (strcmp(command_name, "exit")==0) {
-        /* ----------------------- EXIT --------------------------------*/
-        return 2; //for exit
+        exit_command(my_game);
+        printf("Exiting...\n");
+        return 2;
     } else {
         invalid_command();
     }
@@ -168,7 +169,8 @@ int init_user_turn(Game *my_game){
         init_game(command_name, token, my_game);
         return 0;
     } else if (strcmp(command_name, "exit")==0) {
-        /* ----------------------- EXIT --------------------------------*/
+        exit_command(my_game);
+        printf("Exiting...\n");
         return 2; //for exit
     } else {
         invalid_command();

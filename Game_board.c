@@ -1,6 +1,3 @@
-//
-// Created by Doron_Passal on 24/08/2018.
-//
 #include <stdio.h>
 #include <stdlib.h>
 #include "Game_board.h"
@@ -84,17 +81,19 @@ void print_user_board(Game *game){
         }
         printf("%s\n",PIPE);
     }
-    print_separator_row(size,game->n_block_cols); /* ther's empty line after! check if it's fine */
+    print_separator_row(size,game->n_block_cols); /* there is an empty line after! check if it's fine */
 }
 
 
 
-void free_board(Cell **board, int size){
-    int i, j;
-    for (i = 0; i < size; ++i) {
-        free(board[i]);
+void free_boards(Game *my_game){
+    int i,j;
+    for (i=0;i<my_game->m_mult_n;i++){
+        free(my_game->user_game_board[i]);
+        free(my_game->solved_game_board[i]);
     }
-    free(board);
+    free(my_game->user_game_board);
+    free(my_game->solved_game_board);
 }
 
 

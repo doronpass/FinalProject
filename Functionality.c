@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include "Play.h"
 #include "Functionality.h"
 #include "Error_handler.h"
 
@@ -209,11 +210,14 @@ int is_valid(Game *my_game, int x, int y, int z) {
     return 1;
 }
 
+/* change the mark errors option on and off */
 void mark_errors(Game *my_game) {
-    if (my_game->mark_error) {
+    if (my_game->mark_error==1) {
         my_game->mark_error = 0;
-    } else {
+    } else if (my_game->mark_error==0){
         my_game->mark_error = 1;
+    } else {
+        printf("Error: the value should be 0 or 1\n");
     }
 }
 
@@ -353,8 +357,8 @@ void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){
 
 /* fill cells with only 1 valid option */
 //NEED TO MAKE SURE that changing value to my_game (with set function) does not effect clone (otherwise, the function won't work properly)gg
-void autofill(Game *my_game, Node *node) {
-    int i,j,k,num_of_valid_nums, new_val=0, node_counter=0;
+int autofill(Game *my_game, Node *node) {
+    int i,j,k,num_of_valid_nums, new_val=0, changed=0;
     Game *clone = (Game *) malloc(sizeof(Game));
     memcpy(clone, my_game,my_game->m_mult_n*my_game->m_mult_n* sizeof(Cell) );
     for (i=0;i<my_game->m_mult_n;i++){
@@ -369,19 +373,101 @@ void autofill(Game *my_game, Node *node) {
                 }
                 if (num_of_valid_nums==1) {
                     set(my_game, i, j, new_val, node);
-                    node_counter+=1;
+                    changed=1;
                 }
             }
         }
     }
+    return changed;
 }
 
-
+/* undo the current move (accodring to the pointer) */
 void undo(Game *my_game){
+    Node *node_to_undo = my_game->doubly_linked_list->dll_pointer;
+    int i;
     if (my_game->doubly_linked_list->doubly_linked_list_size<2 || my_game->doubly_linked_list->dll_pointer->prev == NULL){
         printf("Error: no moves to undo\n");
         return;
     }
+    /* need to print the board and then the changes, so we divided it to 2 separate loops */
+    for (i=0; i<node_to_undo->node_data_size;i++){
+        set_without_dll(my_game,node_to_undo->node_data[i].row,node_to_undo->node_data[i].col,node_to_undo->node_data[i].prev_value);
+    }
+    print_user_board(my_game);
+    for (i=0; i<node_to_undo->node_data_size;i++){
+        undo_print(node_to_undo->node_data[i]);
+    }
     my_game->doubly_linked_list->dll_pointer = my_game->doubly_linked_list->dll_pointer->prev;
+}
 
+/* (re)do the next move on the move list (according to the pointer) */
+void redo(Game *my_game){
+    Node *node_to_redo = my_game->doubly_linked_list->dll_pointer->next;
+    int i;
+    if (my_game->doubly_linked_list->doubly_linked_list_size==0 || my_game->doubly_linked_list->dll_pointer->next == NULL){
+        printf("Error: no moves to redo\n");
+        return;
+    }
+    print_user_board(my_game);
+    for (i=0; i<node_to_redo->node_data_size;i++){
+        set_without_dll(my_game,node_to_redo->node_data[i].row,node_to_redo->node_data[i].col,node_to_redo->node_data[i].value);
+    }
+    for (i=0; i<node_to_redo->node_data_size;i++){
+        redo_print(node_to_redo->node_data[i]);
+    }
+    my_game->doubly_linked_list->dll_pointer = my_game->doubly_linked_list->dll_pointer->next;
+}
+
+
+/* same as set, without adding a new data entry to a node data array.
+ * used by undo/redo to change values without effecting the dll */
+void set_without_dll(Game *my_game, int x, int y, int z) {
+    int prev_val = my_game->user_game_board[x][y].value;
+    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n)) {
+        not_in_range(my_game->m_mult_n);
+        return;
+    }
+    if (my_game->user_game_board[x][y].is_fix == 1){
+        cell_is_fixed();
+        return;
+    }
+    my_game->user_game_board[x][y].value = z;
+    my_game->user_game_board[x][y].is_error = 0;
+    unmark_erroneous_before_change(my_game, x, y, prev_val);
+    mark_erroneous_after_change(my_game, x, y, z);
+};
+
+/* revert to the original board the user loaded (either from a file or a blank 9x9)
+ * clear the moves list */
+void reset(Game *my_game){
+    while (my_game->doubly_linked_list->dll_pointer!=NULL){
+        undo_without_output(my_game);
+    }
+    while (my_game->doubly_linked_list->last!=NULL){
+        remove_last(my_game->doubly_linked_list);
+    }
+    printf("Board reset\n");
+}
+
+/* same as the undo function, but does not print any input
+ * used by reset function */
+void undo_without_output(Game *my_game) {
+    Node *node_to_undo = my_game->doubly_linked_list->dll_pointer;
+    int i;
+    for (i=0; i<node_to_undo->node_data_size;i++){
+        set_without_dll(my_game,node_to_undo->node_data[i].row,node_to_undo->node_data[i].col,node_to_undo->node_data[i].prev_value);
+    }
+    my_game->doubly_linked_list->dll_pointer = my_game->doubly_linked_list->dll_pointer->prev;
+}
+
+void exit_command(Game *my_game){
+    /* free dll */
+    while (my_game->doubly_linked_list->last!=NULL){
+        remove_last(my_game->doubly_linked_list);
+    }
+    free(my_game->doubly_linked_list);
+    /* free both game boards */
+    free_boards(my_game);
+    /* free game */
+    free(my_game);
 }
