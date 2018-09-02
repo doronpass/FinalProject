@@ -54,6 +54,7 @@ int save_to_file(Game *my_game, char *path){
     assertion=fprintf(file, "%d %d\n", m, n);
     if (assertion<0){
         /*problem modifying file*/
+        fclose(file);
         return 0;
     }
     for (i=0; i<N; i++) {
@@ -63,12 +64,14 @@ int save_to_file(Game *my_game, char *path){
                 assertion=fprintf(file, "%d. ", cell_value);
                 if (assertion<0){
                     /*problem modifying file*/
+                    fclose(file);
                     return 0;
                 }
             } else{
                 assertion=fprintf(file, "%d ", cell_value);
                 if (assertion<0){
                     /*problem modifying file*/
+                    fclose(file);
                     return 0;
                 }
             }
@@ -77,6 +80,7 @@ int save_to_file(Game *my_game, char *path){
         assertion = fprintf(file, "\n");
         if (assertion<0){
             /*problem modifying file*/
+            fclose(file);
             return 0;
         }
     }
@@ -115,6 +119,7 @@ int load_from_file(Game *my_game, char *path) {
         } else {                    /*edit mode*/
             printf("Error: File cannot be opened\n");
         }
+        fclose(file);
         return 0;
     }
     /* read m */
@@ -125,6 +130,7 @@ int load_from_file(Game *my_game, char *path) {
     }
     if (ferror(file)) {      /*test if error, if so return 0) */
         printf("Error: Unable to read file\n"); /*custom comment as instructed in forum */
+        fclose(file);
         return 0;
     }
     value-= '0';
@@ -138,6 +144,7 @@ int load_from_file(Game *my_game, char *path) {
     }
     if (ferror(file)) {      /*test if error, if so return 0) */
         printf("Error: Unable to read file\n");
+        fclose(file);
         return 0;
     }
     value-= '0';
@@ -164,12 +171,14 @@ int load_from_file(Game *my_game, char *path) {
             }
             if (ferror(file)) {      /*test if error, if so return 0) */
                 printf("Error: Unable to read file\n");
+                fclose(file);
                 return 0;
             }
             value-= '0';
             my_game->user_game_board[i][j].value = value;
         }
     }
+    fclose(file);
 }
 
 
