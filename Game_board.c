@@ -87,7 +87,7 @@ void print_user_board(Game *game){
 
 
 void free_boards(Game *my_game){
-    int i,j;
+    int i;
     for (i=0;i<my_game->m_mult_n;i++){
         free(my_game->user_game_board[i]);
         free(my_game->solved_game_board[i]);

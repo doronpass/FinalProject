@@ -373,7 +373,7 @@ int autofill(Game *my_game, Node *node) {
         for (j=0;j<my_game->m_mult_n;j++){
             if (my_game->user_game_board[i][j].value==0){
                 num_of_valid_nums=0;
-                for (k=0;k<my_game->m_mult_n;k++){
+                for (k=1;k<=my_game->m_mult_n;k++){
                     if (is_valid(clone,i,j,k)){
                         num_of_valid_nums+=1;
                         new_val = k;
