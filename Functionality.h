@@ -15,6 +15,7 @@ void set(Game *my_game, int x, int y, int z, Node *node);
 void mark_erroneous_after_change(Game *my_game, int x, int y, int z);
 void unmark_erroneous_before_change(Game *my_game, int x, int y, int z);
 int autofill(Game *my_game, Node *node);
+Game * clone_game(Game *my_game);
 void undo(Game *my_game);
 void redo(Game *my_game);
 void set_without_dll(Game *my_game, int x, int y, int z);

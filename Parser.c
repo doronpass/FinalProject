@@ -120,7 +120,10 @@ int user_turn(Game *my_game) {
     } else {
         invalid_command();
     }
-    /* ----------------- test if game over, if so return 1, else return 0 --------------------*/
+    if (is_game_over(my_game)){
+        /* user solved the board - game over */
+        return 1;
+    }
      return 0;
 }
 
@@ -176,4 +179,18 @@ int init_user_turn(Game *my_game){
         invalid_command();
     }
     return 0;
+}
+
+/* checks if the board is full and contains no erroneous values - if so, the user won and the game is over
+ * returns 1 if the game is over and 0 else. */
+int is_game_over(Game *my_game){
+    int i,j;
+    for (i=0;i<my_game->m_mult_n;i++) {
+        for (j = 0; j < my_game->m_mult_n; j++) {
+            if (my_game->user_game_board[i][j].value == 0 || my_game->user_game_board[i][j].is_error == 1) {
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
