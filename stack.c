@@ -117,15 +117,6 @@ void free_stack_node(Stack_Node *node, int size){
     free(node->board);
     free(node);
 }
-void free_boards(Game *my_game){
-    int i;
-    for (i=0;i<my_game->m_mult_n;i++){
-        free(my_game->user_game_board[i]);
-        free(my_game->solved_game_board[i]);
-    }
-    free(my_game->user_game_board);
-    free(my_game->solved_game_board);
-}
 
 /* ------------------------------------ think about the "free()", where it should be for node or new_node -----*/
 int exhaustive_backtracking(Game *my_game){
