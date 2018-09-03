@@ -42,7 +42,6 @@ Stack_Node * create_stack_node(int size, Stack_Node *input_node){
 
 Stack * create_stack(){
     Stack *stack = (Stack *) malloc(sizeof(Stack));
-    stack->size=0;
     stack->top = NULL;
     return stack;
 }
@@ -54,18 +53,16 @@ int is_empty(Stack *stack) {
         return 0;
 }
 
-int** pop(Stack *stack) {
-    int **board = stack->top->board;
+Stack_Node * pop(Stack *stack) {
+    Stack_Node * stack_node = stack->top;
     if(!is_empty(stack)) {
-        stack->size -= 1;
         stack->top = stack->top->prev;
         stack->top->next = NULL;
-        return board;
+        return stack_node;
     }
 }
 
 void push(Stack *stack, Stack_Node *node) {
-    stack->size += 1;
     stack->top->next = node;
     node->prev = stack->top;
     stack->top = node;
@@ -112,11 +109,30 @@ int is_valid_ints(int** board,int m, int n, int x, int y, int z){
     return 1;
 }
 
+void free_stack_node(Stack_Node *node, int size){
+    int i;
+    for (i=0;i<size;i++){
+        free(node->board[i]);
+    }
+    free(node->board);
+    free(node);
+}
+void free_boards(Game *my_game){
+    int i;
+    for (i=0;i<my_game->m_mult_n;i++){
+        free(my_game->user_game_board[i]);
+        free(my_game->solved_game_board[i]);
+    }
+    free(my_game->user_game_board);
+    free(my_game->solved_game_board);
+}
 
+/* ------------------------------------ think about the "free()", where it should be for node or new_node -----*/
 int exhaustive_backtracking(Game *my_game){
-    int i,j,k;
+    int i,j,k,num_valid, num_sols = 0;
     Stack *stack = create_stack();
     Stack_Node *node = create_first_stack_node(my_game);
+    Stack_Node *new_node;
     push(stack, node);
     if (check_if_erroneous(my_game)){
         puzzle_solution_erroneus();
@@ -124,16 +140,37 @@ int exhaustive_backtracking(Game *my_game){
     }
     for (i=0;i<my_game->m_mult_n;i++){
         for (j=0;j<my_game->m_mult_n;j++){
+            if(is_empty(stack)){
+                break;
+            }
             if (stack->top->board[i][j]==0){
                 node = pop(stack);
+                num_valid = 0;
                 for (k=1;k<=my_game->m_mult_n;k++){
                     if(is_valid_ints(node->board,my_game->m_block_rows, my_game->n_block_cols,i,j, k)){
-
+                        num_valid++;
+                        new_node=create_stack_node(my_game->m_mult_n, node);
+                        new_node->board[i][j] = k;
+                        push(stack,new_node);
                     }
                 }
+                if(num_valid==0){
+                    i=0;
+                    j=0;
+                }
+                free_stack_node(node,my_game->m_mult_n);
+            }
+            /* if we got to the last cell in the matt and filled it with a number,
+             * then we have a valid solution to the board. increment the counter and free the node at the top of the
+             * stack. note that the last cell will not have more then 1 valid number, so looking only on the
+             * top node is valid */
+            if(i==(my_game->m_mult_n-1)&& j==(my_game->m_mult_n-1) && stack->top->board[i][j]){
+                num_sols++;
+                free_stack_node(pop(stack),my_game->m_mult_n );
             }
         }
     }
+    free(stack);
 }
 
 

@@ -12,9 +12,7 @@ typedef struct Stack_Node {
 }Stack_Node;
 
 typedef struct Stack {
-    int size;
     Stack_Node *top;
-
 }Stack;
 
 
