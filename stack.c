@@ -39,13 +39,14 @@ Stack_Node * create_stack_node(int size, Stack_Node *input_node){
     }
 }
 
-
+/* create an empty stack */
 Stack * create_stack(){
     Stack *stack = (Stack *) malloc(sizeof(Stack));
     stack->top = NULL;
     return stack;
 }
 
+/* if stack is empty, return 1, else return 0 */
 int is_empty(Stack *stack) {
     if(stack->top == NULL)
         return 1;
@@ -53,6 +54,7 @@ int is_empty(Stack *stack) {
         return 0;
 }
 
+/* remove the item at the top of the stack from the stack, and return it */
 Stack_Node * pop(Stack *stack) {
     Stack_Node * stack_node = stack->top;
     if(!is_empty(stack)) {
@@ -62,6 +64,7 @@ Stack_Node * pop(Stack *stack) {
     }
 }
 
+/* push an item to the top of the stack */
 void push(Stack *stack, Stack_Node *node) {
     stack->top->next = node;
     node->prev = stack->top;
@@ -81,7 +84,8 @@ int check_if_erroneous(Game *my_game){
     }
     return 0;
 }
-
+/* same function as "is_valid", but input is a matrix and some ints, rather than
+ * a Game struct - used for backtracking */
 int is_valid_ints(int** board,int m, int n, int x, int y, int z){
     int i, j, block_first_row, block_first_col;
     int N = n * m;
@@ -109,6 +113,7 @@ int is_valid_ints(int** board,int m, int n, int x, int y, int z){
     return 1;
 }
 
+/* free all memory allocated to a stack node */
 void free_stack_node(Stack_Node *node, int size){
     int i;
     for (i=0;i<size;i++){
@@ -162,6 +167,13 @@ int exhaustive_backtracking(Game *my_game){
         }
     }
     free(stack);
+    printf("Number of solutions: %d\n", num_sols);
+    if (num_sols==1){
+        printf("This is a good board!\n");
+    } else if (num_sols>1){
+        printf("The puzzle has more than 1 solution, try to edit it further\n");
+    }
+    return num_sols;
 }
 
 

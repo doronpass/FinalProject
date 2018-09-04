@@ -192,7 +192,7 @@ int is_valid(Game *my_game, int x, int y, int z) {
     int n = my_game->n_block_cols;
     int N = n * m;
 
-    if (my_game->user_game_board[x][y].value == z) {
+    if (my_game->user_game_board[x][y].value == z || z==0) {
         return 1;
     }
     /* search row (row is x) */
@@ -236,8 +236,11 @@ void mark_errors(Game *my_game) {
  * the file in the path argument */
 
 /* ---------- need to free previous game memory before creating new, maybe another function ----- */
-Game * init_game(char *command, char *path, Game *new_game) {
+Game * init_game(char *command, char *path, Game *new_game, int is_there_old_game) {
     int assert,i,j;
+    if (is_there_old_game){
+        free_all_mem(new_game); /* free old game boards and dll if there was an old game */
+    }
     if (strcmp(command, "solve") == 0) {
         new_game->mode = 1;
     }
@@ -260,7 +263,9 @@ Game * init_game(char *command, char *path, Game *new_game) {
         if (new_game->mode == 0) {
             for (i = 0; i < new_game->m_mult_n; i++) {
                 for (j = 0; j < new_game->m_mult_n; j++) {
-                    new_game->user_game_board[i][j].is_fix = 1;
+                    if (new_game->user_game_board[i][j].value!=0){
+                        new_game->user_game_board[i][j].is_fix = 1;
+                    }
                 }
             }
         }
@@ -491,7 +496,10 @@ void undo_without_output(Game *my_game) {
     my_game->doubly_linked_list->dll_pointer = my_game->doubly_linked_list->dll_pointer->prev;
 }
 
-void exit_command(Game *my_game){
+/* free all memory alocated inside Game, including dll and boards (user and solution)
+ * does not free Game itself */
+
+void free_all_mem(Game *my_game){
     /* free dll */
     while (my_game->doubly_linked_list->last!=NULL){
         remove_last(my_game->doubly_linked_list);
@@ -499,6 +507,5 @@ void exit_command(Game *my_game){
     free(my_game->doubly_linked_list);
     /* free both game boards */
     free_boards(my_game);
-    /* free game */
-    free(my_game);
+
 }

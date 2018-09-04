@@ -6,13 +6,13 @@
 #include "Game.h"
 #include "Error_handler.h"
 #include "Functionality.h"
+#include "stack.h"
 
 
 int user_turn(Game *my_game) {
-    int x = -1, y = -1, z = -1, i = 0,autofill_change=0;
+    int x = -1, y = -1, z = -1, i = 0;
     char *command_name;
     char *token = NULL, input[1024] = "", delimiter[] = " \t\r\n";
-    Node *node;
     while (token == NULL) {
         printf("Enter your command:\n");
         fgets(input, 1024, stdin);
@@ -37,11 +37,11 @@ int user_turn(Game *my_game) {
             invalid_command();
             return 0;
         } else {
-            init_game(command_name, token, my_game);
+            init_game(command_name, token, my_game,1);
             return 0;
         }
     } else if (strcmp(command_name, "edit")==0){
-        init_game(command_name, token, my_game);
+        init_game(command_name, token, my_game,1);
         return 0;
     }
     else {
@@ -71,6 +71,30 @@ int user_turn(Game *my_game) {
             token = strtok(NULL, delimiter);
         } fflush(stdin);
     }
+    return (execute_function(my_game, command_name, x,y,z));
+}
+
+/* returns the number typed by the user as int, or -1 if not a number */
+int is_number(char *str){
+    int i;
+    int mult = 1;
+    int number = 0;
+    for (i=(int) strlen(str) ; i>0 ;i--){
+        if (isdigit(str[i-1])==0) {
+            return -1;
+        }
+        number += mult*(str[i] - '0');
+        mult*=10;
+    }
+    return number;
+}
+
+/* compare the command name and args to valid commands and performs the command
+ * or informs the user the command is invalid.
+ * created mainly due to the length of "user_turn" function */
+int execute_function(Game *my_game, char *command_name, int x, int y, int z){
+    int autofill_change=0;
+    Node *node;
     if (strcmp(command_name, "mark_errors")==0){
         mark_errors(my_game);
     } else if (strcmp(command_name, "print_board")==0){
@@ -100,7 +124,7 @@ int user_turn(Game *my_game) {
             not_in_range(my_game->m_mult_n);
         }
     } else if (strcmp(command_name, "num_solutions")==0) {
-        /* ----------------------- NUM_SOLUTIONS --------------------------------*/
+        exhaustive_backtracking(my_game);
     } else if (strcmp(command_name, "autofill")==0) {
         node = create_new_node("autofill");
         autofill_change=autofill(my_game, node);
@@ -114,7 +138,7 @@ int user_turn(Game *my_game) {
     } else if (strcmp(command_name, "reset")==0) {
         reset(my_game);
     } else if (strcmp(command_name, "exit")==0) {
-        exit_command(my_game);
+        free_all_mem(my_game);
         printf("Exiting...\n");
         return 2;
     } else {
@@ -124,28 +148,15 @@ int user_turn(Game *my_game) {
         /* user solved the board - game over */
         return 1;
     }
-     return 0;
+    return 0;
 }
-
-/* returns the number typed by the user as int, or -1 if not a number */
-int is_number(char *str){
-    int i;
-    int mult = 1;
-    int number = 0;
-    for (i=(int) strlen(str) ; i>0 ;i--){
-        if (isdigit(str[i-1])==0) {
-            return -1;
-        }
-        number += mult*(str[i] - '0');
-        mult*=10;
-    }
-    return number;
-}
-
 
 /*takes user input while game is in "init mode"
- * handles only "solve", "edit" or "exit" commands */
-int init_user_turn(Game *my_game){
+ * handles only "solve", "edit" or "exit" commands
+ * return 0 for a valid command (solve/edit with proper args),
+ * 1 for invalid command
+ * 2 for exit command */
+int init_user_turn(Game *my_game,int is_there_old_game){
     char *command_name;
     char *token = NULL;
     char input[1024] = "";
@@ -155,8 +166,8 @@ int init_user_turn(Game *my_game){
         fgets(input, 1024, stdin);
         token = strtok(input, delimiter);
     }
-    if (strlen(input) == 1) {       //Test if this works with both Enter, and spaces then Enter
-        user_turn(my_game);
+    if (strlen(input) == 1) {
+        init_user_turn(my_game, is_there_old_game);
     }
     command_name = token;
     token = strtok(NULL, delimiter);
@@ -165,20 +176,22 @@ int init_user_turn(Game *my_game){
             invalid_command();
             return 0;
         } else {
-            init_game(command_name, token, my_game);
+            init_game(command_name, token, my_game, is_there_old_game);
             return 0;
         }
     } else if (strcmp(command_name, "edit")==0){
-        init_game(command_name, token, my_game);
+        init_game(command_name, token, my_game, is_there_old_game);
         return 0;
     } else if (strcmp(command_name, "exit")==0) {
-        exit_command(my_game);
+        if (my_game!=NULL){
+            free_all_mem(my_game);
+        }
         printf("Exiting...\n");
         return 2; //for exit
     } else {
         invalid_command();
     }
-    return 0;
+    return 1;
 }
 
 /* checks if the board is full and contains no erroneous values - if so, the user won and the game is over

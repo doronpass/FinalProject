@@ -20,7 +20,7 @@ void print_cell(Cell *cell,int mode) {
     }
     else{
     printf("%2d",cell->value);}
-    if (cell->is_fix) {
+    if (cell->is_fix && cell->value != 0) {
         printf("%s","."); }
     else if ((mode == 0) || (cell->is_error)){ /* mode 0 is edit mode*/
         printf("%s", "*");
@@ -28,7 +28,7 @@ void print_cell(Cell *cell,int mode) {
     else {
         printf(" "); /* mabye would be better do check if the value is 0 at start and then pring 4 spaces, to check if leagal*/
     }
-    }
+}
 
 /*allocates dynamic memory space for a game board based on size N*N */
 Cell **create_new_board(int rows_size, int cols_size) {
