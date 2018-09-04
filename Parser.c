@@ -7,12 +7,12 @@
 #include "Error_handler.h"
 #include "Functionality.h"
 
+
 int user_turn(Game *my_game) {
-    int x = -1, y = -1, z = -1, i = 0;
+    int x = -1, y = -1, z = -1, i = 0,autofill_change=0;
     char *command_name;
-    char *token = NULL;
-    char input[1024] = "";
-    char delimiter[] = " \t\r\n";
+    char *token = NULL, input[1024] = "", delimiter[] = " \t\r\n";
+    Node *node;
     while (token == NULL) {
         printf("Enter your command:\n");
         fgets(input, 1024, stdin);
@@ -72,22 +72,14 @@ int user_turn(Game *my_game) {
         } fflush(stdin);
     }
     if (strcmp(command_name, "mark_errors")==0){
-        if (x == 0 || x ==1){
-            mark_errors(my_game);
-        } else {
-            printf("Error: the value should be 0 or 1\n");
-            return 0;
-        }
+        mark_errors(my_game);
     } else if (strcmp(command_name, "print_board")==0){
-        /* ----------------------- PRINT BOARD!!! -------------------------*/
+        print_user_board(my_game);
     } else if (strcmp(command_name, "set")==0){
-        if (x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n){
-
-            /*---------------- SET XYZ ------------------------------------*/
-        } else {
-            not_in_range(my_game->m_mult_n);
-            return 0;
-        }
+        node = create_new_node("set");
+        set(my_game, x, y, z, node);
+        append_node_to_list(my_game->doubly_linked_list, node);
+        print_user_board(my_game);
     } else if (strcmp(command_name, "validate")==0){
         /*---------------- VALIDATE! ------------------------------------*/
     } else if (strcmp(command_name, "generate")==0) {
@@ -98,29 +90,40 @@ int user_turn(Game *my_game) {
             return 0;
         }
     } else if (strcmp(command_name, "undo")==0) {
-        /* ----------------------- UNDO --------------------------------*/
+        undo(my_game);
     } else if (strcmp(command_name, "redo")==0) {
-        /* ----------------------- REDO --------------------------------*/
+        redo(my_game);
     } else if (strcmp(command_name, "hint")==0) {
         if (x<my_game->m_mult_n && y<my_game->m_mult_n){
             /* ----------------------- HINT --------------------------------*/
         } else {
             not_in_range(my_game->m_mult_n);
-            return 0;
         }
     } else if (strcmp(command_name, "num_solutions")==0) {
         /* ----------------------- NUM_SOLUTIONS --------------------------------*/
     } else if (strcmp(command_name, "autofill")==0) {
-        /* ----------------------- AUTOFILL --------------------------------*/
+        node = create_new_node("autofill");
+        autofill_change=autofill(my_game, node);
+        /* according to forum, if autofill made no changes to the board, it should not be added to dll */
+        if (autofill_change==1){
+            append_node_to_list(my_game->doubly_linked_list, node);
+        } else {
+            free_node(node);
+        }
+        print_user_board(my_game);
     } else if (strcmp(command_name, "reset")==0) {
-        /* ----------------------- RESET --------------------------------*/
+        reset(my_game);
     } else if (strcmp(command_name, "exit")==0) {
-        /* ----------------------- EXIT --------------------------------*/
-        return 2; //for exit
+        exit_command(my_game);
+        printf("Exiting...\n");
+        return 2;
     } else {
         invalid_command();
     }
-    /* ----------------- test if game over, if so return 1, else return 0 --------------------*/
+    if (is_game_over(my_game)){
+        /* user solved the board - game over */
+        return 1;
+    }
      return 0;
 }
 
@@ -169,10 +172,25 @@ int init_user_turn(Game *my_game){
         init_game(command_name, token, my_game);
         return 0;
     } else if (strcmp(command_name, "exit")==0) {
-        /* ----------------------- EXIT --------------------------------*/
+        exit_command(my_game);
+        printf("Exiting...\n");
         return 2; //for exit
     } else {
         invalid_command();
     }
     return 0;
+}
+
+/* checks if the board is full and contains no erroneous values - if so, the user won and the game is over
+ * returns 1 if the game is over and 0 else. */
+int is_game_over(Game *my_game){
+    int i,j;
+    for (i=0;i<my_game->m_mult_n;i++) {
+        for (j = 0; j < my_game->m_mult_n; j++) {
+            if (my_game->user_game_board[i][j].value == 0 || my_game->user_game_board[i][j].is_error == 1) {
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
