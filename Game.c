@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "Game.h"
 #include "Functionality.h"
+#include "Parser.h"
 
 /*starts the game and let user type commands
  * first loop takes care if "init mode", inner loop takes care of the rest of the game
