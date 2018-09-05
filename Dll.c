@@ -2,13 +2,23 @@
 #include <stdio.h>
 #include <mem.h>
 #include "Dll.h"
+#include "Game.h"
 
 /*crate now dll node ,node data array is empty */
 Node * create_new_node(char* command_name){
-    Node *node = (Node *) malloc(sizeof(Node));
+    printf("got here 1\n");
+    struct Node *node;
+    printf("got here 2\n");
+    node = malloc(sizeof(struct Node));
+    printf("got here 3\n");
+    if (node==NULL){
+        printf("Error: malloc has failed\n");
+        exit(4);
+    }
+    printf("got here 4\n");
+    node->command_name = command_name;
     node->next = NULL;
     node->prev = NULL;
-    strcpy(node->command_name,command_name);
     node->node_data = NULL;
     node->node_data_size = 0;
     return node;
@@ -29,10 +39,12 @@ Data* create_new_data (int row ,int col ,int value, int prev_value){
 void append_node_to_list(Doubly_linked_list *dll, Node *node){
     Node *prev_node = dll->dll_pointer;
 
-    while (prev_node->next != NULL){
-        remove_last(dll);
+    if (dll->doubly_linked_list_size != 0) {
+        while (prev_node->next != NULL){
+            remove_last(dll);
+        }
+        node->prev = prev_node;
     }
-    node->prev = prev_node;
     if (dll->first == NULL){
         dll->first = node;
     } else {

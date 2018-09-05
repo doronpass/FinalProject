@@ -105,8 +105,8 @@ int has_erroneous_values(Game *my_game) {
 
 /*getting matrix information (size and value) from a formatted file */
 
-//don't forget to point out erroneous cells if needed - do this in the solve/edit functions
-//need to resolve the board after load to get the solved_board for my_game
+/* DONT FORGET  to point out erroneous cells if needed - do this in the solve/edit functions
+need to resolve the board after load to get the solved_board for my_game */
 
 int load_from_file(Game *my_game, char *path) {
     FILE *file;
@@ -248,6 +248,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
         new_game->mode = 0;
     }
     new_game->mark_error = 1; /*default value */
+    new_game->doubly_linked_list = create_new_dll();
     if (path == NULL){
         /* create 9X9 empty board (will only happen on edit, checked by another function */
         new_game->n_block_cols = 3;
@@ -278,7 +279,8 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
 /* executes the set command, after making sure the input numbers are in range and cell is not fixed */
 void set(Game *my_game, int x, int y, int z, Node *node){
     Data *data;
-    int prev_val = my_game->user_game_board[x][y].value;
+    int prev_val;
+    prev_val = my_game->user_game_board[x][y].value;
     if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n)) {
         not_in_range(my_game->m_mult_n);
         return;
@@ -291,7 +293,6 @@ void set(Game *my_game, int x, int y, int z, Node *node){
     my_game->user_game_board[x][y].is_error = 0;
     unmark_erroneous_before_change(my_game, x, y, prev_val);
     mark_erroneous_after_change(my_game, x, y, z);
-
     data = create_new_data (x ,y ,z, prev_val);
     append_data_to_node(node, data);
 
@@ -323,7 +324,7 @@ void mark_erroneous_after_change(Game *my_game, int x, int y, int z){
     block_first_col = (y / n) * n;
     for (i = block_first_row; i < (block_first_row + m); i++) {
         for (j = block_first_col; j < (block_first_col + n); j++) {
-            if (my_game->user_game_board[i][j].value == z && (j != y || i != x)) {
+            if (my_game->user_game_board[i][j].value == z && (j != y && i != x)) {
                 my_game->user_game_board[x][y].is_error = 1;
                 my_game->user_game_board[i][j].is_error = 1;
             }
@@ -370,7 +371,8 @@ void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){
 
 
 /* fill cells with only 1 valid option */
-//NEED TO MAKE SURE that changing value to my_game (with set function) does not effect clone (otherwise, the function won't work properly)gg
+
+/* NEED TO MAKE SURE that changing value to my_game (with set function) does not effect clone (otherwise, the function won't work properly) */
 int autofill(Game *my_game, Node *node) {
     int i,j,k,num_of_valid_nums, new_val=0, changed=0;
     Game *clone = clone_game(my_game);

@@ -1,7 +1,3 @@
-//
-// Created by Doron_Passal on 27/08/2018.
-//
-
 #ifndef FINALPROJECT_PLAY_H
 #define FINALPROJECT_PLAY_H
 #include "Game.h"
@@ -27,11 +23,4 @@ void do_undo (Game *game ,int x, int y , int value , int pre_value);
 
 void do_redo (Game *game ,int x, int y , int value , int pre_value );
 
-
-
-
-
-
-
-
-#endif //FINALPROJECT_PLAY_H
+#endif

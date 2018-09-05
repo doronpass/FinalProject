@@ -18,7 +18,7 @@ int user_turn(Game *my_game) {
         fgets(input, 1024, stdin);
         token = strtok(input, delimiter);
     }
-    if (strlen(input) == 1) {       //Test if this works with both Enter, and spaces then Enter
+    if (strlen(input) == 1) {
         user_turn(my_game);
     }
     command_name = token;
@@ -83,7 +83,7 @@ int is_number(char *str){
         if (isdigit(str[i-1])==0) {
             return -1;
         }
-        number += mult*(str[i] - '0');
+        number += mult*(str[i-1]-'0');
         mult*=10;
     }
     return number;
@@ -191,6 +191,7 @@ int init_user_turn(Game *my_game,int is_there_old_game){
     } else {
         invalid_command();
     }
+    print_user_board(my_game); /* ------------------- for testing only! remove later ------------*/
     return 1;
 }
 

@@ -27,4 +27,4 @@ int is_valid_ints(int** board,int m, int n, int x, int y, int z);
 void free_stack_node(Stack_Node *node, int size);
 int exhaustive_backtracking(Game *my_game);
 
-#endif //FINALPROJECT_STACK_H
+#endif

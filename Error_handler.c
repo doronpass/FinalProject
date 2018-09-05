@@ -1,6 +1,3 @@
-//
-// Created by Doron_Passal on 27/08/2018.
-//
 #include <stdio.h>
 #include <stdlib.h>
 #include "Error_handler.h"

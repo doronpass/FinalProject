@@ -8,11 +8,11 @@ typedef struct Game
 {
     Cell **user_game_board;
     Cell **solved_game_board;
-    int mark_error;// 0 do not mark, 1 do mark
-    int mode; // 0 if edit , 1 if solve
+    int mark_error;/* 0 do not mark, 1 do mark */
+    int mode; /* 0 if edit , 1 if solve */
     int m_block_rows;
     int n_block_cols;
-    int m_mult_n; // for conv
+    int m_mult_n;
     Doubly_linked_list *doubly_linked_list;
 } Game;
 
@@ -20,4 +20,4 @@ Game* create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_
 void start_game();
 
 
-#endif // FINALPROJECT_GAME_H
+#endif

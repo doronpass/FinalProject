@@ -22,4 +22,4 @@ void set_without_dll(Game *my_game, int x, int y, int z);
 void reset(Game *my_game);
 void undo_without_output(Game *my_game);
 void free_all_mem(Game *my_game);
-#endif //FINALPROJECT_FUNCTIONALITY_H
+#endif

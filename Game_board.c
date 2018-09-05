@@ -13,7 +13,7 @@ Cell* create_new_cell(int value ,int is_fix, int is_error){
     return new_cell;
 }
 
-void print_cell(Cell *cell,int mode) {
+void print_cell(Cell *cell,int mode, int mark_error) {
     printf("%s", " ");
     if ((cell->value) == 0){
         printf("%s","  ");
@@ -22,7 +22,7 @@ void print_cell(Cell *cell,int mode) {
     printf("%2d",cell->value);}
     if (cell->is_fix && cell->value != 0) {
         printf("%s","."); }
-    else if ((mode == 0) || (cell->is_error)){ /* mode 0 is edit mode*/
+    else if (cell->value!=0 && cell->is_error==1 && ((mode == 0) || (mark_error==1))){ /* mode 0 is edit mode*/
         printf("%s", "*");
     }
     else {
@@ -34,10 +34,10 @@ void print_cell(Cell *cell,int mode) {
 Cell **create_new_board(int rows_size, int cols_size) {
     int size, i;
     size = rows_size * cols_size;
-    Cell **arr = (Cell **) calloc(size, sizeof(Cell *));
+    Cell **arr = (Cell **) calloc((size_t) size, sizeof(Cell *));
     check_memory2(arr);
     for (i = 0; i < size; ++i) {
-        arr[i] = (Cell *) calloc(size, sizeof(Cell));
+        arr[i] = (Cell *) calloc((size_t) size, sizeof(Cell));
         check_memory(arr[i]);
     }
     insert_zero_cells(arr, size);
@@ -77,7 +77,7 @@ void print_user_board(Game *game){
             if ((j % (game->m_block_rows)) == 0) {
                 printf(PIPE);
             }
-            print_cell(&(game->user_game_board[i][j]), game->mode);
+            print_cell(&(game->user_game_board[i][j]), game->mode, game->mark_error);
         }
         printf("%s\n",PIPE);
     }

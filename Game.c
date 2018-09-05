@@ -34,7 +34,3 @@ void start_game(){
     }
     free(my_game);
 }
-
-void free_prev_game(Game *prev_game){
-
-}
