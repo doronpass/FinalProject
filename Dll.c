@@ -77,8 +77,8 @@ void free_node(Node *node){
 /* add a new data entry ( (row,col) of the cell, new value, old value) to the node data array */
 void append_data_to_node(Node *node,Data *data){
     node->node_data_size++;
-    node->node_data = (Data *) realloc(node->node_data, node->node_data_size* sizeof(Data));
-    node->node_data[node->node_data_size] = *data;
+    node->node_data = (Data **) realloc(node->node_data, node->node_data_size* sizeof(Data));
+    node->node_data[node->node_data_size] = data;
 }
 
 Doubly_linked_list* create_new_dll(){

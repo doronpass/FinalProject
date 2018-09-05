@@ -4,11 +4,11 @@
 #include "Error_handler.h"
 #include <string.h>
 
-void undo_print(Data data) {
-    int x = data.row;
-    int y = data.row;
-    int value = data.value;
-    int prev_value = data.prev_value;
+void undo_print(Data *data) {
+    int x = data->row;
+    int y = data->row;
+    int value = data->value;
+    int prev_value = data->prev_value;
     if (value != 0 && prev_value != 0) {
         printf("Undo %d,%d :from %d to %d\n", x, y, prev_value, value);
     } else if (value != 0 && prev_value == 0) {
@@ -20,11 +20,11 @@ void undo_print(Data data) {
     }
 }
 
-void redo_print(Data data) {
-    int x = data.row;
-    int y = data.row;
-    int value = data.value;
-    int prev_value = data.prev_value;
+void redo_print(Data *data) {
+    int x = data->row;
+    int y = data->row;
+    int value = data->value;
+    int prev_value = data->prev_value;
     if (value != 0 && prev_value != 0) {
         printf("Redo %d,%d :from %d to %d\n", x, y, prev_value, value);
     } else{

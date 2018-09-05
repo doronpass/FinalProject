@@ -15,7 +15,7 @@ typedef struct Node {
     struct Node *next;
     struct Node *prev;
     char* command_name;
-    Data *node_data;
+    Data **node_data;
     int node_data_size;
 } Node;
 
