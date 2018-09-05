@@ -1,12 +1,13 @@
 #ifndef FINALPROJECT_GAME_BOARD_H
 #define FINALPROJECT_GAME_BOARD_H
-#include "Game.h"
 
 typedef struct {
     int value;
     int is_fix;
     int is_error;
 } Cell;
+
+typedef struct Game Game;
 
 Cell** create_new_board(int rows_size , int cols_size);
 Cell* create_new_cell(int value ,int is_fix, int is_error);

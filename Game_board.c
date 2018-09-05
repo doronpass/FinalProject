@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Game_board.h"
-#include "Game.h"
 #include "Error_handler.h"
+#include "Game.h"
 #define PIPE "|"
 Cell* create_new_cell(int value ,int is_fix, int is_error){
     Cell *new_cell;
