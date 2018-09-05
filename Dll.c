@@ -1,21 +1,18 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <mem.h>
 #include "Dll.h"
 #include "Game.h"
 
 /*crate now dll node ,node data array is empty */
 Node * create_new_node(char* command_name){
     printf("got here 1\n");
-    struct Node *node;
+    Node *node;
     printf("got here 2\n");
     node = malloc(sizeof(struct Node));
-    printf("got here 3\n");
     if (node==NULL){
         printf("Error: malloc has failed\n");
         exit(4);
     }
-    printf("got here 4\n");
     node->command_name = command_name;
     node->next = NULL;
     node->prev = NULL;
@@ -27,6 +24,10 @@ Node * create_new_node(char* command_name){
  * and the value before the change (prev_value) */
 Data* create_new_data (int row ,int col ,int value, int prev_value){
     Data *data = (Data *) malloc(sizeof(Data));
+    if (data==NULL){
+        printf("Error: malloc has failed\n");
+        exit(4);
+    }
     data->row = row;
     data->col = col;
     data->value = value;
@@ -39,7 +40,7 @@ Data* create_new_data (int row ,int col ,int value, int prev_value){
 void append_node_to_list(Doubly_linked_list *dll, Node *node){
     Node *prev_node = dll->dll_pointer;
 
-    if (dll->doubly_linked_list_size != 0) {
+    if (prev_node!=NULL) {
         while (prev_node->next != NULL){
             remove_last(dll);
         }
@@ -59,10 +60,12 @@ void append_node_to_list(Doubly_linked_list *dll, Node *node){
 void remove_last (Doubly_linked_list *dll){
     Node *to_delete;
     to_delete = dll->last;
-    dll->last->prev->next = NULL;
-    dll->last = dll->last->prev;
-    dll->doubly_linked_list_size--;
-    free_node(to_delete);
+    if (to_delete!=NULL){
+        dll->last->prev->next = NULL;
+        dll->last = dll->last->prev;
+        dll->doubly_linked_list_size--;
+        free_node(to_delete);
+    }
 }
 
 /*free all memory space assigned to the input node */

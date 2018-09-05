@@ -34,10 +34,10 @@ void print_cell(Cell *cell,int mode, int mark_error) {
 Cell **create_new_board(int rows_size, int cols_size) {
     int size, i;
     size = rows_size * cols_size;
-    Cell **arr = (Cell **) calloc((size_t) size, sizeof(Cell *));
+    Cell **arr = (Cell **) malloc(sizeof(Cell *) * size);
     check_memory2(arr);
     for (i = 0; i < size; ++i) {
-        arr[i] = (Cell *) calloc((size_t) size, sizeof(Cell));
+        arr[i] = (Cell *) malloc(sizeof(Cell) * size);
         check_memory(arr[i]);
     }
     insert_zero_cells(arr, size);

@@ -19,6 +19,7 @@ Stack_Node * create_first_stack_node(Game *my_game){
             node->board[i][j] = my_game->user_game_board[i][j].value;
         }
     }
+    return node;
 }
 
 /* creates a new stack node, it's board will be a duplicate of the board of the input node */
@@ -37,6 +38,7 @@ Stack_Node * create_stack_node(int size, Stack_Node *input_node){
             node->board[i][j] = input_node->board[i][j];
         }
     }
+    return node;
 }
 
 /* create an empty stack */
@@ -57,11 +59,9 @@ int is_empty(Stack *stack) {
 /* remove the item at the top of the stack from the stack, and return it */
 Stack_Node * pop(Stack *stack) {
     Stack_Node * stack_node = stack->top;
-    if(!is_empty(stack)) {
-        stack->top = stack->top->prev;
-        stack->top->next = NULL;
-        return stack_node;
-    }
+    stack->top = stack->top->prev;
+    stack->top->next = NULL;
+    return stack_node;
 }
 
 /* push an item to the top of the stack */

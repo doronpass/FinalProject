@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
-#include <mem.h>
 #include <ctype.h>
+#include <string.h>
 #include "Parser.h"
 #include "Game.h"
 #include "Error_handler.h"
@@ -187,7 +187,7 @@ int init_user_turn(Game *my_game,int is_there_old_game){
             free_all_mem(my_game);
         }
         printf("Exiting...\n");
-        return 2; //for exit
+        return 2;
     } else {
         invalid_command();
     }

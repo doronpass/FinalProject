@@ -179,6 +179,7 @@ int load_from_file(Game *my_game, char *path) {
         }
     }
     fclose(file);
+    return 1;
 }
 
 
