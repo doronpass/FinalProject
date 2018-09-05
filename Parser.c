@@ -100,10 +100,14 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     } else if (strcmp(command_name, "print_board")==0){
         print_user_board(my_game);
     } else if (strcmp(command_name, "set")==0){
-        node = create_new_node("set");
-        set(my_game, x, y, z, node);
-        append_node_to_list(my_game->doubly_linked_list, node);
-        print_user_board(my_game);
+        if (x>=0 && y>=0 && z>=0){
+            node = create_new_node("set");
+            set(my_game, x, y, z, node);
+            append_node_to_list(my_game->doubly_linked_list, node);
+            print_user_board(my_game);
+        } else {
+            invalid_command();
+        }
     } else if (strcmp(command_name, "validate")==0){
         /*---------------- VALIDATE! ------------------------------------*/
     } else if (strcmp(command_name, "generate")==0) {

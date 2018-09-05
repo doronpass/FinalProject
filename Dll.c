@@ -5,9 +5,7 @@
 
 /*crate now dll node ,node data array is empty */
 Node * create_new_node(char* command_name){
-    printf("got here 1\n");
     Node *node;
-    printf("got here 2\n");
     node = malloc(sizeof(struct Node));
     if (node==NULL){
         printf("Error: malloc has failed\n");

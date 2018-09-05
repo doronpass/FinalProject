@@ -282,7 +282,7 @@ void set(Game *my_game, int x, int y, int z, Node *node){
     Data *data;
     int prev_val;
     prev_val = my_game->user_game_board[x][y].value;
-    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n)) {
+    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n)) {
         not_in_range(my_game->m_mult_n);
         return;
     }
