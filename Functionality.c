@@ -10,10 +10,13 @@
 /* the function used when the user enters the "save" command*/
 void save_game(Game *my_game, char *path){
     /*if game mode is solve, simply save to file*/
-    if (my_game->mode == 0) {
-        save_to_file(my_game, path);
-        printf("Saved to: %s\n", path);
-        return;
+    if (my_game->mode == 1) {
+        if (save_to_file(my_game, path)==0){
+            printf("Error: File cannot be created or modified\n");
+        } else{
+            printf("Saved to: %s\n", path);
+        }
+       return;
     }
 
     /*make sure board is not erroneous before save in edit mode*/
@@ -22,7 +25,7 @@ void save_game(Game *my_game, char *path){
         return;
     }
 
-    /*make sure the board is valid before save in edit mode ------ NEED TO BUILD FUNCTION*/
+    /*make sure the board is valid before save in edit mode ------ NEED TO BUILD FUNCTION - need gurubi*/
 /*
      if (!validate(my_game)){
         printf("Error: board validation failed\n");
@@ -39,12 +42,11 @@ void save_game(Game *my_game, char *path){
 
 /* the actual process of writing the game board in a text file in the correct format for saving*/
 int save_to_file(Game *my_game, char *path){
-    int i,j;
+    int i,j,cell_value;
     FILE *file;
     int m = my_game->m_block_rows;
     int n = my_game->n_block_cols;
     int N = my_game->m_mult_n;
-    int cell_value;
     int assertion = 0;
     file = fopen(path, "w");
     if (file == NULL){
@@ -60,7 +62,7 @@ int save_to_file(Game *my_game, char *path){
     for (i=0; i<N; i++) {
         for (j=0; j<N; j++) {
             cell_value = my_game->user_game_board[i][j].value;
-            if (my_game->mode == 0 || my_game->user_game_board[i][j].is_fix == 1){
+            if (cell_value!=0 && (my_game->mode == 0 || my_game->user_game_board[i][j].is_fix == 1)){
                 assertion=fprintf(file, "%d. ", cell_value);
                 if (assertion<0){
                     /*problem modifying file*/
@@ -84,6 +86,7 @@ int save_to_file(Game *my_game, char *path){
             return 0;
         }
     }
+    fclose(file);
     return 1;
 }
 
@@ -260,17 +263,6 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
         if (assert == 0) {
             exit(1);
         }
-        /* make all fixed on "edit" command ----------------TEST */
-        if (new_game->mode == 0) {
-            for (i = 0; i < new_game->m_mult_n; i++) {
-                for (j = 0; j < new_game->m_mult_n; j++) {
-                    if (new_game->user_game_board[i][j].value!=0){
-                        new_game->user_game_board[i][j].is_fix = 1;
-                    }
-                }
-            }
-        }
-
     }
     /* ------------ need function to check all cells for is_error ----------------------------- */
     return new_game;
@@ -304,6 +296,10 @@ void mark_erroneous_after_change(Game *my_game, int x, int y, int z){
     int m = my_game->m_block_rows;
     int n = my_game->n_block_cols;
     int N = my_game->m_mult_n;
+    /* changing value to 0 is always valid */
+    if (z==0){
+        return;
+    }
     /* search row (row is x) */
     for (i = 0; i < N; i++) {
         if ((i != y) && (my_game->user_game_board[x][i].value == z)) {
@@ -445,7 +441,6 @@ void redo(Game *my_game){
         printf("Error: no moves to redo\n");
         return;
     }
-    printf("node_data = (%d,%d) val - %d\n", node_to_redo->node_data[0]->row, node_to_redo->node_data[0]->col, node_to_redo->node_data[0]->value); /* ---------------------- for testing!! */
     for (i=0; i<node_to_redo->node_data_size;i++){
         set_without_dll(my_game,node_to_redo->node_data[i]->row,node_to_redo->node_data[i]->col,node_to_redo->node_data[i]->value);
     }
@@ -461,7 +456,7 @@ void redo(Game *my_game){
  * used by undo/redo to change values without effecting the dll */
 void set_without_dll(Game *my_game, int x, int y, int z) {
     int prev_val = my_game->user_game_board[x][y].value;
-    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n)) {
+    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n)) {
         not_in_range(my_game->m_mult_n);
         return;
     }
