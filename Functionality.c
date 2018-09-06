@@ -192,8 +192,7 @@ int is_valid(Game *my_game, int x, int y, int z) {
     int m = my_game->m_block_rows;
     int n = my_game->n_block_cols;
     int N = n * m;
-
-    if (my_game->user_game_board[x][y].value == z || z==0) {
+    if (z==0) {
         return 1;
     }
     /* search row (row is x) */
@@ -296,7 +295,6 @@ void set(Game *my_game, int x, int y, int z, Node *node){
     mark_erroneous_after_change(my_game, x, y, z);
     data = create_new_data (x ,y ,z, prev_val);
     append_data_to_node(node, data);
-
 }
 
 /* go over the board after a value was change, change is_error of all cells that are erroneous
@@ -424,7 +422,7 @@ Game * clone_game(Game *my_game) {
 void undo(Game *my_game){
     Node *node_to_undo = my_game->doubly_linked_list->dll_pointer;
     int i;
-    if (my_game->doubly_linked_list->doubly_linked_list_size<2 || my_game->doubly_linked_list->dll_pointer->prev == NULL){
+    if (my_game->doubly_linked_list->dll_pointer->prev == NULL){
         printf("Error: no moves to undo\n");
         return;
     }
@@ -443,14 +441,15 @@ void undo(Game *my_game){
 void redo(Game *my_game){
     Node *node_to_redo = my_game->doubly_linked_list->dll_pointer->next;
     int i;
-    if (my_game->doubly_linked_list->doubly_linked_list_size==0 || my_game->doubly_linked_list->dll_pointer->next == NULL){
+    if (my_game->doubly_linked_list->dll_pointer->next == NULL){
         printf("Error: no moves to redo\n");
         return;
     }
-    print_user_board(my_game);
+    printf("node_data = (%d,%d) val - %d\n", node_to_redo->node_data[0]->row, node_to_redo->node_data[0]->col, node_to_redo->node_data[0]->value); /* ---------------------- for testing!! */
     for (i=0; i<node_to_redo->node_data_size;i++){
         set_without_dll(my_game,node_to_redo->node_data[i]->row,node_to_redo->node_data[i]->col,node_to_redo->node_data[i]->value);
     }
+    print_user_board(my_game);
     for (i=0; i<node_to_redo->node_data_size;i++){
         redo_print(node_to_redo->node_data[i]);
     }

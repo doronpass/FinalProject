@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "Dll.h"
 #include "Game.h"
 
@@ -37,22 +38,18 @@ Data* create_new_data (int row ,int col ,int value, int prev_value){
  * then append the input node to the end of the linked list  */
 void append_node_to_list(Doubly_linked_list *dll, Node *node){
     Node *prev_node = dll->dll_pointer;
-
     if (prev_node!=NULL) {
         while (prev_node->next != NULL){
             remove_last(dll);
         }
         node->prev = prev_node;
     }
-    if (dll->first == NULL){
-        dll->first = node;
-    } else {
-        prev_node->next = node;
-    }
+    prev_node->next = node;
     dll->dll_pointer = node;
     dll->last = node;
     dll->doubly_linked_list_size++;
 }
+
 
 /* remove the last node in the dll */
 void remove_last (Doubly_linked_list *dll){
@@ -76,18 +73,21 @@ void free_node(Node *node){
 void append_data_to_node(Node *node,Data *data){
     node->node_data_size++;
     node->node_data = (Data **) realloc(node->node_data, node->node_data_size* sizeof(Data));
-    node->node_data[node->node_data_size] = data;
+    node->node_data[node->node_data_size-1] = data;
 }
 
+/* create a new dll, and add a "start node" to it */
 Doubly_linked_list* create_new_dll(){
+    Node *start_node;
     Doubly_linked_list *new_dll = (Doubly_linked_list*)malloc(sizeof(Doubly_linked_list));
     if (new_dll == NULL){
         printf("Error: malloc has failed\n");
         exit(3);
     }
-    new_dll->doubly_linked_list_size = 0;
-    new_dll->first = NULL;
-    new_dll->last = NULL;
+    new_dll->doubly_linked_list_size = 1;
+    start_node = create_new_node("start_node");
+    new_dll->first = start_node;
+    new_dll->last = start_node;
     new_dll->dll_pointer = new_dll->last;
     return new_dll;
 }

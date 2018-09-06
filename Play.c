@@ -5,8 +5,8 @@
 #include <string.h>
 
 void undo_print(Data *data) {
-    int x = data->row;
-    int y = data->row;
+    int x = data->row+1;
+    int y = data->col+1;
     int value = data->value;
     int prev_value = data->prev_value;
     if (value != 0 && prev_value != 0) {
@@ -21,8 +21,8 @@ void undo_print(Data *data) {
 }
 
 void redo_print(Data *data) {
-    int x = data->row;
-    int y = data->row;
+    int x = data->row+1;
+    int y = data->col+1;
     int value = data->value;
     int prev_value = data->prev_value;
     if (value != 0 && prev_value != 0) {
