@@ -268,18 +268,19 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
     return new_game;
 }
 
-/* executes the set command, after making sure the input numbers are in range and cell is not fixed */
-void set(Game *my_game, int x, int y, int z, Node *node){
+/* executes the set command, after making sure the input numbers are in range and cell is not fixed
+ * returns 1 if value was changed, else 0 */
+int set(Game *my_game, int x, int y, int z, Node *node){
     Data *data;
     int prev_val;
     prev_val = my_game->user_game_board[x][y].value;
     if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n)) {
         not_in_range(my_game->m_mult_n);
-        return;
+        return 0;
     }
     if (my_game->user_game_board[x][y].is_fix == 1){
         cell_is_fixed();
-        return;
+        return 0;
     }
     my_game->user_game_board[x][y].value = z;
     my_game->user_game_board[x][y].is_error = 0;

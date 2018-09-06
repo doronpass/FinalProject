@@ -11,7 +11,7 @@ int load_from_file(Game *my_game, char *path);
 int is_valid(Game *my_game,int x, int y, int z);
 void mark_errors(Game *my_game);
 Game * init_game(char *command, char *path, Game *new_game, int is_there_old_game);
-void set(Game *my_game, int x, int y, int z, Node *node);
+int set(Game *my_game, int x, int y, int z, Node *node);
 void mark_erroneous_after_change(Game *my_game, int x, int y, int z);
 void unmark_erroneous_before_change(Game *my_game, int x, int y, int z);
 int autofill(Game *my_game, Node *node);
