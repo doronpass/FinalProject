@@ -478,10 +478,12 @@ void set_without_dll(Game *my_game, int x, int y, int z) {
 /* revert to the original board the user loaded (either from a file or a blank 9x9)
  * clear the moves list */
 void reset(Game *my_game){
-    while (my_game->doubly_linked_list->dll_pointer!=NULL){
+    /* if there is a play to undo, undo it */
+    while (strcmp(my_game->doubly_linked_list->dll_pointer->command_name, "start_node")!=0){
         undo_without_output(my_game);
     }
-    while (my_game->doubly_linked_list->last!=NULL){
+    /* reset dll */
+    while (strcmp(my_game->doubly_linked_list->last->command_name, "start_node")!=0){
         remove_last(my_game->doubly_linked_list);
     }
     printf("Board reset\n");
@@ -503,7 +505,7 @@ void undo_without_output(Game *my_game) {
 
 void free_all_mem(Game *my_game){
     /* free dll */
-    while (my_game->doubly_linked_list->last!=NULL){
+    while (strcmp(my_game->doubly_linked_list->last->command_name, "start_node")!=0){
         remove_last(my_game->doubly_linked_list);
     }
     free(my_game->doubly_linked_list);

@@ -65,6 +65,10 @@ void remove_last (Doubly_linked_list *dll){
 
 /*free all memory space assigned to the input node */
 void free_node(Node *node){
+    int i;
+    for(i=node->node_data_size; i>0;i--){
+        free(node->node_data[i-1]);
+    }
     free(node->node_data);
     free(node);
 }
