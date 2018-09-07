@@ -15,7 +15,7 @@ int user_turn(Game *my_game) {
     char *token = NULL, input[1024] = "", delimiter[] = " \t\r\n";
     while (token == NULL) {
         printf("Enter your command:\n");
-        fgets(input, 1024, stdin);
+        fgets(input, 270, stdin);
         if(strlen(input)>256){
             invalid_command();
             user_turn(my_game);
