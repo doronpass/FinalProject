@@ -1,5 +1,3 @@
-//CREAted bla bla
-
 #ifndef FINALPROJECT_GAME_H
 #define FINALPROJECT_GAME_H
 

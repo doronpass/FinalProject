@@ -13,9 +13,26 @@ void check_memory(Cell* point){
     }
 }
 
+/* same as the above function, only for an array of ints */
+void check_memory_int(int* point){
+    if (point == NULL) {
+        printf("Error: calloc has failed\n");
+        exit(0);
+    }
+}
+
+
 /*tests whether calloc failed
  * if so, alert the user and terminate program - not sure i should send a messege*/
 void check_memory2(Cell** point) {
+    if (point == NULL) {
+        printf("Error: calloc has failed\n");
+        exit(0);
+    }
+}
+
+/* same as the above function, only for ints */
+void check_memory2_int(int** point) {
     if (point == NULL) {
         printf("Error: calloc has failed\n");
         exit(0);

@@ -7,6 +7,8 @@
 #include "Game_board.h"
 
 void check_memory(Cell* point);
+void check_memory_int(int* point);
+void check_memory2_int(int** point);
 void check_memory2(Cell** point);
 void invalid_command();
 
