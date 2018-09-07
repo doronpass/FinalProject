@@ -31,7 +31,7 @@ void copy_sol_to_board(int *sol, Game *game) {
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
             for (v = 0; v < N; v++) {
-                if (sol[N * N * i + j * N + v] == 1.0) {
+                if (sol[N * N * i + j * N + v] == 1) /* to make sure it sould be 1 and not 1.0 */ {
                     game->solved_game_board[i][j].value= v+1;
                 }
             }
@@ -39,7 +39,7 @@ void copy_sol_to_board(int *sol, Game *game) {
     }
 }
 
-
+Cell **
 
 int ilp_solver(Game *game) {
     GRBenv *env = NULL;
@@ -254,7 +254,7 @@ int ilp_solver(Game *game) {
 
     /* the sol is a good one so we thake it to out solver board in game and make it be the same */
     if (optimstatus == GRB_OPTIMAL) {
-        copy_to_sol_board(sol, game);
+        copy_sol_to_board(sol,game);
         flag = 1 ;
         printf("Optimal objective: %.4e\n", objval);
     } else if (optimstatus == GRB_INF_OR_UNBD)
@@ -273,7 +273,6 @@ int ilp_solver(Game *game) {
 
     return  flag;
 
-    /* copy sol to game->user_game_board */
 
 
 }
