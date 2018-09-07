@@ -39,8 +39,6 @@ void copy_sol_to_board(int *sol, Game *game) {
     }
 }
 
-Cell **
-
 int ilp_solver(Game *game) {
     GRBenv *env = NULL;
     GRBmodel *model = NULL;
