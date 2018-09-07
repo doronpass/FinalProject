@@ -16,6 +16,10 @@ int user_turn(Game *my_game) {
     while (token == NULL) {
         printf("Enter your command:\n");
         fgets(input, 1024, stdin);
+        if(strlen(input)>256){
+            invalid_command();
+            user_turn(my_game);
+        }
         token = strtok(input, delimiter);
     }
     if (strlen(input) == 1) {
@@ -114,7 +118,7 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
         }
     } else if (strcmp(command_name, "validate")==0){
         /*---------------- VALIDATE! ------------------------------------*/
-    } else if (strcmp(command_name, "generate")==0) {
+    } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
         if (x<= (my_game->m_mult_n * my_game->m_mult_n) && y <= (my_game->m_mult_n * my_game->m_mult_n)){
             /* ------------------ GENERATE XY ---------------------------*/
         } else {
@@ -152,8 +156,7 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     } else {
         invalid_command();
     }
-    if (is_game_over(my_game)){
-        /* user solved the board - game over */
+    if (my_game->mode==1 && is_game_over(my_game)==1){
         return 1;
     }
     return 0;
@@ -199,20 +202,32 @@ int init_user_turn(Game *my_game,int is_there_old_game){
     } else {
         invalid_command();
     }
-    print_user_board(my_game); /* ------------------- for testing only! remove later ------------*/
     return 1;
 }
 
-/* checks if the board is full and contains no erroneous values - if so, the user won and the game is over
+/* checks if the board is full and contains no erroneous values.
+ * if not full, does nothing
+ * if so, the user won and the game is over
  * returns 1 if the game is over and 0 else. */
 int is_game_over(Game *my_game){
-    int i,j;
+    int i,j, has_errors = 0;
     for (i=0;i<my_game->m_mult_n;i++) {
         for (j = 0; j < my_game->m_mult_n; j++) {
-            if (my_game->user_game_board[i][j].value == 0 || my_game->user_game_board[i][j].is_error == 1) {
+            if (my_game->user_game_board[i][j].value == 0) {
+                /*board not full */
                 return 0;
+            }
+            if(my_game->user_game_board[i][j].is_error == 1) {
+                /*board has at least one error */
+                has_errors = 1;
             }
         }
     }
-    return 1;
+    if(has_errors){
+        printf("Puzzle solution erroneous\n");
+        return 0;
+    } else {
+        printf("Puzzle solved successfully\n");
+        return 1;
+    }
 }

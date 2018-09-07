@@ -240,9 +240,11 @@ void mark_errors(Game *my_game) {
 
 /* ---------- need to free previous game memory before creating new, maybe another function ----- */
 Game * init_game(char *command, char *path, Game *new_game, int is_there_old_game) {
-    int assert,i,j;
+    int assert;
     if (is_there_old_game){
         free_all_mem(new_game); /* free old game boards and dll if there was an old game */
+    } else {
+        new_game->mark_error = 1; /*default value */
     }
     if (strcmp(command, "solve") == 0) {
         new_game->mode = 1;
@@ -250,7 +252,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
     if (strcmp(command, "edit") == 0) {
         new_game->mode = 0;
     }
-    new_game->mark_error = 1; /*default value */
+
     new_game->doubly_linked_list = create_new_dll();
     if (path == NULL){
         /* create 9X9 empty board (will only happen on edit, checked by another function */
