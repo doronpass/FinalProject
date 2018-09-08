@@ -21,15 +21,16 @@ void do_set (Game *game ,int x, int y , int value);
 
 void do_validate (char *x);
 
-void do_generate (char *x);
+void do_generate (Game *game, int x,int y);
 
 void do_undo (Game *game ,int x, int y , int value , int pre_value);
 
 void do_redo (Game *game ,int x, int y , int value , int pre_value );
 
+int num_of_empty_cells(Game *game);
+int num_not_valid(int empty_cells,int x);
 
-
-
+int get_leagel_random_val(Game *game,int row,int col);
 
 
 
