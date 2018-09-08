@@ -41,3 +41,19 @@ void redo_print(Data data) {
         }
     }
 }
+
+void do_generate(Game *game,int x, int y){
+    int empty_cells = 0;
+    empty_cells = num_of_empty_cells(game);
+    if (game->mode != 0) /* if the mode is not edit print invalid command */{
+        invalid_command();
+        /* should we exit after invalid command?! */
+    }
+    else if (num_not_valid(empty_cells,x) || num_not_valid(empty_cells,y){
+        not_in_range(empty_cells);
+    }
+
+
+
+}
+

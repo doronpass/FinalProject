@@ -60,6 +60,7 @@ int ilp_solver(Game *game) {
     int temportry_value;
     /* initialize arrays and pointer for later use */
 
+
     sol = (double *) malloc(N * N * N * sizeof(double));
     N = game->m_mult_n * game->m_mult_n;
     vtype = (char *) malloc(N * N * N);

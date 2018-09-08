@@ -66,3 +66,6 @@ void nothing_to_redo(){
     printf("Error: no moves to redo\n");
 }
 
+void board_not_empty(){
+    printf("Error: board is not empty\n");
+}
