@@ -69,3 +69,7 @@ void nothing_to_redo(){
 void board_not_empty(){
     printf("Error: board is not empty\n");
 }
+void puzzle_generator_failed(){
+    printf("Error: puzzle generator failed\n");
+
+}

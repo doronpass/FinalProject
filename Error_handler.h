@@ -25,5 +25,6 @@ void validation_passed();
 void nothing_to_undo();
 void nothing_to_redo();
 void board_not_empty();
+void puzzle_generator_failed();
 
 #endif //FINALPROJECT_ERROR_HANDLER_H

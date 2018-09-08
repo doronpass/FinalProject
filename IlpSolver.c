@@ -254,13 +254,13 @@ int ilp_solver(Game *game) {
     /* the sol is a good one so we thake it to out solver board in game and make it be the same */
     if (optimstatus == GRB_OPTIMAL) {
         copy_sol_to_board(sol,game);
-        flag = 1 ;
-        printf("Optimal objective: %.4e\n", objval);
+        flag = 1 ;}
+/*        printf("Optimal objective: %.4e\n", objval);
     } else if (optimstatus == GRB_INF_OR_UNBD)
         printf("Model is infeasible or unbounded\n");
     else
         printf("Optimization was stopped early\n");
-    printf("\n");
+    printf("\n"); */
 
 
     if (error) {
