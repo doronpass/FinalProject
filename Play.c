@@ -4,6 +4,7 @@
 #include "Error_handler.h"
 #include <string.h>
 #include "Functionality.h"
+#include "IlpSolver.h"
 
 void undo_print(Data data) {
     int x = data.row;
@@ -54,7 +55,7 @@ void clear_board(Game *game){
 
 
 void do_generate(Game *game,int x, int y){ /* Generates a puzzle by randomly filling X cells with random legal values, running ILP to solve the resulting board, and then clearing all but Y random cells.*/
-    int empty_cells = 0,i;
+    int empty_cells = 0,i,res_from_ilp;
     int N = game->m_mult_n * game->m_mult_n ;
     int row,col, rand_value, x_counter=0 , y_counter=0;
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
@@ -72,33 +73,49 @@ void do_generate(Game *game,int x, int y){ /* Generates a puzzle by randomly fil
         return;
     }
     else {
-        for (x_counter = 0; x_counter < x; ++x_counter) {
-            i = 0;
+        i=0;
             while (i <= 1000) {
-                if (i == 1000) {
-                    puzzle_generator_failed();
-                    clear_board(game); /*to add func the returned the board to be all 0 */
-                    return;
-                }
-                row = rand() % N;
-                col = rand() % N;
-                if (game->user_game_board[row][col].value != 0) {
-                    continue;
-                }
-                else {
-                    rand_value = get_leagel_random_val(game, row, col); /* function returnes 0 if there isnt a leagel value and the right one if there is*/
-                    if (rand_value == 0) {
-                        clear_board(game);
-                        i++;
+                x_counter = 1;
+                while(x_counter<=x){
+                    if (i == 1000) {
+                        puzzle_generator_failed();
+                        clear_board(game); /*to add func the returned the board to be all 0 */
+                        return;
                     }
-                    else {
-                        game->user_game_board[row][col].value = rand_value;
+                    row = rand() % N;
+                    col = rand() % N;
+                    if (game->user_game_board[row][col].value != 0) {
+                        i++;
                         break;
                     }
-                }
+                    else {
+                        rand_value = get_leagel_random_val(game, row, col); /* function returnes 0 if there isnt a leagel value and the right one if there is*/
+                        if (rand_value == 0 || num_of_sol(game)== 0) {
+                            clear_board(game);
+                            i++;
+                            break;
+                        }
+                        else {
+                            game->user_game_board[row][col].value = rand_value;
+                            x_counter++;
+                        }
+                    }
+                 }
             }
-        }
     }
+
+    /* until here we choose x random places and gave every one an optional number */
+    /* from here try to solve the board, and then delete y valuse randomly */
+
+    res_from_ilp = ilp_solver(game);
+        if(res_from_ilp==0){
+            clear_board(game);
+            puzzle_generator_failed(); /* i put this one out! to check with itay its ok, and to check that the ilp solver to prints it by himself */
+            return;
+        }
+        if {
+
+        }
 }
 
 int num_of_empty_cells(Game *game){ /* get game and return the number of empty cells in user_boardv*/
