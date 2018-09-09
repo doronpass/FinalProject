@@ -138,7 +138,6 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     } else if (strcmp(command_name, "num_solutions")==0) {
         if (exhaustive_backtracking(my_game)==-1){
             puzzle_solution_erroneus();
-            return 0;
         }
     } else if (strcmp(command_name, "autofill")==0) {
         node = create_new_node("autofill");

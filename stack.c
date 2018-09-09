@@ -3,6 +3,11 @@
 #include "Functionality.h"
 #include "Error_handler.h"
 
+/* ---------------------------- FOR testing only!! ------------ */
+#include "Game_board.h"
+#define PIPE "|"
+
+
 /* creates the first stack node, it's board is a duplicate of the user board
  * of the my_game input*/
 Stack_Node * create_first_stack_node(Game *my_game){
@@ -71,7 +76,7 @@ Stack_Node * pop(Stack *stack) {
 
 /* push an item to the top of the stack */
 void push(Stack *stack, Stack_Node *node) {
-    if (is_empty==0){
+    if (is_empty(stack)==0){
         stack->top->next = node;
         node->prev = stack->top;
     }
@@ -130,6 +135,38 @@ void free_stack_node(Stack_Node *node, int size){
     free(node);
 }
 
+
+/* function for testing only! -------------------------------------------------------
+void print_test(Game *game, int** matrix){
+    int i, j, size;
+    if (game == NULL){
+        exit(1);
+    }
+    size = game->m_mult_n;
+    for (i = 0; i < size; ++i) {
+        if ((i % (game->n_block_cols)) == 0) {
+            print_separator_row(size,game->n_block_cols);
+        }
+        for ( j = 0; j < size; ++j) {
+            if ((j % (game->m_block_rows)) == 0) {
+                printf(PIPE);
+            }
+            printf("%s", " ");
+            if ((matrix[i][j]) == 0){
+                printf("%s","  ");
+            } else {
+                printf("%2d",matrix[i][j]);
+            }
+        }
+        printf("%s\n",PIPE);
+    }
+    print_separator_row(size,game->n_block_cols);
+    printf("new_board_here\n");
+}
+*/
+
+
+
 /* ------------------------------------ think about the "free()", where it should be for node or new_node -----*/
 int exhaustive_backtracking(Game *my_game){
     int i,j,k,num_valid, num_sols = 0;
@@ -139,7 +176,7 @@ int exhaustive_backtracking(Game *my_game){
     push(stack, node);
     if (check_if_erroneous(my_game)){
         puzzle_solution_erroneus();
-        return -1; /* ------------------------ remember to check if returns -1 then do nothing */
+        return -1;
     }
     for (i=0;i<my_game->m_mult_n;i++){
         if(is_empty(stack)){
@@ -173,6 +210,8 @@ int exhaustive_backtracking(Game *my_game){
             if(i==(my_game->m_mult_n-1)&& j==(my_game->m_mult_n-1) && stack->top->board[i][j]){
                 num_sols++;
                 free_stack_node(pop(stack),my_game->m_mult_n );
+                i=0;
+                j=0;
             }
         }
     }
