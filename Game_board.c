@@ -70,18 +70,18 @@ void print_user_board(Game *game){
     }
     size = game->m_mult_n;
     for (i = 0; i < size; ++i) {
-        if ((i % (game->n_block_cols)) == 0) {
-            print_separator_row(size,game->n_block_cols);
+        if ((i % (game->m_block_rows)) == 0) {
+            print_separator_row(size,game->m_block_rows);
         }
         for ( j = 0; j < size; ++j) {
-            if ((j % (game->m_block_rows)) == 0) {
+            if ((j % (game->n_block_cols)) == 0) {
                 printf(PIPE);
             }
             print_cell(&(game->user_game_board[i][j]), game->mode, game->mark_error);
         }
         printf("%s\n",PIPE);
     }
-    print_separator_row(size,game->n_block_cols); /* there is an empty line after! check if it's fine */
+    print_separator_row(size,game->m_block_rows); /* there is an empty line after! check if it's fine */
 }
 
 

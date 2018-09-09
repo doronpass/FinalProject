@@ -21,7 +21,7 @@ void save_game(Game *my_game, char *path){
 
     /*make sure board is not erroneous before save in edit mode*/
     if (has_erroneous_values(my_game)) {
-        printf("Error: board contains erroneous values\n");
+        puzzle_solution_erroneus();
         return;
     }
 
@@ -90,8 +90,7 @@ int save_to_file(Game *my_game, char *path){
     return 1;
 }
 
-/* return 1 if there is a cell with an erroneous value in the board
- * to test before save in edit mode*/
+/* return 1 if there is a cell with an erroneous value in the board, else 0*/
 int has_erroneous_values(Game *my_game) {
     int i,j;
     int N = my_game->m_mult_n;
@@ -275,11 +274,11 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
 int set(Game *my_game, int x, int y, int z, Node *node){
     Data *data;
     int prev_val;
-    prev_val = my_game->user_game_board[x][y].value;
     if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n)) {
         not_in_range(my_game->m_mult_n);
         return 0;
     }
+    prev_val = my_game->user_game_board[x][y].value;
     if (my_game->user_game_board[x][y].is_fix == 1){
         cell_is_fixed();
         return 0;
@@ -373,8 +372,14 @@ void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){
 /* NEED TO MAKE SURE that changing value to my_game (with set function) does not effect clone (otherwise, the function won't work properly) */
 int autofill(Game *my_game, Node *node) {
     int i,j,k,num_of_valid_nums, new_val=0, changed=0;
-    Game *clone = clone_game(my_game);
-    for (i=0;i<my_game->m_mult_n;i++){
+    Game *clone;
+    if (has_erroneous_values(my_game)==1){
+        puzzle_solution_erroneus();
+        return 0;
+    }
+    clone = clone_game(my_game);
+
+    for (i=0;i<my_game->m_mult_n;i++){ /* 0------------------------------------ CHANGE TO i=0 AFTER TEST!!! -------*/
         for (j=0;j<my_game->m_mult_n;j++){
             if (my_game->user_game_board[i][j].value==0){
                 num_of_valid_nums=0;
@@ -386,6 +391,7 @@ int autofill(Game *my_game, Node *node) {
                 }
                 if (num_of_valid_nums==1) {
                     set(my_game, i, j, new_val, node);
+                    printf("Cell <%d,%d> set to %d\n", i+1,j+1,new_val);
                     changed=1;
                 }
             }
