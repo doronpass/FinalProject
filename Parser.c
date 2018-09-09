@@ -136,7 +136,10 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
             not_in_range(my_game->m_mult_n);
         }
     } else if (strcmp(command_name, "num_solutions")==0) {
-        exhaustive_backtracking(my_game);
+        if (exhaustive_backtracking(my_game)==-1){
+            puzzle_solution_erroneus();
+            return 0;
+        }
     } else if (strcmp(command_name, "autofill")==0) {
         node = create_new_node("autofill");
         autofill_change=autofill(my_game, node);

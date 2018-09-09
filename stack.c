@@ -19,6 +19,8 @@ Stack_Node * create_first_stack_node(Game *my_game){
             node->board[i][j] = my_game->user_game_board[i][j].value;
         }
     }
+    node->prev=NULL;
+    node->next=NULL;
     return node;
 }
 
@@ -27,6 +29,7 @@ Stack_Node * create_stack_node(int size, Stack_Node *input_node){
     int i,j;
     Stack_Node *node = (Stack_Node *) malloc(sizeof(Stack_Node));
     node->next = NULL;
+    node->prev=NULL;
     node->board = (int **) calloc((size_t) size, sizeof(int *));
     check_memory2_int(node->board);
     for (i = 0; i < size; ++i) {
@@ -60,14 +63,18 @@ int is_empty(Stack *stack) {
 Stack_Node * pop(Stack *stack) {
     Stack_Node * stack_node = stack->top;
     stack->top = stack->top->prev;
-    stack->top->next = NULL;
+    if (is_empty(stack)==0){
+        stack->top->next = NULL;
+    }
     return stack_node;
 }
 
 /* push an item to the top of the stack */
 void push(Stack *stack, Stack_Node *node) {
-    stack->top->next = node;
-    node->prev = stack->top;
+    if (is_empty==0){
+        stack->top->next = node;
+        node->prev = stack->top;
+    }
     stack->top = node;
 }
 
@@ -135,6 +142,9 @@ int exhaustive_backtracking(Game *my_game){
         return -1; /* ------------------------ remember to check if returns -1 then do nothing */
     }
     for (i=0;i<my_game->m_mult_n;i++){
+        if(is_empty(stack)){
+            break;
+        }
         for (j=0;j<my_game->m_mult_n;j++){
             if(is_empty(stack)){
                 break;
