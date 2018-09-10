@@ -56,10 +56,11 @@ void clear_board(Game *game){
 }
 
 
-void do_generate(Game *game,int x, int y) { /* Generates a puzzle by randomly filling X cells with random legal values, running ILP to solve the resulting board, and then clearing all but Y random cells.*/
+void do_generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by randomly filling X cells with random legal values, running ILP to solve the resulting board, and then clearing all but Y random cells.*/
     int empty_cells = 0, i, res_from_ilp=0,j;
     int N = game->m_mult_n * game->m_mult_n;
     int row, col, rand_value, x_counter = 1, y_counter = 0;
+    Data *data;
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
     if (game->mode != 0) /* if the mode is not edit print invalid command */{
         invalid_command();
@@ -118,7 +119,7 @@ void do_generate(Game *game,int x, int y) { /* Generates a puzzle by randomly fi
         puzzle_generator_failed(); /* i put this one out! to check with itay its ok, and to check that the ilp solver to prints it by himself */
         return;
     }
-    copy_solve_2_user(game);
+    copy_solve_2_user(game); /* this method copy solved board to user board */;
     for ( j = 0; j < y; ++j) {
         row = rand() % N;
         col = rand() % N;
@@ -135,8 +136,10 @@ void do_generate(Game *game,int x, int y) { /* Generates a puzzle by randomly fi
             if (game->user_game_board[i][j].is_error != 1) { /* if its not a "error" cell so we need to delete it*/
                 game->user_game_board[i][j].value= 0;
             }
-            else { /* if it is one of the error cells so we initilize it back to 0 */
+            else { /* if it is one of the error cells so we initilize it back to 0  and add to the do\undo list the changed that have been mase*/
                 game->user_game_board[i][j].is_error=0;
+                data = create_new_data (x ,y ,game->user_game_board[i][j].value, 0);
+                append_data_to_node(node, data);
             }
 
         }
@@ -263,7 +266,12 @@ void do_hint(Game *game, int row, int cols){
 
 void copy_solve_2_user(Game *game){ /* copy solve board to user board */
     int i,j;
-    int N = game->m_mult_n;
+    int N=game->m_mult_n;
+    for (i = 0; i <N ; ++i) {
+        for (j = 0; j <N; ++j) {
+            game->user_game_board[i][j]=game->solved_game_board[i][j];
+        }
+    }
 
 
 }
