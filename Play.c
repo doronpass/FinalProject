@@ -265,4 +265,5 @@ void copy_solve_2_user(Game *game){ /* copy solve board to user board */
     int i,j;
     int N = game->m_mult_n;
 
+
 }
