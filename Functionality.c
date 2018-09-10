@@ -5,6 +5,7 @@
 #include "Play.h"
 #include "Functionality.h"
 #include "Error_handler.h"
+#include "Game_board.h" /* for tests only */
 
 
 /* the function used when the user enters the "save" command*/
@@ -160,10 +161,13 @@ int load_from_file(Game *my_game, char *path) {
     for (i = 0; i < my_game->m_mult_n; i++) {
         for (j = 0; j < my_game->m_mult_n; j++) {
             while ((value = getc(file)) != EOF) {
-
                 /*if we get '.' - set last cell to fixed and continue to look for next cell's value */
                 if (value == '.') {
-                    my_game->user_game_board[i][j-1].is_fix = 1;
+                    if (j==0) { /*fixed cell is last in row */
+                        my_game->user_game_board[i-1][my_game->m_mult_n-1].is_fix = 1;
+                    } else {
+                        my_game->user_game_board[i][j-1].is_fix = 1;
+                    }
                     continue;
                 }
                 /*if we read a whitespace char - keep reading */
@@ -179,6 +183,11 @@ int load_from_file(Game *my_game, char *path) {
             value-= '0';
             my_game->user_game_board[i][j].value = value;
         }
+    }
+    /* test if last cell on matrix is fixed  */
+    value = getc(file);
+    if (value=='.'){
+        my_game->user_game_board[my_game->m_mult_n-1][my_game->m_mult_n-1].is_fix = 1;
     }
     fclose(file);
     return 1;
@@ -307,6 +316,7 @@ int set(Game *my_game, int x, int y, int z, Node *node){
     mark_erroneous_after_change(my_game, x, y, z);
     data = create_new_data (x ,y ,z, prev_val);
     append_data_to_node(node, data);
+    return 1;
 }
 
 /* go over the board after a value was change, change is_error of all cells that are erroneous
