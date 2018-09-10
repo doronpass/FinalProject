@@ -59,6 +59,10 @@ void validation_passed(){
     printf("Validation passed: board is solvable\n");
 }
 
+void validation_failed(){
+    printf("Validation failed: board is unsolvable\n");
+}
+
 void nothing_to_undo(){
     printf("Error: no moves to undo\n");
 }
@@ -71,5 +75,9 @@ void board_not_empty(){
 }
 void puzzle_generator_failed(){
     printf("Error: puzzle generator failed\n");
+
+}
+void cell_contatins_value(){
+    printf("Error: cell already contains a value\n");
 
 }

@@ -10,6 +10,8 @@ void undo_print(Data data);
 void redo_print(Data data);
 
 void do_solve (char *x);
+void do_hint(Game *game,int row,int cols);
+
 
 void do_edit(char *x);
 
@@ -18,8 +20,6 @@ void do_mark_errors (char *x);
 void do_print_board (char *x);
 
 void do_set (Game *game ,int x, int y , int value);
-
-void do_validate (char *x);
 
 void do_generate (Game *game, int x,int y);
 
@@ -31,6 +31,9 @@ int num_of_empty_cells(Game *game);
 int num_not_valid(int empty_cells,int x);
 
 int get_leagel_random_val(Game *game,int row,int col);
+void do_validate(Game *game);
+int count_invalid_numbers(Game *game);
+
 
 
 

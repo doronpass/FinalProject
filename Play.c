@@ -189,3 +189,62 @@ int get_leagel_random_val(Game *game,int row,int col){ /* get game,num of row an
     free(valid_arr);
     return res;
     }
+
+void do_validate(Game *game){
+    int res,num_of_errors=0;
+
+    if (num_of_errors(game) != 0 ){
+        puzzle_solution_erroneus();
+        return;
+    }
+    res = ilp_solver(game);
+    if (res ==1 ){
+        validation_passed();
+    }
+    else {
+        validation_failed();
+    }
+}
+
+int count_invalid_numbers(Game *game){
+    int i,j,count_errors=0;
+    int N = game->m_mult_n;
+    for (i = 0; i <N ; ++i) {
+        for (j = 0; j < N; ++j) {
+            if(game->user_game_board[i][j].is_error == 1){
+                count_errors++;
+            }
+        }
+    }
+    return count_errors;
+}
+
+void do_hint(Game *game, int row, int cols){
+    /* to check if i need to verify the mode here or it going to be checkgd outside */
+    int N  = game->m_mult_n;
+    int res;
+    if (row>N || cols>N){
+        not_in_range(N);
+        return;
+    }
+    if ( count_invalid_numbers(game) != 0){
+        puzzle_solution_erroneus();
+        return;
+    }
+    if (game->user_game_board[row][cols].is_fix==1){
+        cell_is_fixed();
+        return;
+    }
+    if ((game->user_game_board[row][cols].is_fix==0) && (game->user_game_board[row][cols].value!=0)){
+        cell_contatins_value();
+        return;
+    }
+    res = ilp_solver(game);
+    if (res = 0){
+        board_not_solvable();
+        return;
+    }
+    printf("Hint: set cell to %d\n",game->solved_game_board[row][cols].value);
+    /* shoude i do the set my self or the user need to do it?????????? */
+
+}
