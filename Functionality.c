@@ -397,7 +397,7 @@ int autofill(Game *my_game, Node *node) {
     }
     clone = clone_game(my_game);
 
-    for (i=0;i<my_game->m_mult_n;i++){ /* 0------------------------------------ CHANGE TO i=0 AFTER TEST!!! -------*/
+    for (i=0;i<my_game->m_mult_n;i++){
         for (j=0;j<my_game->m_mult_n;j++){
             if (my_game->user_game_board[i][j].value==0){
                 num_of_valid_nums=0;
@@ -424,6 +424,10 @@ int autofill(Game *my_game, Node *node) {
 Game * clone_game(Game *my_game) {
     int i,j;
     Game *clone = (Game *) malloc(sizeof(Game));
+    if (clone==NULL){
+        printf("Error: malloc has failed\n");
+        exit(0);
+    }
     clone->solved_game_board=NULL;
     clone->mark_error=my_game->mark_error;
     clone->mode=my_game->mode;

@@ -7,6 +7,10 @@
 Cell* create_new_cell(int value ,int is_fix, int is_error){
     Cell *new_cell;
     new_cell = (Cell*)malloc(sizeof(Cell));
+    if (new_cell==NULL){
+        printf("Error: malloc has failed\n");
+        exit(0);
+    }
     new_cell->is_error=is_error;
     new_cell->is_fix=is_fix;
     new_cell->value=value;

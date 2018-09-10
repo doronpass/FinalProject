@@ -13,6 +13,10 @@
 Stack_Node * create_first_stack_node(Game *my_game){
     int i,j, size = my_game->m_mult_n;
     Stack_Node *node = (Stack_Node *) malloc(sizeof(Stack_Node));
+    if (node==NULL){
+        printf("Error: malloc has failed\n");
+        exit(0);
+    }
     node->board = (int **) calloc((size_t) size, sizeof(int *));
     check_memory2_int(node->board);
     for (i = 0; i < size; ++i) {
@@ -33,6 +37,10 @@ Stack_Node * create_first_stack_node(Game *my_game){
 Stack_Node * create_stack_node(int size, Stack_Node *input_node){
     int i,j;
     Stack_Node *node = (Stack_Node *) malloc(sizeof(Stack_Node));
+    if (node==NULL){
+        printf("Error: malloc has failed\n");
+        exit(0);
+    }
     node->next = NULL;
     node->prev=NULL;
     node->board = (int **) calloc((size_t) size, sizeof(int *));
@@ -52,6 +60,10 @@ Stack_Node * create_stack_node(int size, Stack_Node *input_node){
 /* create an empty stack */
 Stack * create_stack(){
     Stack *stack = (Stack *) malloc(sizeof(Stack));
+    if (stack==NULL){
+        printf("Error: malloc has failed\n");
+        exit(0);
+    }
     stack->top = NULL;
     return stack;
 }

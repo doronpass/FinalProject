@@ -13,6 +13,10 @@
 void start_game(){
     int game_status = 0, is_there_old_game=0;
     Game *my_game=(Game *) malloc(sizeof(Game));
+    if (my_game==NULL){
+        printf("Error: malloc has failed\n");
+        exit(0);
+    }
     printf("Sudoku\n------\n");
     while (1){
         if (game_status==2) {
