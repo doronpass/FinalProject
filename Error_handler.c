@@ -63,3 +63,10 @@ void nothing_to_redo(){
     printf("Error: no moves to redo\n");
 }
 
+void board_not_empty(){
+    printf("Error: board is not empty\n");
+}
+void puzzle_generator_failed(){
+    printf("Error: puzzle generator failed\n");
+
+}
