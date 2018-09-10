@@ -5,24 +5,28 @@
 #include "Play.h"
 #include "Functionality.h"
 #include "Error_handler.h"
+#include "Game_board.h" /* for tests only */
 
 
 /* the function used when the user enters the "save" command*/
 void save_game(Game *my_game, char *path){
     /*if game mode is solve, simply save to file*/
-    if (my_game->mode == 0) {
-        save_to_file(my_game, path);
-        printf("Saved to: %s\n", path);
-        return;
+    if (my_game->mode == 1) {
+        if (save_to_file(my_game, path)==0){
+            printf("Error: File cannot be created or modified\n");
+        } else{
+            printf("Saved to: %s\n", path);
+        }
+       return;
     }
 
     /*make sure board is not erroneous before save in edit mode*/
     if (has_erroneous_values(my_game)) {
-        printf("Error: board contains erroneous values\n");
+        puzzle_solution_erroneus();
         return;
     }
 
-    /*make sure the board is valid before save in edit mode ------ NEED TO BUILD FUNCTION*/
+    /*make sure the board is valid before save in edit mode ------ NEED TO BUILD FUNCTION - need gurubi*/
 /*
      if (!validate(my_game)){
         printf("Error: board validation failed\n");
@@ -39,12 +43,11 @@ void save_game(Game *my_game, char *path){
 
 /* the actual process of writing the game board in a text file in the correct format for saving*/
 int save_to_file(Game *my_game, char *path){
-    int i,j;
+    int i,j,cell_value;
     FILE *file;
     int m = my_game->m_block_rows;
     int n = my_game->n_block_cols;
     int N = my_game->m_mult_n;
-    int cell_value;
     int assertion = 0;
     file = fopen(path, "w");
     if (file == NULL){
@@ -60,7 +63,7 @@ int save_to_file(Game *my_game, char *path){
     for (i=0; i<N; i++) {
         for (j=0; j<N; j++) {
             cell_value = my_game->user_game_board[i][j].value;
-            if (my_game->mode == 0 || my_game->user_game_board[i][j].is_fix == 1){
+            if (cell_value!=0 && (my_game->mode == 0 || my_game->user_game_board[i][j].is_fix == 1)){
                 assertion=fprintf(file, "%d. ", cell_value);
                 if (assertion<0){
                     /*problem modifying file*/
@@ -84,11 +87,11 @@ int save_to_file(Game *my_game, char *path){
             return 0;
         }
     }
+    fclose(file);
     return 1;
 }
 
-/* return 1 if there is a cell with an erroneous value in the board
- * to test before save in edit mode*/
+/* return 1 if there is a cell with an erroneous value in the board, else 0*/
 int has_erroneous_values(Game *my_game) {
     int i,j;
     int N = my_game->m_mult_n;
@@ -105,8 +108,8 @@ int has_erroneous_values(Game *my_game) {
 
 /*getting matrix information (size and value) from a formatted file */
 
-//don't forget to point out erroneous cells if needed - do this in the solve/edit functions
-//need to resolve the board after load to get the solved_board for my_game
+/* DONT FORGET  to point out erroneous cells if needed - do this in the solve/edit functions
+need to resolve the board after load to get the solved_board for my_game */
 
 int load_from_file(Game *my_game, char *path) {
     FILE *file;
@@ -158,10 +161,13 @@ int load_from_file(Game *my_game, char *path) {
     for (i = 0; i < my_game->m_mult_n; i++) {
         for (j = 0; j < my_game->m_mult_n; j++) {
             while ((value = getc(file)) != EOF) {
-
                 /*if we get '.' - set last cell to fixed and continue to look for next cell's value */
                 if (value == '.') {
-                    my_game->user_game_board[i][j-1].is_fix = 1;
+                    if (j==0) { /*fixed cell is last in row */
+                        my_game->user_game_board[i-1][my_game->m_mult_n-1].is_fix = 1;
+                    } else {
+                        my_game->user_game_board[i][j-1].is_fix = 1;
+                    }
                     continue;
                 }
                 /*if we read a whitespace char - keep reading */
@@ -178,7 +184,13 @@ int load_from_file(Game *my_game, char *path) {
             my_game->user_game_board[i][j].value = value;
         }
     }
+    /* test if last cell on matrix is fixed  */
+    value = getc(file);
+    if (value=='.'){
+        my_game->user_game_board[my_game->m_mult_n-1][my_game->m_mult_n-1].is_fix = 1;
+    }
     fclose(file);
+    return 1;
 }
 
 
@@ -191,8 +203,7 @@ int is_valid(Game *my_game, int x, int y, int z) {
     int m = my_game->m_block_rows;
     int n = my_game->n_block_cols;
     int N = n * m;
-
-    if (my_game->user_game_board[x][y].value == z) {
+    if (z==0) {
         return 1;
     }
     /* search row (row is x) */
@@ -220,11 +231,11 @@ int is_valid(Game *my_game, int x, int y, int z) {
 }
 
 /* change the mark errors option on and off */
-void mark_errors(Game *my_game) {
-    if (my_game->mark_error==1) {
-        my_game->mark_error = 0;
-    } else if (my_game->mark_error==0){
+void mark_errors(Game *my_game, int x) {
+    if (x==1) {
         my_game->mark_error = 1;
+    } else if (x==0){
+        my_game->mark_error = 0;
     } else {
         printf("Error: the value should be 0 or 1\n");
     }
@@ -236,15 +247,21 @@ void mark_errors(Game *my_game) {
  * the file in the path argument */
 
 /* ---------- need to free previous game memory before creating new, maybe another function ----- */
-Game * init_game(char *command, char *path, Game *new_game) {
-    int assert,i,j;
+Game * init_game(char *command, char *path, Game *new_game, int is_there_old_game) {
+    int assert;
+    if (is_there_old_game){
+        free_all_mem(new_game); /* free old game boards and dll if there was an old game */
+    } else {
+        new_game->mark_error = 1; /*default value */
+    }
     if (strcmp(command, "solve") == 0) {
         new_game->mode = 1;
     }
     if (strcmp(command, "edit") == 0) {
         new_game->mode = 0;
     }
-    new_game->mark_error = 1; /*default value */
+
+    new_game->doubly_linked_list = create_new_dll();
     if (path == NULL){
         /* create 9X9 empty board (will only happen on edit, checked by another function */
         new_game->n_block_cols = 3;
@@ -254,42 +271,52 @@ Game * init_game(char *command, char *path, Game *new_game) {
     } else {
         assert = load_from_file(new_game, path);
         if (assert == 0) {
-            exit(1);
+            free(new_game->doubly_linked_list->first);
+            free(new_game->doubly_linked_list);
+            new_game->mode = -1; /*indicates an error */
+        } else {
+            mark_error_cells(new_game);
         }
-        /* make all fixed on "edit" command ----------------TEST */
-        if (new_game->mode == 0) {
-            for (i = 0; i < new_game->m_mult_n; i++) {
-                for (j = 0; j < new_game->m_mult_n; j++) {
-                    new_game->user_game_board[i][j].is_fix = 1;
+    }
+    return new_game;
+}
+/* goes over a board and marks erroneous cells.
+ * used when loading new board */
+void mark_error_cells(Game *my_game){
+    int i,j;
+    for (i=0;i<my_game->m_mult_n;i++){
+        for (j=0;j<my_game->m_mult_n;j++){
+            if (my_game->user_game_board[i][j].value!=0){
+                if (!is_valid(my_game,i,j,my_game->user_game_board[i][j].value)){
+                    my_game->user_game_board[i][j].is_error=1;
                 }
             }
         }
-
     }
-    /* ------------ need function to check all cells for is_error ----------------------------- */
-    return new_game;
 }
 
-/* executes the set command, after making sure the input numbers are in range and cell is not fixed */
-void set(Game *my_game, int x, int y, int z, Node *node){
+
+/* executes the set command, after making sure the input numbers are in range and cell is not fixed
+ * returns 1 if value was changed, else 0 */
+int set(Game *my_game, int x, int y, int z, Node *node){
     Data *data;
-    int prev_val = my_game->user_game_board[x][y].value;
-    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n)) {
+    int prev_val;
+    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n)) {
         not_in_range(my_game->m_mult_n);
-        return;
+        return 0;
     }
+    prev_val = my_game->user_game_board[x][y].value;
     if (my_game->user_game_board[x][y].is_fix == 1){
         cell_is_fixed();
-        return;
+        return 0;
     }
     my_game->user_game_board[x][y].value = z;
     my_game->user_game_board[x][y].is_error = 0;
     unmark_erroneous_before_change(my_game, x, y, prev_val);
     mark_erroneous_after_change(my_game, x, y, z);
-
     data = create_new_data (x ,y ,z, prev_val);
     append_data_to_node(node, data);
-
+    return 1;
 }
 
 /* go over the board after a value was change, change is_error of all cells that are erroneous
@@ -299,6 +326,10 @@ void mark_erroneous_after_change(Game *my_game, int x, int y, int z){
     int m = my_game->m_block_rows;
     int n = my_game->n_block_cols;
     int N = my_game->m_mult_n;
+    /* changing value to 0 is always valid */
+    if (z==0){
+        return;
+    }
     /* search row (row is x) */
     for (i = 0; i < N; i++) {
         if ((i != y) && (my_game->user_game_board[x][i].value == z)) {
@@ -318,7 +349,7 @@ void mark_erroneous_after_change(Game *my_game, int x, int y, int z){
     block_first_col = (y / n) * n;
     for (i = block_first_row; i < (block_first_row + m); i++) {
         for (j = block_first_col; j < (block_first_col + n); j++) {
-            if (my_game->user_game_board[i][j].value == z && (j != y || i != x)) {
+            if (my_game->user_game_board[i][j].value == z && (j != y && i != x)) {
                 my_game->user_game_board[x][y].is_error = 1;
                 my_game->user_game_board[i][j].is_error = 1;
             }
@@ -365,10 +396,17 @@ void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){
 
 
 /* fill cells with only 1 valid option */
-//NEED TO MAKE SURE that changing value to my_game (with set function) does not effect clone (otherwise, the function won't work properly)gg
+
+/* NEED TO MAKE SURE that changing value to my_game (with set function) does not effect clone (otherwise, the function won't work properly) */
 int autofill(Game *my_game, Node *node) {
     int i,j,k,num_of_valid_nums, new_val=0, changed=0;
-    Game *clone = clone_game(my_game);
+    Game *clone;
+    if (has_erroneous_values(my_game)==1){
+        puzzle_solution_erroneus();
+        return 0;
+    }
+    clone = clone_game(my_game);
+
     for (i=0;i<my_game->m_mult_n;i++){
         for (j=0;j<my_game->m_mult_n;j++){
             if (my_game->user_game_board[i][j].value==0){
@@ -381,6 +419,7 @@ int autofill(Game *my_game, Node *node) {
                 }
                 if (num_of_valid_nums==1) {
                     set(my_game, i, j, new_val, node);
+                    printf("Cell <%d,%d> set to %d\n", i+1,j+1,new_val);
                     changed=1;
                 }
             }
@@ -395,6 +434,10 @@ int autofill(Game *my_game, Node *node) {
 Game * clone_game(Game *my_game) {
     int i,j;
     Game *clone = (Game *) malloc(sizeof(Game));
+    if (clone==NULL){
+        printf("Error: malloc has failed\n");
+        exit(0);
+    }
     clone->solved_game_board=NULL;
     clone->mark_error=my_game->mark_error;
     clone->mode=my_game->mode;
@@ -416,13 +459,13 @@ Game * clone_game(Game *my_game) {
 void undo(Game *my_game){
     Node *node_to_undo = my_game->doubly_linked_list->dll_pointer;
     int i;
-    if (my_game->doubly_linked_list->doubly_linked_list_size<2 || my_game->doubly_linked_list->dll_pointer->prev == NULL){
+    if (my_game->doubly_linked_list->dll_pointer->prev == NULL){
         printf("Error: no moves to undo\n");
         return;
     }
     /* need to print the board and then the changes, so we divided it to 2 separate loops */
     for (i=0; i<node_to_undo->node_data_size;i++){
-        set_without_dll(my_game,node_to_undo->node_data[i].row,node_to_undo->node_data[i].col,node_to_undo->node_data[i].prev_value);
+        set_without_dll(my_game,node_to_undo->node_data[i]->row,node_to_undo->node_data[i]->col,node_to_undo->node_data[i]->prev_value);
     }
     print_user_board(my_game);
     for (i=0; i<node_to_undo->node_data_size;i++){
@@ -435,14 +478,14 @@ void undo(Game *my_game){
 void redo(Game *my_game){
     Node *node_to_redo = my_game->doubly_linked_list->dll_pointer->next;
     int i;
-    if (my_game->doubly_linked_list->doubly_linked_list_size==0 || my_game->doubly_linked_list->dll_pointer->next == NULL){
+    if (my_game->doubly_linked_list->dll_pointer->next == NULL){
         printf("Error: no moves to redo\n");
         return;
     }
-    print_user_board(my_game);
     for (i=0; i<node_to_redo->node_data_size;i++){
-        set_without_dll(my_game,node_to_redo->node_data[i].row,node_to_redo->node_data[i].col,node_to_redo->node_data[i].value);
+        set_without_dll(my_game,node_to_redo->node_data[i]->row,node_to_redo->node_data[i]->col,node_to_redo->node_data[i]->value);
     }
+    print_user_board(my_game);
     for (i=0; i<node_to_redo->node_data_size;i++){
         redo_print(node_to_redo->node_data[i]);
     }
@@ -454,7 +497,7 @@ void redo(Game *my_game){
  * used by undo/redo to change values without effecting the dll */
 void set_without_dll(Game *my_game, int x, int y, int z) {
     int prev_val = my_game->user_game_board[x][y].value;
-    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<my_game->m_mult_n)) {
+    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n)) {
         not_in_range(my_game->m_mult_n);
         return;
     }
@@ -471,10 +514,12 @@ void set_without_dll(Game *my_game, int x, int y, int z) {
 /* revert to the original board the user loaded (either from a file or a blank 9x9)
  * clear the moves list */
 void reset(Game *my_game){
-    while (my_game->doubly_linked_list->dll_pointer!=NULL){
+    /* if there is a play to undo, undo it */
+    while (strcmp(my_game->doubly_linked_list->dll_pointer->command_name, "start_node")!=0){
         undo_without_output(my_game);
     }
-    while (my_game->doubly_linked_list->last!=NULL){
+    /* reset dll */
+    while (strcmp(my_game->doubly_linked_list->last->command_name, "start_node")!=0){
         remove_last(my_game->doubly_linked_list);
     }
     printf("Board reset\n");
@@ -486,19 +531,22 @@ void undo_without_output(Game *my_game) {
     Node *node_to_undo = my_game->doubly_linked_list->dll_pointer;
     int i;
     for (i=0; i<node_to_undo->node_data_size;i++){
-        set_without_dll(my_game,node_to_undo->node_data[i].row,node_to_undo->node_data[i].col,node_to_undo->node_data[i].prev_value);
+        set_without_dll(my_game,node_to_undo->node_data[i]->row,node_to_undo->node_data[i]->col,node_to_undo->node_data[i]->prev_value);
     }
     my_game->doubly_linked_list->dll_pointer = my_game->doubly_linked_list->dll_pointer->prev;
 }
 
-void exit_command(Game *my_game){
+/* free all memory alocated inside Game, including dll and boards (user and solution)
+ * does not free Game itself */
+
+void free_all_mem(Game *my_game){
     /* free dll */
-    while (my_game->doubly_linked_list->last!=NULL){
+    while (strcmp(my_game->doubly_linked_list->last->command_name, "start_node")!=0){
         remove_last(my_game->doubly_linked_list);
     }
+    free(my_game->doubly_linked_list->first);
     free(my_game->doubly_linked_list);
     /* free both game boards */
     free_boards(my_game);
-    /* free game */
-    free(my_game);
+
 }

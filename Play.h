@@ -1,13 +1,9 @@
-//
-// Created by Doron_Passal on 27/08/2018.
-//
-
 #ifndef FINALPROJECT_PLAY_H
 #define FINALPROJECT_PLAY_H
 #include "Game.h"
 
-void undo_print(Data data);
-void redo_print(Data data);
+void undo_print(Data *data);
+void redo_print(Data *data);
 
 void do_solve (char *x);
 
@@ -31,8 +27,5 @@ int num_of_empty_cells(Game *game);
 int num_not_valid(int empty_cells,int x);
 
 int get_leagel_random_val(Game *game,int row,int col);
+#endif
 
-
-
-
-#endif //FINALPROJECT_PLAY_H
