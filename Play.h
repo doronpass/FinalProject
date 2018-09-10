@@ -30,6 +30,7 @@ int get_leagel_random_val(Game *game,int row,int col);
 void do_validate(Game *game);
 int count_invalid_numbers(Game *game);
 
+void copy_solve_2_user(Game *game);
 
 #endif
 

@@ -74,7 +74,7 @@ void puzzle_generator_failed(){
     printf("Error: puzzle generator failed\n");
 
 }
-void cell_contatins_value(){
+cell_contains_value(){
     printf("Error: cell already contains a value\n");
 
 }
