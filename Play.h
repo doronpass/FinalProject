@@ -17,7 +17,7 @@ void do_print_board (char *x);
 
 void do_set (Game *game ,int x, int y , int value);
 
-void do_generate (Game *game, int x,int y);
+void do_generate (Game *game,Node *node, int x,int y);
 
 void do_undo (Game *game ,int x, int y , int value , int pre_value);
 

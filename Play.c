@@ -59,7 +59,7 @@ void clear_board(Game *game){
 void do_generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by randomly filling X cells with random legal values, running ILP to solve the resulting board, and then clearing all but Y random cells.*/
     int empty_cells = 0, i, res_from_ilp=0,j;
     int N = game->m_mult_n * game->m_mult_n;
-    int row, col, rand_value, x_counter = 1, y_counter = 0;
+    int row, col, rand_value, x_counter = 1;
     Data *data;
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
     if (game->mode != 0) /* if the mode is not edit print invalid command */{
@@ -203,7 +203,7 @@ int get_leagel_random_val(Game *game,int row,int col){ /* get game,num of row an
     }
 
 void do_validate(Game *game){
-    int res,num_of_errors=0;
+    int res;
 
     if (count_invalid_numbers(game) != 0 ){
         puzzle_solution_erroneus();
