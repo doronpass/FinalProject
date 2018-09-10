@@ -222,11 +222,11 @@ int is_valid(Game *my_game, int x, int y, int z) {
 }
 
 /* change the mark errors option on and off */
-void mark_errors(Game *my_game) {
-    if (my_game->mark_error==1) {
-        my_game->mark_error = 0;
-    } else if (my_game->mark_error==0){
+void mark_errors(Game *my_game, int x) {
+    if (x==1) {
         my_game->mark_error = 1;
+    } else if (x==0){
+        my_game->mark_error = 0;
     } else {
         printf("Error: the value should be 0 or 1\n");
     }
@@ -262,12 +262,30 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
     } else {
         assert = load_from_file(new_game, path);
         if (assert == 0) {
-            exit(1);
+            free(new_game->doubly_linked_list->first);
+            free(new_game->doubly_linked_list);
+            new_game->mode = -1; /*indicates an error */
+        } else {
+            mark_error_cells(new_game);
         }
     }
-    /* ------------ need function to check all cells for is_error ----------------------------- */
     return new_game;
 }
+/* goes over a board and marks erroneous cells.
+ * used when loading new board */
+void mark_error_cells(Game *my_game){
+    int i,j;
+    for (i=0;i<my_game->m_mult_n;i++){
+        for (j=0;j<my_game->m_mult_n;j++){
+            if (my_game->user_game_board[i][j].value!=0){
+                if (!is_valid(my_game,i,j,my_game->user_game_board[i][j].value)){
+                    my_game->user_game_board[i][j].is_error=1;
+                }
+            }
+        }
+    }
+}
+
 
 /* executes the set command, after making sure the input numbers are in range and cell is not fixed
  * returns 1 if value was changed, else 0 */
@@ -512,6 +530,7 @@ void free_all_mem(Game *my_game){
     while (strcmp(my_game->doubly_linked_list->last->command_name, "start_node")!=0){
         remove_last(my_game->doubly_linked_list);
     }
+    free(my_game->doubly_linked_list->first);
     free(my_game->doubly_linked_list);
     /* free both game boards */
     free_boards(my_game);

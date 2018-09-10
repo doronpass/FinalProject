@@ -100,7 +100,12 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     int autofill_change=0, set_complete = 0;
     Node *node;
     if (strcmp(command_name, "mark_errors")==0){
-        mark_errors(my_game);
+        x+=1; /*we decrease x by 1 for matrix, so we need to increase */
+        if (x!=0 && x!=1){
+            invalid_command();
+        } else {
+            mark_errors(my_game,x);
+        }
     } else if (strcmp(command_name, "print_board")==0){
         print_user_board(my_game);
     } else if (strcmp(command_name, "set")==0){
@@ -142,7 +147,6 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     } else if (strcmp(command_name, "autofill")==0) {
         node = create_new_node("autofill");
         autofill_change=autofill(my_game, node);
-        /* according to forum, if autofill made no changes to the board, it should not be added to dll */
         if (autofill_change==1){
             append_node_to_list(my_game->doubly_linked_list, node);
         } else {
@@ -187,16 +191,24 @@ int init_user_turn(Game *my_game,int is_there_old_game){
     if (strcmp(command_name, "solve")==0) {
         if (token == NULL) {
             invalid_command();
-            return 0;
+            return 1;
         } else {
             init_game(command_name, token, my_game, is_there_old_game);
-            return 0;
+           if (my_game->mode==-1){/* loading from file unsuccessful */
+               return 1;
+           } else {
+               return 0;
+           }
         }
     } else if (strcmp(command_name, "edit")==0){
         init_game(command_name, token, my_game, is_there_old_game);
-        return 0;
+        if (my_game->mode==-1){/* loading from file unsuccessful */
+            return 1;
+        } else {
+            return 0;
+        }
     } else if (strcmp(command_name, "exit")==0) {
-        if (my_game!=NULL){
+        if (is_there_old_game==1){
             free_all_mem(my_game);
         }
         printf("Exiting...\n");
