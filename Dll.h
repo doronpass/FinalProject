@@ -15,7 +15,7 @@ typedef struct Node {
     struct Node *next;
     struct Node *prev;
     char* command_name;
-    Data *node_data;
+    Data **node_data;
     int node_data_size;
 } Node;
 
@@ -24,7 +24,7 @@ typedef struct
 {
     struct Node *first;
     struct Node *last;
-    struct Node *dll_pointer; // point to the last command that has been done
+    struct Node *dll_pointer;
     int doubly_linked_list_size;
 } Doubly_linked_list;
 
@@ -36,4 +36,4 @@ void remove_last (Doubly_linked_list *dll); /* inside it remove node, with all t
 void free_node(Node *node);
 void append_data_to_node(Node *node,Data *data);/* add new data to the data array in node*/
 Doubly_linked_list* create_new_dll();
-#endif // FINALPROJECT_DLL_H
+#endif

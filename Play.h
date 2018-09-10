@@ -1,13 +1,9 @@
-//
-// Created by Doron_Passal on 27/08/2018.
-//
-
 #ifndef FINALPROJECT_PLAY_H
 #define FINALPROJECT_PLAY_H
 #include "Game.h"
 
-void undo_print(Data data);
-void redo_print(Data data);
+void undo_print(Data *data);
+void redo_print(Data *data);
 
 void do_solve (char *x);
 void do_hint(Game *game,int row,int cols);
@@ -35,7 +31,5 @@ void do_validate(Game *game);
 int count_invalid_numbers(Game *game);
 
 
+#endif
 
-
-
-#endif //FINALPROJECT_PLAY_H

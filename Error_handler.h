@@ -1,7 +1,3 @@
-//
-// Created by Doron_Passal on 27/08/2018.
-//
-
 #ifndef FINALPROJECT_ERROR_HANDLER_H
 #define FINALPROJECT_ERROR_HANDLER_H
 #include "Game_board.h"
@@ -28,4 +24,4 @@ void nothing_to_redo();
 void board_not_empty();
 void puzzle_generator_failed();
 
-#endif //FINALPROJECT_ERROR_HANDLER_H
+#endif
