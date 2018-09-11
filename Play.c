@@ -204,11 +204,12 @@ int get_leagel_random_val(Game *game,int row,int col){ /* get game,num of row an
 
 void do_validate(Game *game){
     int res;
-
+    printf("until 207 good");auto
     if (count_invalid_numbers(game) != 0 ){
         puzzle_solution_erroneus();
         return;
     }
+    printf("until 212 good");
     res = ilp_solver(game);
     if (res ==1 ){
         validation_passed();
@@ -238,6 +239,10 @@ void do_hint(Game *game, int row, int cols){
     if (game->mode==0){ /* check we are in solve mode */
         invalid_command();
         return;
+
+    }
+    if (row<0 || cols <0){
+        invalid_command();
     }
     if (row>N || cols>N){
         not_in_range(N);

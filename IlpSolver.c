@@ -25,7 +25,7 @@ void free_grb(int *ind ,int *indarr2,double *val , double *valarr2, double *sol 
 
 
 
-void copy_sol_to_board(int *sol, Game *game) {
+void copy_sol_to_board(double *sol, Game *game) {
     int N = (game->m_mult_n)*(game->m_mult_n);
     int i, j, v;
     for (i = 0; i < N; i++) {
@@ -42,7 +42,6 @@ void copy_sol_to_board(int *sol, Game *game) {
 int ilp_solver(Game *game) {
     GRBenv *env = NULL;
     GRBmodel *model = NULL;
-    char inputline[100];
     int *ind;
     int *indarr2;
     double *val;
@@ -51,7 +50,6 @@ int ilp_solver(Game *game) {
     char *vtype;
     int optimstatus;
     double objval;
-    int zero = 0;
     int i, j, v, ig, jg, count;
     int error = 0;
     int N;
@@ -60,7 +58,7 @@ int ilp_solver(Game *game) {
     int temportry_value;
     /* initialize arrays and pointer for later use */
 
-
+    N = game->m_mult_n ;/* it was before  this in squeare -------------------------------------- */
     sol = (double *) malloc(N * N * N * sizeof(double));
     N = game->m_mult_n * game->m_mult_n;
     vtype = (char *) malloc(N * N * N);
@@ -89,7 +87,7 @@ int ilp_solver(Game *game) {
 
     error = GRBloadenv(&env, "sudoku.log");
     if (error) {
-        printf("Error: %s\n",GRBgeterrormsg(env)));
+        printf("Error: %s\n",GRBgeterrormsg(env));
         free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                  model,lb);
         return flag;
@@ -100,7 +98,7 @@ int ilp_solver(Game *game) {
     error = GRBnewmodel(env, &model, "sudoku", N * N * N, NULL, lb, NULL,
                         vtype, NULL);
     if (error) {
-        printf("Error: %s\n",GRBgeterrormsg(env)));
+        printf("Error: %s\n",GRBgeterrormsg(env));
         free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                  model,lb);
         return flag;
@@ -117,7 +115,7 @@ int ilp_solver(Game *game) {
 
             error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, NULL);
             if (error) {
-                printf("Error: %s\n",GRBgeterrormsg(env)));
+                printf("Error: %s\n" , GRBgeterrormsg(env));
                 free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                          model,lb);
                 return flag;
@@ -135,7 +133,7 @@ int ilp_solver(Game *game) {
                 indarr2[0] = N*N*j + i*N+(temportry_value - 1);
                 error = GRBaddconstr(model, 1, indarr2, valarr2, GRB_EQUAL, 1.0, NULL);
                 if (error) {
-                    printf("Error: %s\n",GRBgeterrormsg(env)));
+                    printf("Error: %s\n",GRBgeterrormsg(env));
                     free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                              model,lb);
                     return flag;
@@ -155,7 +153,7 @@ int ilp_solver(Game *game) {
 
             error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, NULL);
             if (error) {
-                printf("Error: %s\n",GRBgeterrormsg(env)));
+                printf("Error: %s\n",GRBgeterrormsg(env));
                 free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                          model,lb);
                 return flag;
@@ -173,7 +171,7 @@ int ilp_solver(Game *game) {
 
             error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, NULL);
             if (error) {
-                printf("Error: %s\n",GRBgeterrormsg(env)));
+                printf("Error: %s\n",GRBgeterrormsg(env));
                 free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                          model,lb);
                 return flag;
@@ -194,9 +192,9 @@ int ilp_solver(Game *game) {
                     }
                 }
 
-                error = GRBaddconstr(model, DIM, ind, val, GRB_EQUAL, 1.0, NULL);
+                error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, NULL);
                 if (error) {
-                    printf("Error: %s\n",GRBgeterrormsg(env)));
+                    printf("Error: %s\n",GRBgeterrormsg(env));
                     free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                              model,lb);
                     return flag;
@@ -208,7 +206,7 @@ int ilp_solver(Game *game) {
 
     error = GRBoptimize(model);
     if (error) {
-        printf("Error: %s\n",GRBgeterrormsg(env)));
+        printf("Error: %s\n",GRBgeterrormsg(env));
         free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                  model,lb);
         return flag;
@@ -217,7 +215,7 @@ int ilp_solver(Game *game) {
 
     error = GRBwrite(model, "sudoku.lp");
     if (error) {
-        printf("Error: %s\n",GRBgeterrormsg(env)));
+        printf("Error: %s\n",GRBgeterrormsg(env));
         free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                  model,lb);
         return flag;
@@ -227,7 +225,7 @@ int ilp_solver(Game *game) {
     error = GRBgetintattr(model, GRB_INT_ATTR_STATUS,
                           &optimstatus); /*/query the status of the optimization process by retrieving the value of the Status attribute*/
     if (error) {
-        printf("Error: %s\n",GRBgeterrormsg(env)));
+        printf("Error: %s\n",GRBgeterrormsg(env));
         free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                  model,lb);
         return flag;
@@ -237,7 +235,7 @@ int ilp_solver(Game *game) {
     error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL,
                           &objval); /* the value of the objective function for the computed solution*/
     if (error) {
-        printf("Error: %s\n",GRBgeterrormsg(env)));
+        printf("Error: %s\n",GRBgeterrormsg(env));
         free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                  model,lb);
         return flag;
@@ -245,7 +243,7 @@ int ilp_solver(Game *game) {
     /*this routine retrieves the values of an array-valued attribute. The third and fourth arguments indicate the index of the first array element to be retrieved, and the number of elements to retrieve*/
     error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, N * N * N, sol); /* func i added from the example */
     if (error) {
-        printf("Error: %s\n",GRBgeterrormsg(env)));
+        printf("Error: %s\n",GRBgeterrormsg(env));
         free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                  model,lb);
         return flag;
@@ -253,7 +251,7 @@ int ilp_solver(Game *game) {
 
     /* the sol is a good one so we thake it to out solver board in game and make it be the same */
     if (optimstatus == GRB_OPTIMAL) {
-        copy_sol_to_board(sol,game);
+        copy_sol_to_board(sol,game); /*mbaye without the &, to check it out */
         flag = 1 ;}
 /*        printf("Optimal objective: %.4e\n", objval);
     } else if (optimstatus == GRB_INF_OR_UNBD)
@@ -264,7 +262,7 @@ int ilp_solver(Game *game) {
 
 
     if (error) {
-        printf("Error: %s\n",GRBgeterrormsg(env)));
+        printf("Error: %s\n",GRBgeterrormsg(env));
         free_grb(ind ,indarr2,val ,valarr2, sol ,vtype,env,
                 model,lb);
         return flag;
