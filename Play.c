@@ -204,14 +204,11 @@ int get_leagel_random_val(Game *game,int row,int col){ /* get game,num of row an
 
 void do_validate(Game *game){
     int res;
-    printf("im inside validate \n");
     if(count_invalid_numbers(game) != 0 ){
         puzzle_solution_erroneus();
         return;
     }
-    printf("im before ilp solver \n");
     res = ilp_solver(game);
-    printf("im after ilp solver \n");
 
     if (res ==1 ){
         validation_passed();

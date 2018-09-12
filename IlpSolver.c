@@ -26,9 +26,12 @@ int ilp_solver(Game *game) {
     int flag = 0;
     double *sol;
     int temportry_value;
+    int **result_arr;
     /* initialize arrays and pointer for later use */
     printf("here hello\n");
     N = game->m_mult_n ;/* it was before  this in squeare -------------------------------------- */
+    result_arr = create_matrix( N);
+
     sol = (double *) malloc(N * N * N * sizeof(double));
     if( sol == NULL){
         printf("malloc has a problem\n");
@@ -268,7 +271,10 @@ int ilp_solver(Game *game) {
     /* the sol is a good one so we thake it to out solver board in game and make it be the same */
     if (optimstatus == GRB_OPTIMAL) {
         printf(" 260\n");
-        copy_sol_to_board(sol,game); /*mbaye without the &, to check it out */
+        copy_sol_to_board(sol,result_arr,N); /*mbaye without the &, to check it out */
+        printf("after first copy\n");
+        copy_board_to_game(result_arr,N,game);
+        printf("after second cop\n");
 
         flag = 1 ;}
 
@@ -295,8 +301,9 @@ int ilp_solver(Game *game) {
 
 
 }
-void copy_sol_to_board(double *sol, Game *game) {
+/* void copy_sol_to_board(double *sol, Game *game) {
     int N = (game->m_mult_n);
+    int **result_arr = malloc(N*N* sizeof(int));
     int i, j, v;
     printf("301\n");
 
@@ -315,7 +322,7 @@ void copy_sol_to_board(double *sol, Game *game) {
     }
     printf("312\n");
 
-}
+} */
 
 /* free all the other stuff we used */     /* Free environment */     /* Free model */
 void free_grb(int *ind ,int *indarr2,double *val , double *valarr2, double *sol , char *vtype, GRBenv *env,

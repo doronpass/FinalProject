@@ -16,4 +16,8 @@ void insert_zero_cells(Cell **arr,int size);
 void print_separator_row(int size,int m);
 void print_user_board(Game *game);
 void free_boards(Game *my_game);
+int** create_matrix(int N);
+void copy_board_to_game(int **result_arr,int N,Game *game);
+void copy_sol_to_board(double *sol,int **result_arr, int N ) ;
+
 #endif
