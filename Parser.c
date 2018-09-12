@@ -101,7 +101,9 @@ int is_number(char *str){
 int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     int autofill_change=0, set_complete = 0;
     Node *node;
+    printf("im here at ex-func\n");
     if (strcmp(command_name, "mark_errors")==0){
+        printf("im here 1\n");
         x+=1; /*we decrease x by 1 for matrix, so we need to increase */
         if (x!=0 && x!=1){
             invalid_command();
@@ -109,8 +111,10 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
             mark_errors(my_game,x);
         }
     } else if (strcmp(command_name, "print_board")==0){
+        printf("im here 2\n");
         print_user_board(my_game);
     } else if (strcmp(command_name, "set")==0){
+        printf("im here 3\n");
         if (x>=0 && y>=0 && z>=0){
             node = create_new_node("set");
             set_complete = set(my_game, x, y, z, node);
@@ -122,9 +126,11 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
             }
         } else {
             invalid_command();
+            printf("were about to enter validate function inside parsrt");
+
         }
     } else if (strcmp(command_name, "validate")==0){
-        /*---------------- VALIDATE! ------------------------------------*/
+        printf("im here 4\n");
         do_validate(my_game);
     } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
         if (x<= (my_game->m_mult_n * my_game->m_mult_n) && y <= (my_game->m_mult_n * my_game->m_mult_n)){
