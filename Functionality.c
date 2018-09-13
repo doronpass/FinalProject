@@ -442,13 +442,13 @@ int get_legal_random_val(Game *game,int row,int col) {
     int x,order;
     N = game->m_mult_n;
     valid_arr = (int*)malloc(sizeof(int)*(N+1));
-    valid_number_counter = create_valid_arr(game,valid_arr,row,col,N); /* create arr of 1 in the valid number and return unmber of valid numbers*/
+    valid_number_counter = create_valid_arr(game,valid_arr,row,col,N); /* create arr of 1 in the valid number and return number of valid numbers*/
 
     if (valid_number_counter == 0) {
         return 0;
     }
     order = rand() % valid_number_counter;
-    x = get_the_order_number_from_arr(order, valid_arr); /* to go over it with itay to check the indexes are right*/
+    x = get_the_order_number_from_arr(order+1, valid_arr);
     free(valid_arr);
     return x;
 
@@ -456,6 +456,7 @@ int get_legal_random_val(Game *game,int row,int col) {
 
 int create_valid_arr(Game *game,int *valid_arr, int row , int col,int N) {
     int i,cnt=0;
+    valid_arr[0] = 0; /* not used */
     for (i = 1; i < (N + 1); ++i) {
         if (is_valid(game, row, col, i) == 1) {
             valid_arr[i] = 1;
@@ -469,7 +470,7 @@ int create_valid_arr(Game *game,int *valid_arr, int row , int col,int N) {
 }
 
 int get_the_order_number_from_arr(int order, int *valid_arr){
-    int res,index=0,ones_cnt=0;
+    int res,index=1,ones_cnt=0;
     while(ones_cnt<order){
         if ( valid_arr[index] == 1 ){
             ones_cnt++;
@@ -477,7 +478,7 @@ int get_the_order_number_from_arr(int order, int *valid_arr){
 
         index++;
     }
-    res = valid_arr[index-1];
+    res = (index-1);
     return res;
 }
 
