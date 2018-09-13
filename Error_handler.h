@@ -17,7 +17,7 @@ void puzzle_solution_erroneus();
 
 void board_not_solvable();
 void validation_failed();
-void cell_contatins_value();
+void cell_contains_value();
 void validation_passed();
 void nothing_to_undo();
 void nothing_to_redo();

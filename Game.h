@@ -13,7 +13,8 @@ typedef struct Game
     int m_block_rows;
     int n_block_cols;
     int m_mult_n;
-    Doubly_linked_list *doubly_linked_list;
+    /* here there wad create matrix field, why? */
+        Doubly_linked_list *doubly_linked_list;
 } Game;
 
 Game* create_new_game (Cell **user_game_board,Cell **solved_game_board,int mark_error,int mode,int m_block_rows, int n_block_cols);

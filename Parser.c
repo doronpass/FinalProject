@@ -4,9 +4,11 @@
 #include <string.h>
 #include "Parser.h"
 #include "Game.h"
+#include "Play.h"
 #include "Error_handler.h"
 #include "Functionality.h"
 #include "stack.h"
+#include "Play.h"
 
 
 int user_turn(Game *my_game) {
@@ -120,11 +122,14 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
             }
         } else {
             invalid_command();
+
         }
     } else if (strcmp(command_name, "validate")==0){
-        /*---------------- VALIDATE! ------------------------------------*/
+        do_validate(my_game);
     } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
         if (x<= (my_game->m_mult_n * my_game->m_mult_n) && y <= (my_game->m_mult_n * my_game->m_mult_n)){
+            node = create_new_node("generate");
+            do_generate(my_game,node,(x+1),(y+1));
             /* ------------------ GENERATE XY ---------------------------*/
         } else {
             not_in_range(my_game->m_mult_n*my_game->m_mult_n);
@@ -136,6 +141,7 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
         redo(my_game);
     } else if (strcmp(command_name, "hint")==0) {
         if (x<my_game->m_mult_n && y<my_game->m_mult_n){
+            do_hint(my_game,x,y);
             /* ----------------------- HINT --------------------------------*/
         } else {
             not_in_range(my_game->m_mult_n);

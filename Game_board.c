@@ -94,10 +94,56 @@ void free_boards(Game *my_game){
     int i;
     for (i=0;i<my_game->m_mult_n;i++){
         free(my_game->user_game_board[i]);
-        /* free(my_game->solved_game_board[i]); -------------------- un-comment this when we add gurubi and solved board */
+        free(my_game->solved_game_board[i]);
     }
     free(my_game->user_game_board);
-    /* free(my_game->solved_game_board); -------------------- un-comment this when we add gurubi and solved board */
+    free(my_game->solved_game_board);
 }
 
+/*allocates dynamic memory space for a game board based on size
+ *all cells are initialized to 0 */
+int** create_matrix(int N){
+    int i;
+    int** arr =(int**) calloc(N,sizeof(int*));
+    if(arr ==NULL){
+        printf("somthing about that maloc has faild@!#!#!@#!@#!@#!@#\n");
+        exit(1);
+    }
+    for (i=0; i<N; i++){
+        arr[i] = (int*) calloc (N,sizeof(int));
+        if((arr[i])== NULL){
+            printf("somthing about that maloc has faild@!#!#!@#!@#!@#!@#\n");
+            exit(1);
+        }
+    }
+    return arr;
+}
 
+void copy_board_to_game(int **result_arr,int N,Game *game){
+    int i,j;
+    game->solved_game_board = create_new_board(N,N);
+    for (i = 0; i <N ;  ++i) {
+        for (j = 0; j <N ; ++j) {
+            printf("copy_board_to_game i=%d,j=%d \n",i,j);
+            game->solved_game_board[i][j].value = result_arr[i][j];
+
+
+        }
+    }
+}
+void copy_sol_to_board(double *sol,int **result_arr, int N ) {
+    int i, j, v;
+    printf("301\n");
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            for (v = 0; v < N; v++) {
+                printf("i=%d,j=%d,v=%d\n", i, j, v);
+                if (sol[i * N * N + j * N + v] == 1) {
+                    printf("307\n");
+                    result_arr[i][j] = v + 1;
+                    printf("309\n");
+                } else { printf("not enter to if\n"); }
+            }
+        }
+    }
+}
