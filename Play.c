@@ -141,6 +141,8 @@ int autofill(Game *my_game, Node *node) {
             }
         }
     }
+    free_boards(clone);
+    free(clone);
     return changed;
 }
 
