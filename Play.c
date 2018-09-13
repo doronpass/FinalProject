@@ -213,11 +213,8 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
     } else {
         i = 0;
         while (i <= 1000) {
-            printf("77\n");
             if(x_counter == x){
-                printf("79\n");
                 res_from_ilp = ilp_solver(game);
-                printf("81\n");
                 if (res_from_ilp == 1){
                     break;
                 } else{
@@ -226,49 +223,35 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
                 }
             }
             x_counter = 1;
-            printf("90\n");
             while (x_counter <= x) {
                 if (i == 1000) {
-                    printf("93\n");
                     puzzle_generator_failed();
-                    printf("95\n");
 
                     clear_board(game); /*to add func the returned the board to be all 0 */
 
-                    printf("97\n");
 
                     return;
                 }
-                printf("103\n");
 
                 row = rand() % N;
                 col = rand() % N;
-                printf("107\n");
-                printf("row num is :%d\n",row);
-                printf("col num is : %d\n",col);
-                printf("the value is : row: %d,col: %d ,value:%d\n",row,col, game->user_game_board[row][col].value);
+
                 if (game->user_game_board[row][col].value != 0) {
                     /*  i++;  TO CHECK IF NEEDED*/
-                    printf("111\n");
-                    printf("111\n");
+
                     continue;
                 } else {
-                    printf("114\n");
 
                     rand_value = get_legal_random_val(game, row,
                                                       col); /* function returnes 0 if there isnt a legal value and the right one if there is*/
                     printf("rand val is %d\n", rand_value);
                     if (rand_value == 0 ) {
-                        printf("117\n");
-                        printf("before clear board\n" );
-
+                        printf("means no valid value \n");
                         clear_board(game);
-                        printf("after clear board\n" );
                         i++;
+                        printf("i = %d",i);
                         break;
                     } else {
-                        printf("125\n");
-
                         game->user_game_board[row][col].value = rand_value;
                         x_counter++;
                     }
@@ -279,9 +262,7 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
 
     /* until here we choose x random places and gave every one an optional number */
     /* from here try to solve the board, and then delete y valuse randomly */
-    printf("137\n");
     if (res_from_ilp == 0) {
-        printf("140\n");
         clear_board(game);
         puzzle_generator_failed(); /* i put this one out! to check with itay its ok, and to check that the ilp solver to prints it by himself */
         return;

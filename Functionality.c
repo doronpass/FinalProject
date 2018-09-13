@@ -406,7 +406,6 @@ void clear_board(Game *game){
     int i,j;
     for ( i = 0; i <N ; ++i) {
         for ( j = 0; j <N ; ++j) {
-            printf("i = %d , j= %d \n",i,j);
             game->user_game_board[i][j].value = 0 ;
             /*      game->solved_game_board[i][j].value = 0 ;     */
 
@@ -449,7 +448,7 @@ int get_legal_random_val(Game *game,int row,int col) {
         return 0;
     }
     order = rand() % valid_number_counter;
-    x = get_the_order_number_from_arr(order, valid_arr);
+    x = get_the_order_number_from_arr(order, valid_arr); /* to go over it with itay to check the indexes are right*/
     free(valid_arr);
     return x;
 
