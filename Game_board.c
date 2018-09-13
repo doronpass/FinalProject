@@ -62,8 +62,9 @@ void print_cell(Cell *cell,int mode, int mark_error) {
 /*allocates dynamic memory space for a game board based on size N*N */
 Cell **create_new_board(int rows_size, int cols_size) {
     int size, i;
+    Cell **arr;
     size = rows_size * cols_size;
-    Cell **arr = (Cell **) malloc(sizeof(Cell *) * size);
+    arr = (Cell **) malloc(sizeof(Cell *) * size);
     check_memory2(arr);
     for (i = 0; i < size; ++i) {
         arr[i] = (Cell *) malloc(sizeof(Cell) * size);
@@ -114,15 +115,22 @@ void print_user_board(Game *game){
 }
 
 
-
+/* free the user board and, if initialized, solved board */
 void free_boards(Game *my_game){
     int i;
-    for (i=0;i<my_game->m_mult_n;i++){
-        free(my_game->user_game_board[i]);
-        free(my_game->solved_game_board[i]);
+    if( my_game->solved_game_board == NULL){
+        for (i=0;i<my_game->m_mult_n;i++){
+            free(my_game->user_game_board[i]);
+        }
+        free(my_game->user_game_board);
+    } else {
+        for (i=0;i<my_game->m_mult_n;i++){
+            free(my_game->user_game_board[i]);
+            free(my_game->solved_game_board[i]);
+        }
+        free(my_game->user_game_board);
+        free(my_game->solved_game_board);
     }
-    free(my_game->user_game_board);
-    free(my_game->solved_game_board);
 }
 
 /*allocates dynamic memory space for a game board based on size
