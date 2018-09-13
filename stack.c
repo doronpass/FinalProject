@@ -1,12 +1,7 @@
 #include "stack.h"
-#include "Game.h"
+#include "Game_board.h"
 #include "Functionality.h"
 #include "Error_handler.h"
-
-/* ---------------------------- FOR testing only!! ------------ */
-#include "Game_board.h"
-#define PIPE "|"
-
 
 /* creates the first stack node, it's board is a duplicate of the user board
  * of the my_game input*/

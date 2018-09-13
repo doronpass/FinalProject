@@ -1,6 +1,6 @@
 #ifndef FINALPROJECT_PARSER_H
 #define FINALPROJECT_PARSER_H
-#include "Game.h"
+#include "Game_board.h"
 
 int user_turn(Game *my_game);
 int is_number(char *str);

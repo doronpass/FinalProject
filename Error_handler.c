@@ -59,14 +59,6 @@ void validation_passed(){
 void validation_failed(){
     printf("Validation failed: board is unsolvable\n");
 }
-
-void nothing_to_undo(){
-    printf("Error: no moves to undo\n");
-}
-void nothing_to_redo(){
-    printf("Error: no moves to redo\n");
-}
-
 void board_not_empty(){
     printf("Error: board is not empty\n");
 }

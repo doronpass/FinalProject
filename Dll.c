@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "Dll.h"
-#include "Game.h"
+
 
 /*crate now dll node ,node data array is empty */
 Node * create_new_node(char* command_name){

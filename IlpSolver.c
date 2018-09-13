@@ -1,11 +1,8 @@
-
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "gurobi_c.h"
 #include "Game_board.h"
-#include "Game.h"
 #include "IlpSolver.h"
 
 

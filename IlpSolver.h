@@ -1,6 +1,6 @@
 #ifndef FINALPROJECT_ILPSOLVER_H
 #define FINALPROJECT_ILPSOLVER_H
-#include "Game.h"
+#include "Game_board.h"
 #include "gurobi_c.h"
 
 
