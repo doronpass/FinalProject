@@ -94,10 +94,10 @@ void free_boards(Game *my_game){
     int i;
     for (i=0;i<my_game->m_mult_n;i++){
         free(my_game->user_game_board[i]);
-        /* free(my_game->solved_game_board[i]); -------------------- un-comment this when we add gurubi and solved board */
+        free(my_game->solved_game_board[i]);
     }
     free(my_game->user_game_board);
-    /* free(my_game->solved_game_board); -------------------- un-comment this when we add gurubi and solved board */
+    free(my_game->solved_game_board);
 }
 
 /*allocates dynamic memory space for a game board based on size

@@ -260,7 +260,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
     if (strcmp(command, "edit") == 0) {
         new_game->mode = 0;
     }
-
+    new_game->solved_game_board = create_new_board(new_game->m_block_rows,new_game->n_block_cols);
     new_game->doubly_linked_list = create_new_dll();
     if (path == NULL){
         /* create 9X9 empty board (will only happen on edit, checked by another function */

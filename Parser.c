@@ -129,7 +129,7 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
         if (x<= (my_game->m_mult_n * my_game->m_mult_n) && y <= (my_game->m_mult_n * my_game->m_mult_n)){
             node = create_new_node("generate");
-            do_generate(my_game,node,x,y);
+            do_generate(my_game,node,(x+1),(y+1));
             /* ------------------ GENERATE XY ---------------------------*/
         } else {
             not_in_range(my_game->m_mult_n*my_game->m_mult_n);
