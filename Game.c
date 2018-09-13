@@ -1,3 +1,4 @@
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include "Game.h"
@@ -10,6 +11,7 @@
  * 0 during the game
  * 1 when the game is over (so the user will return to "init mode" = in the first loop)
  * 2 when the user enters "exit" command to exit program */
+ /*
 void start_game(){
     int game_status = 0, is_there_old_game=0;
     Game *my_game=(Game *) malloc(sizeof(Game));
@@ -39,3 +41,4 @@ void start_game(){
     }
     free(my_game);
 }
+*/

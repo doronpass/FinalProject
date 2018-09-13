@@ -2,7 +2,7 @@
 #define FINALPROJECT_STACK_H
 
 #include "Dll.h"
-#include "Game.h"
+#include "Game_board.h"
 
 typedef struct Stack_Node {
     int **board;
