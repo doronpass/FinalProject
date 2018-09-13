@@ -288,13 +288,14 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
             }
             else { /* if it is one of the error cells so we initilize it back to 0  and add to the do\undo list the changed that have been mase*/
                 game->user_game_board[i][j].is_error=0;
-                data = create_new_data (x ,y ,game->user_game_board[i][j].value, 0);
+                data = create_new_data (i ,j ,game->user_game_board[i][j].value, 0);
                 append_data_to_node(node, data);
             }
 
         }
 
     }
+    print_user_board(game);
 }
 
 void validate(Game *game){

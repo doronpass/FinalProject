@@ -127,8 +127,15 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
         validate(my_game);
     } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
         if (x<= (my_game->m_mult_n * my_game->m_mult_n) && y <= (my_game->m_mult_n * my_game->m_mult_n)){
-            node = create_new_node("generate");
-            generate(my_game,node,(x+1),(y+1));
+            if (y==0){
+                print_user_board(my_game);
+                return 0; /*function would return an empty board, just like the board we started with, so we skip it */
+            } else {
+                node = create_new_node("generate");
+                generate(my_game,node,(x+1),(y+1));
+                append_node_to_list(my_game->doubly_linked_list, node);
+            }
+
         } else {
             not_in_range(my_game->m_mult_n*my_game->m_mult_n);
             return 0;
