@@ -85,6 +85,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
             mark_error_cells(new_game);
         }
     }
+    print_user_board(new_game);
     return new_game;
 }
 
