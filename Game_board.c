@@ -12,6 +12,7 @@
  * 0 during the game
  * 1 when the game is over (so the user will return to "init mode" = in the first loop)
  * 2 when the user enters "exit" command to exit program */
+
 void start_game(){
     int game_status = 0, is_there_old_game=0;
     Game *my_game=(Game *) malloc(sizeof(Game));
@@ -48,7 +49,7 @@ void print_cell(Cell *cell,int mode, int mark_error) {
         printf("%s","  ");
     }
     else{
-    printf("%2d",cell->value);}
+        printf("%2d",cell->value);}
     if (cell->is_fix && cell->value != 0) {
         printf("%s","."); }
     else if (cell->value!=0 && cell->is_error==1 && ((mode == 0) || (mark_error==1))){ /* mode 0 is edit mode*/
@@ -64,10 +65,10 @@ Cell **create_new_board(int rows_size, int cols_size) {
     int size, i;
     Cell **arr;
     size = rows_size * cols_size;
-    arr = (Cell **) malloc(sizeof(Cell *) * size);
+    arr = (Cell **) calloc(size,sizeof(Cell *));
     check_memory2(arr);
     for (i = 0; i < size; ++i) {
-        arr[i] = (Cell *) malloc(sizeof(Cell) * size);
+        arr[i] = (Cell *) calloc(size,sizeof(Cell));
         check_memory(arr[i]);
     }
     insert_zero_cells(arr, size);
@@ -137,7 +138,8 @@ void free_boards(Game *my_game){
  *all cells are initialized to 0 */
 int** create_matrix(int N){
     int i;
-    int** arr =(int**) calloc(N,sizeof(int*));
+    int** arr; /* i took the next line out of this one*/
+    arr =(int**) calloc(N,sizeof(int*));
     if(arr ==NULL){
         printf("somthing about that maloc has faild@!#!#!@#!@#!@#!@#\n");
         exit(1);
@@ -154,7 +156,8 @@ int** create_matrix(int N){
 
 void copy_board_to_game(int **result_arr,int N,Game *game){
     int i,j;
-    game->solved_game_board = create_new_board(N,N);
+
+    game->solved_game_board = create_new_board(N,1);
     for (i = 0; i <N ;  ++i) {
         for (j = 0; j <N ; ++j) {
             game->solved_game_board[i][j].value = result_arr[i][j];
