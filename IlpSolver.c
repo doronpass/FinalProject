@@ -25,7 +25,6 @@ int ilp_solver(Game *game) {
     int temportry_value;
     int **result_arr;
     /* initialize arrays and pointer for later use */
-    printf("here hello\n");
     N = game->m_mult_n ;/* it was before  this in squeare -------------------------------------- */
     result_arr = create_matrix( N);
 
@@ -71,15 +70,13 @@ int ilp_solver(Game *game) {
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
             for (v = 0; v < N; v++) {
-                printf("N=%d\n",N);
-                printf("i=%d,j=%d,v=%d\n",i,j,v);
                 if (game->user_game_board[i][j].value == v+1) /* to make sure that te plus 1 is needed */
-                { printf("75\n");
+                {
                     lb[i * N * N + j * N + v] = 1;}
-                else{
-                    printf("78\n");
+                else {
+
                     lb[i * N * N + j * N + v] = 0;
-                    printf("im at 80");}
+                }
                 vtype[i * N * N + j * N + v] = GRB_BINARY;
 
 
@@ -87,9 +84,7 @@ int ilp_solver(Game *game) {
         }}
 
     /* Create environment */
-    printf("87\n");
-    printf("87\n");
-    printf("this is it \n");
+
     error = GRBloadenv(&env, "sudoku.log");
     if (error) {
         printf("Error: %s\n",GRBgeterrormsg(env));
@@ -99,7 +94,6 @@ int ilp_solver(Game *game) {
     }
 
     /* Create new model */
-    printf("97\n");
 
     error = GRBnewmodel(env, &model, "sudoku", N * N * N, NULL, lb, NULL,
                         vtype, NULL);
@@ -131,7 +125,6 @@ int ilp_solver(Game *game) {
 /* this is the problematic one, if there are problem to check here */
     /* firest consraint that we might sould dump assure that the values that come in boars stay in place */
 /* and sould check that in line 4 it realy user game board and not solved one */
-    printf("135\n");
     for (j = 0; j < N; j++) {
         for (i = 0; i < N; i++) {
             temportry_value = game->user_game_board[j][i].value;
@@ -150,7 +143,6 @@ int ilp_solver(Game *game) {
     }
 
     /* Each value must appear once in each row */
-    printf("155\n");
     for (v = 0; v < N; v++) {
         for (j = 0; j < N; j++) {
             for (i = 0; i < N; i++) {
@@ -166,7 +158,6 @@ int ilp_solver(Game *game) {
                 return flag;
             }        }
     }
-    printf("169\n");
 
 
     /* Each value must appear once in each column */
@@ -186,7 +177,6 @@ int ilp_solver(Game *game) {
                 return flag;
             }        }
     }
-    printf("189\n");
     /* Each value must appear once in each subgrid */
 
     for (v = 0; v < N; v++) {
@@ -210,7 +200,6 @@ int ilp_solver(Game *game) {
                 }            }
         }
     }
-    printf("213\n");
     /* Optimize model */
 
     error = GRBoptimize(model);
@@ -220,7 +209,6 @@ int ilp_solver(Game *game) {
                  model,lb);
         return flag;
     }
-    printf("223\n");
     /* Write model to 'sudoku.lp', int the tuturial they aid not necessary but very helpful */
 
     error = GRBwrite(model, "sudoku.lp");
@@ -231,7 +219,6 @@ int ilp_solver(Game *game) {
         return flag;
     }
     /* Capture solution information */
-    printf("234\n");
     error = GRBgetintattr(model, GRB_INT_ATTR_STATUS,
                           &optimstatus); /*/query the status of the optimization process by retrieving the value of the Status attribute*/
     if (error) {
@@ -240,7 +227,6 @@ int ilp_solver(Game *game) {
                  model,lb);
         return flag;
     }
-    printf("243\n");
     /* this call would return a non-zero error result if no solution was found for this model.*/
 
     error = GRBgetdblattr(model, GRB_DBL_ATTR_OBJVAL,
@@ -251,7 +237,6 @@ int ilp_solver(Game *game) {
                  model,lb);
         return flag;
     }
-    printf("253\n");
 
     /*this routine retrieves the values of an array-valued attribute. The third and fourth arguments indicate the index of the first array element to be retrieved, and the number of elements to retrieve*/
     error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, N * N * N, sol); /* func i added from the example */
@@ -262,20 +247,14 @@ int ilp_solver(Game *game) {
         return flag;
     }
 
-    printf("265\n");
 
 
     /* the sol is a good one so we thake it to out solver board in game and make it be the same */
     if (optimstatus == GRB_OPTIMAL) {
-        printf(" 260\n");
         copy_sol_to_board(sol,result_arr,N); /*mbaye without the &, to check it out */
-        printf("after first copy\n");
         copy_board_to_game(result_arr,N,game);
-        printf("after second cop\n");
 
         flag = 1 ;}
-
-    printf("275\n");
 
 /*        printf("Optimal objective: %.4e\n", objval);
     } else if (optimstatus == GRB_INF_OR_UNBD)
@@ -294,32 +273,10 @@ int ilp_solver(Game *game) {
 
     return  flag;
 
-    printf("294\n");
 
 
 }
-/* void copy_sol_to_board(double *sol, Game *game) {
-    int N = (game->m_mult_n);
-    int **result_arr = malloc(N*N* sizeof(int));
-    int i, j, v;
-    printf("301\n");
 
-    for (i = 0; i < N; i++) {
-        for (j = 0; j < N; j++) {
-            for (v = 0; v < N; v++) {
-                printf("i=%d,j=%d,v=%d\n",i,j,v);
-                if (sol[i * N * N + j * N + v] == 1) {
-                    printf("307");
-                    game->solved_game_board[i][j].value= v+1;
-                    printf("309");
-                }
-                else{ printf("not enter to if");}
-            }
-        }
-    }
-    printf("312\n");
-
-} */
 
 /* free all the other stuff we used */     /* Free environment */     /* Free model */
 void free_grb(int *ind ,int *indarr2,double *val , double *valarr2, double *sol , char *vtype, GRBenv *env,

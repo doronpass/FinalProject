@@ -406,7 +406,6 @@ void clear_board(Game *game){
     int i,j;
     for ( i = 0; i <N ; ++i) {
         for ( j = 0; j <N ; ++j) {
-            printf("i = %d , j= %d \n",i,j);
             game->user_game_board[i][j].value = 0 ;
             /*      game->solved_game_board[i][j].value = 0 ;     */
 
