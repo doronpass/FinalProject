@@ -261,18 +261,13 @@ int ilp_solver(Game *game) {
             copy_sol_to_board(sol, result_arr, N); /*maybe without the &, to check it out */
             copy_board_to_game(result_arr, N, game);
 
-            flag = 1;
             free_grb(ind, indarr2, val, valarr2, sol, vtype, env,
                      model, lb, result_arr, N);
+            flag = 1;
+
         }
 
-        if (error) {
-            printf("Error: %s\n", GRBgeterrormsg(env));
-            free_grb(ind, indarr2, val, valarr2, sol, vtype, env,
-                     model, lb, result_arr, N);
-            return flag;
-        }
-        free_grb(ind, indarr2, val, valarr2, sol, vtype, env,
+    free_grb(ind, indarr2, val, valarr2, sol, vtype, env,
              model, lb, result_arr, N);
         return flag;
 
@@ -297,7 +292,6 @@ void free_grb(int *ind, int *indarr2, double *val, double *valarr2, double *sol,
         }
         free(result_arr);
     }
-    free(result_arr);
     GRBfreemodel(model);
     GRBfreeenv(env);
 }
