@@ -65,10 +65,10 @@ Cell **create_new_board(int rows_size, int cols_size) {
     int size, i;
     Cell **arr;
     size = rows_size * cols_size;
-    arr = (Cell **) calloc(size,sizeof(Cell *));
+    arr = (Cell **) calloc((size_t) size,sizeof(Cell *));
     check_memory2(arr);
     for (i = 0; i < size; ++i) {
-        arr[i] = (Cell *) calloc(size,sizeof(Cell));
+        arr[i] = (Cell *) calloc((size_t) size,sizeof(Cell));
         check_memory(arr[i]);
     }
     insert_zero_cells(arr, size);

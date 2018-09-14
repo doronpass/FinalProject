@@ -67,7 +67,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
     if (strcmp(command, "edit") == 0) {
         new_game->mode = 0;
     }
-    new_game->solved_game_board = create_new_board(new_game->m_block_rows,new_game->n_block_cols);
+
     new_game->doubly_linked_list = create_new_dll();
     if (path == NULL){
         /* create 9X9 empty board (will only happen on edit, checked by another function */
@@ -85,6 +85,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
             mark_error_cells(new_game);
         }
     }
+    new_game->solved_game_board = create_new_board(new_game->m_block_rows,new_game->n_block_cols);
     print_user_board(new_game);
     return new_game;
 }
@@ -203,10 +204,7 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
     int N = game->m_mult_n;
     int row = -1, col = -1, rand_value = -1, x_counter = 1;
     Data *data;
-    printf("205\n");
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
-    printf("207\n");
-
     if (x > (game->m_mult_n * game->m_mult_n) ||
         y > (game->m_mult_n * game->m_mult_n)) { /* checks if x and y valid vualues*/
         not_in_range(empty_cells);
@@ -218,12 +216,7 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
         i = 0;
         while (i <= 1000) {
             if (x_counter == x) {
-                printf("221\n");
-
                 res_from_ilp = ilp_solver(game);
-
-                printf("225\n");
-
                 if (res_from_ilp == 1) {
                     break;
                 } else {
@@ -235,10 +228,7 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
             while (x_counter <= x) {
                 if (i == 1000) {
                     puzzle_generator_failed();
-
                     clear_board(game); /*to add func the returned the board to be all 0 */
-
-
                     return;
                 }
 
@@ -250,9 +240,6 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
 
                     continue;
                 } else {
-                    printf("254\n");
-
-
                     rand_value = get_legal_random_val(game, row,
                                                       col); /* function returnes 0 if there isnt a legal value and the right one if there is*/
                     printf("rand val is %d\n", rand_value);
