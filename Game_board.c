@@ -157,7 +157,7 @@ int** create_matrix(int N){
 void copy_board_to_game(int **result_arr,int N,Game *game){
     int i,j;
 
-    game->solved_game_board = create_new_board(N,1);
+  /*  game->solved_game_board = create_new_board(N,1);  */
     for (i = 0; i <N ;  ++i) {
         for (j = 0; j <N ; ++j) {
             game->solved_game_board[i][j].value = result_arr[i][j];

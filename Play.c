@@ -67,7 +67,6 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
     if (strcmp(command, "edit") == 0) {
         new_game->mode = 0;
     }
-
     new_game->doubly_linked_list = create_new_dll();
     if (path == NULL){
         /* create 9X9 empty board (will only happen on edit, checked by another function */
@@ -205,6 +204,10 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
     int row = -1, col = -1, rand_value = -1, x_counter = 1;
     Data *data;
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2b9175a3df4a1e40f7682a56e3b354fb074a6470
     if (x > (game->m_mult_n * game->m_mult_n) ||
         y > (game->m_mult_n * game->m_mult_n)) { /* checks if x and y valid vualues*/
         not_in_range(empty_cells);
