@@ -96,7 +96,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
 int set(Game *my_game, int x, int y, int z, Node *node){
     Data *data;
     int prev_val;
-    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n)) {
+    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n) || x==-1 || y==-1 || z==-1) { /*first check, if not bigger then N, after that, check that it's a valid number (not -1) */
         not_in_range(my_game->m_mult_n);
         return 0;
     }
