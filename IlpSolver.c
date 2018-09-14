@@ -69,7 +69,6 @@ int ilp_solver(Game *game) {
         }
 
         /* Create an empty model */
-        printf("72\n");
         for (i = 0; i < N; i++) {
             for (j = 0; j < N; j++) {
                 for (v = 0; v < N; v++) {
@@ -267,9 +266,8 @@ int ilp_solver(Game *game) {
 
         }
 
-    free_grb(ind, indarr2, val, valarr2, sol, vtype, env,
-             model, lb, result_arr, N);
-        return flag;
+
+    return flag;
 
 }
 
