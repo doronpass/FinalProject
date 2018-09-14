@@ -93,7 +93,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
 
 /* executes the set command, after making sure the input numbers are in range and cell is not fixed
  * returns 1 if value was changed, else 0 */
-int set(Game *my_game, int x, int y, int z, Node *node){
+int set(Game *my_game, int x, int y, int z, Node *node){/*changed x and y order */
     Data *data;
     int prev_val;
     if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n) || x==-1 || y==-1 || z==-1) { /*first check, if not bigger then N, after that, check that it's a valid number (not -1) */
@@ -136,7 +136,7 @@ int autofill(Game *my_game, Node *node) {
                 }
                 if (num_of_valid_nums==1) {
                     set(my_game, i, j, new_val, node);
-                    printf("Cell <%d,%d> set to %d\n", i+1,j+1,new_val);
+                    printf("Cell <%d,%d> set to %d\n", j+1,i+1,new_val); /* swiched between j+1 and i+1 */
                     changed=1;
                 }
             }
@@ -157,7 +157,7 @@ void undo(Game *my_game){
     }
     /* need to print the board and then the changes, so we divided it to 2 separate loops */
     for (i=0; i<node_to_undo->node_data_size;i++){
-        set_without_dll(my_game,node_to_undo->node_data[i]->row,node_to_undo->node_data[i]->col,node_to_undo->node_data[i]->prev_value);
+        set_without_dll(my_game,node_to_undo->node_data[i]->col,node_to_undo->node_data[i]->row,node_to_undo->node_data[i]->prev_value); /* changed between cole and row */
     }
     print_user_board(my_game);
     for (i=0; i<node_to_undo->node_data_size;i++){
@@ -175,7 +175,7 @@ void redo(Game *my_game){
         return;
     }
     for (i=0; i<node_to_redo->node_data_size;i++){
-        set_without_dll(my_game,node_to_redo->node_data[i]->row,node_to_redo->node_data[i]->col,node_to_redo->node_data[i]->value);
+        set_without_dll(my_game,node_to_redo->node_data[i]->col,node_to_redo->node_data[i]->row,node_to_redo->node_data[i]->value); /* change between col and row */
     }
     print_user_board(my_game);
     for (i=0; i<node_to_redo->node_data_size;i++){
@@ -205,7 +205,7 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
     Data *data;
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
     if (x > (game->m_mult_n * game->m_mult_n) ||
-        y > (game->m_mult_n * game->m_mult_n)) { /* checks if x and y valid vualues*/
+        y > (game->m_mult_n * game->m_mult_n) || x==-1 || y==-1) { /* checks if x and y valid vualues*/
         not_in_range(empty_cells);
         return;
     } else if (empty_cells < game->m_mult_n * game->m_mult_n) { /* if the we  try generate on not empty board */
@@ -241,9 +241,7 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
                 } else {
                     rand_value = get_legal_random_val(game, row,
                                                       col); /* function returnes 0 if there isnt a legal value and the right one if there is*/
-                    printf("rand val is %d\n", rand_value);
                     if (rand_value == 0) {
-                        printf("means no valid value \n");
                         clear_board(game);
                         i++;
                         printf("i = %d", i);
@@ -292,7 +290,6 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
         }
 
     }
-    print_user_board(game);
 }
 
 void validate(Game *game){
@@ -312,7 +309,6 @@ void validate(Game *game){
 }
 
 void hint(Game *game, int row, int cols){
-
     int N  = game->m_mult_n;
     int res;
     if (game->mode==0){ /* check we are in solve mode */
@@ -320,10 +316,7 @@ void hint(Game *game, int row, int cols){
         return;
 
     }
-    if (row<0 || cols <0){
-        invalid_command();
-    }
-    if (row>N || cols>N){
+    if (row>N || cols>N || row<0 || cols <0){
         not_in_range(N);
         return;
     }
@@ -345,6 +338,5 @@ void hint(Game *game, int row, int cols){
         return;
     }
     printf("Hint: set cell to %d\n",game->solved_game_board[row][cols].value);
-
 }
 
