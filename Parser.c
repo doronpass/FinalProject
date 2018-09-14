@@ -11,7 +11,7 @@
 
 
 int user_turn(Game *my_game) {
-    int x = -1, y = -1, z = -1, i = 0;
+    int x = -5, y = -5, z = -5, i = 0;
     char *command_name;
     char *token = NULL, input[1024] = "", delimiter[] = " \t\r\n";
     while (token == NULL) {
@@ -52,25 +52,17 @@ int user_turn(Game *my_game) {
     else {
         while (token != NULL && i < 3) {
             if (i == 0) {
-                x = is_number(token);
-                if (x==-1){
-                    not_in_range(my_game->m_mult_n);
-                    return 0;
-                }
-                x--;
-            } else if (i == 1) {
                 y = is_number(token);
-                if (y==-1){
-                    not_in_range(my_game->m_mult_n);
-                    return 0;
+                if (y!=-1){ /*if y is a number */
+                    y--;
                 }
-                y--;
+            } else if (i == 1) {
+                x = is_number(token);
+                if (x!=-1){ /*if x is a number */
+                    x--;
+                }
             } else if (i == 2) {
                 z = is_number(token);
-                if (z == -1){
-                    not_in_range(my_game->m_mult_n);
-                    return 0;
-                }
             }
             i++;
             token = strtok(NULL, delimiter);
@@ -110,7 +102,7 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     } else if (strcmp(command_name, "print_board")==0){
         print_user_board(my_game);
     } else if (strcmp(command_name, "set")==0){
-        if (x>=0 && y>=0 && z>=0){
+        if (x!=-5 && y!=-5 && z!=-5){
             node = create_new_node("set");
             set_complete = set(my_game, x, y, z, node);
             if (set_complete){
@@ -121,27 +113,16 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
             }
         } else {
             invalid_command();
-
+            return 0;
         }
     } else if (strcmp(command_name, "validate")==0){
         validate(my_game);
     } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
-         if (x>=0 && y>=0){ /* to add a check that both x and y are numbers */
-             printf("130 before y=0 check\n");
-             if (y==0){
-                 printf("131\n");
-                 print_user_board(my_game);
-                 printf("134\n");
-                 return 0;
-             } else {
-                 printf("137\n");
-                 node = create_new_node("generate");
-                 printf("in parser before 131\n");
-                 generate(my_game,node,(x+1),(y+1));
-                 append_node_to_list(my_game->doubly_linked_list, node);
-                 printf("139\n");
-                 print_user_board(my_game);
-             }
+        if (x!=-5 && y!=-5){
+            node = create_new_node("generate");
+            generate(my_game,node,(y+1),(x+1));
+            append_node_to_list(my_game->doubly_linked_list, node);
+            print_user_board(my_game);
         } else {
             invalid_command();
             return 0;
@@ -151,10 +132,10 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     } else if (strcmp(command_name, "redo")==0) {
         redo(my_game);
     } else if (strcmp(command_name, "hint")==0) {
-        if (x<my_game->m_mult_n && y<my_game->m_mult_n){
+        if (x!=-5 && y!=-5){
             hint(my_game,x,y);
         } else {
-            not_in_range(my_game->m_mult_n);
+            invalid_command();
         }
     } else if (strcmp(command_name, "num_solutions")==0) {
         if (exhaustive_backtracking(my_game)==-1){

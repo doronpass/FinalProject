@@ -181,26 +181,33 @@ int exhaustive_backtracking(Game *my_game){
     Stack_Node *node = create_first_stack_node(my_game);
     Stack_Node *new_node;
     push(stack, node);
+
     if (check_if_erroneous(my_game)){
+
         puzzle_solution_erroneus();
+        free_stack_node(node,my_game->m_mult_n );
+        free(stack);
         return -1;
     }
-    for (i=0;i<my_game->m_mult_n;i++){
+    for (j=0;j<my_game->m_mult_n;j++){ /* changed from i to j */
         if(is_empty(stack)){
+
             break;
         }
-        for (j=0;j<my_game->m_mult_n;j++){
+        for (i=0;i<my_game->m_mult_n;i++){/* changed from j to i */
             if(is_empty(stack)){
+
                 break;
             }
-            if (stack->top->board[i][j]==0){
+            if (stack->top->board[j][i]==0){ /* swiched between i and j */
+
                 node = pop(stack);
                 num_valid = 0;
                 for (k=1;k<=my_game->m_mult_n;k++){
-                    if(is_valid_ints(node->board,my_game->m_block_rows, my_game->n_block_cols,i,j, k)){
+                    if(is_valid_ints(node->board,my_game->n_block_cols, my_game->m_block_rows,j,i, k)){ /* swiched between i and j  and n with m*/
                         num_valid++;
                         new_node=create_stack_node(my_game->m_mult_n, node);
-                        new_node->board[i][j] = k;
+                        new_node->board[j][i] = k; /*change between i and j */
                         push(stack,new_node);
                     }
                 }
