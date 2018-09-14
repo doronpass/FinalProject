@@ -204,10 +204,6 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
     int row = -1, col = -1, rand_value = -1, x_counter = 1;
     Data *data;
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
-<<<<<<< HEAD
-=======
-
->>>>>>> 2b9175a3df4a1e40f7682a56e3b354fb074a6470
     if (x > (game->m_mult_n * game->m_mult_n) ||
         y > (game->m_mult_n * game->m_mult_n)) { /* checks if x and y valid vualues*/
         not_in_range(empty_cells);
