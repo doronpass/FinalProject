@@ -127,13 +127,16 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
         validate(my_game);
     } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
          if (x>=0 && y>=0){ /* to add a check that both x and y are numbers */
+             printf("130 before y=0 check\n");
              if (y==0){
                  printf("131\n");
                  print_user_board(my_game);
+                 printf("134\n");
                  return 0;
              } else {
+                 printf("137\n");
                  node = create_new_node("generate");
-                 printf("in parser before generate 131\n");
+                 printf("in parser before 131\n");
                  generate(my_game,node,(x+1),(y+1));
                  append_node_to_list(my_game->doubly_linked_list, node);
                  printf("139\n");

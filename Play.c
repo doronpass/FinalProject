@@ -67,7 +67,6 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
     if (strcmp(command, "edit") == 0) {
         new_game->mode = 0;
     }
-    new_game->solved_game_board = create_new_board(new_game->m_block_rows,new_game->n_block_cols);
     new_game->doubly_linked_list = create_new_dll();
     if (path == NULL){
         /* create 9X9 empty board (will only happen on edit, checked by another function */
@@ -85,6 +84,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
             mark_error_cells(new_game);
         }
     }
+    new_game->solved_game_board = create_new_board(new_game->m_block_rows,new_game->n_block_cols);
     print_user_board(new_game);
     return new_game;
 }
@@ -203,9 +203,7 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
     int N = game->m_mult_n;
     int row = -1, col = -1, rand_value = -1, x_counter = 1;
     Data *data;
-    printf("205\n");
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
-    printf("207\n");
 
     if (x > (game->m_mult_n * game->m_mult_n) ||
         y > (game->m_mult_n * game->m_mult_n)) { /* checks if x and y valid vualues*/
