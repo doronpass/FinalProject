@@ -180,12 +180,9 @@ int exhaustive_backtracking(Game *my_game){
     Stack *stack = create_stack();
     Stack_Node *node = create_first_stack_node(my_game);
     Stack_Node *new_node;
-    printf("183\n");
     push(stack, node);
-    printf("185\n");
 
     if (check_if_erroneous(my_game)){
-        printf("188\n");
 
         puzzle_solution_erroneus();
         free_stack_node(node,my_game->m_mult_n );
@@ -194,18 +191,15 @@ int exhaustive_backtracking(Game *my_game){
     }
     for (j=0;j<my_game->m_mult_n;j++){ /* changed from i to j */
         if(is_empty(stack)){
-            printf("197\n");
 
             break;
         }
         for (i=0;i<my_game->m_mult_n;i++){/* changed from j to i */
             if(is_empty(stack)){
-                printf("203\n");
 
                 break;
             }
             if (stack->top->board[j][i]==0){ /* swiched between i and j */
-                printf("208\n");
 
                 node = pop(stack);
                 num_valid = 0;
