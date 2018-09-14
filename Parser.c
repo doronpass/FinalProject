@@ -126,18 +126,21 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     } else if (strcmp(command_name, "validate")==0){
         validate(my_game);
     } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
-        if (x<= (my_game->m_mult_n * my_game->m_mult_n) && y <= (my_game->m_mult_n * my_game->m_mult_n)){
-            if (y==0){
-                print_user_board(my_game);
-                return 0; /*function would return an empty board, just like the board we started with, so we skip it */
-            } else {
-                node = create_new_node("generate");
-                generate(my_game,node,(x+1),(y+1));
-                append_node_to_list(my_game->doubly_linked_list, node);
-            }
-
+         if (x>=0 && y>=0){ /* to add a check that both x and y are numbers */
+             if (y==0){
+                 printf("131\n");
+                 print_user_board(my_game);
+                 return 0;
+             } else {
+                 node = create_new_node("generate");
+                 printf("in parser before generate 131\n");
+                 generate(my_game,node,(x+1),(y+1));
+                 append_node_to_list(my_game->doubly_linked_list, node);
+                 printf("139\n");
+                 print_user_board(my_game);
+             }
         } else {
-            not_in_range(my_game->m_mult_n*my_game->m_mult_n);
+            invalid_command();
             return 0;
         }
     } else if (strcmp(command_name, "undo")==0) {

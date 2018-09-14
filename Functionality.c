@@ -157,6 +157,7 @@ int load_from_file(Game *my_game, char *path) {
         my_game->user_game_board[my_game->m_mult_n-1][my_game->m_mult_n-1].is_fix = 1;
     }
     fclose(file);
+    print_user_board(my_game);
     return 1;
 }
 
@@ -445,6 +446,7 @@ int get_legal_random_val(Game *game,int row,int col) {
     valid_number_counter = create_valid_arr(game,valid_arr,row,col,N); /* create arr of 1 in the valid number and return number of valid numbers*/
 
     if (valid_number_counter == 0) {
+        free(valid_arr);
         return 0;
     }
     order = rand() % valid_number_counter;
