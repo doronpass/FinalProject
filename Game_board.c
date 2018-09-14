@@ -177,5 +177,4 @@ void copy_sol_to_board(double *sol,int **result_arr, int N ) {
             }
         }
     }
-
 }
