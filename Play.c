@@ -93,7 +93,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
 
 /* executes the set command, after making sure the input numbers are in range and cell is not fixed
  * returns 1 if value was changed, else 0 */
-int set(Game *my_game, int x, int y, int z, Node *node){
+int set(Game *my_game, int x, int y, int z, Node *node){/*changed x and y order */
     Data *data;
     int prev_val;
     if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n)) {
@@ -136,7 +136,7 @@ int autofill(Game *my_game, Node *node) {
                 }
                 if (num_of_valid_nums==1) {
                     set(my_game, i, j, new_val, node);
-                    printf("Cell <%d,%d> set to %d\n", i+1,j+1,new_val);
+                    printf("Cell <%d,%d> set to %d\n", j+1,i+1,new_val); /* swiched between j+1 and i+1 */
                     changed=1;
                 }
             }
@@ -157,7 +157,7 @@ void undo(Game *my_game){
     }
     /* need to print the board and then the changes, so we divided it to 2 separate loops */
     for (i=0; i<node_to_undo->node_data_size;i++){
-        set_without_dll(my_game,node_to_undo->node_data[i]->row,node_to_undo->node_data[i]->col,node_to_undo->node_data[i]->prev_value);
+        set_without_dll(my_game,node_to_undo->node_data[i]->col,node_to_undo->node_data[i]->row,node_to_undo->node_data[i]->prev_value); /* changed between cole and row */
     }
     print_user_board(my_game);
     for (i=0; i<node_to_undo->node_data_size;i++){
@@ -175,7 +175,7 @@ void redo(Game *my_game){
         return;
     }
     for (i=0; i<node_to_redo->node_data_size;i++){
-        set_without_dll(my_game,node_to_redo->node_data[i]->row,node_to_redo->node_data[i]->col,node_to_redo->node_data[i]->value);
+        set_without_dll(my_game,node_to_redo->node_data[i]->col,node_to_redo->node_data[i]->row,node_to_redo->node_data[i]->value); /* change between col and row */
     }
     print_user_board(my_game);
     for (i=0; i<node_to_redo->node_data_size;i++){

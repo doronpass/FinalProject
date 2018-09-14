@@ -52,19 +52,19 @@ int user_turn(Game *my_game) {
     else {
         while (token != NULL && i < 3) {
             if (i == 0) {
-                x = is_number(token);
-                if (x==-1){
-                    not_in_range(my_game->m_mult_n);
-                    return 0;
-                }
-                x--;
-            } else if (i == 1) {
                 y = is_number(token);
                 if (y==-1){
                     not_in_range(my_game->m_mult_n);
                     return 0;
                 }
                 y--;
+            } else if (i == 1) {
+                x = is_number(token);
+                if (x==-1){
+                    not_in_range(my_game->m_mult_n);
+                    return 0;
+                }
+                x--;
             } else if (i == 2) {
                 z = is_number(token);
                 if (z == -1){
@@ -137,7 +137,7 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
                  printf("137\n");
                  node = create_new_node("generate");
                  printf("in parser before 131\n");
-                 generate(my_game,node,(x+1),(y+1));
+                 generate(my_game,node,(y+1),(x+1)); /* change between x+1 and y+1 */
                  append_node_to_list(my_game->doubly_linked_list, node);
                  printf("139\n");
                  print_user_board(my_game);

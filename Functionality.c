@@ -255,7 +255,7 @@ void mark_erroneous_after_change(Game *my_game, int x, int y, int z){
 
 /* go over the board before a value was change, change is_error of all cells that will not
  * be erroneous after the change to 0 */
-void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){
+void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){ /* not change because set have chnged */
     int i, j, block_first_row, block_first_col;
     int m = my_game->m_block_rows;
     int n = my_game->n_block_cols;
@@ -318,7 +318,7 @@ Game * clone_game(Game *my_game) {
 
 /* same as set, without adding a new data entry to a node data array.
  * used by undo/redo to change values without effecting the dll */
-void set_without_dll(Game *my_game, int x, int y, int z) {
+void set_without_dll(Game *my_game, int y, int x, int z) { /* change here x and y order */
     int prev_val = my_game->user_game_board[x][y].value;
     if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n)) {
         not_in_range(my_game->m_mult_n);
@@ -362,8 +362,8 @@ void free_all_mem(Game *my_game){
 /* print a move that was undone in the correct format
  * used by the undo function*/
 void undo_print(Data *data) {
-    int x = data->row+1;
-    int y = data->col+1;
+    int y = data->row+1; /* change between*/
+    int x = data->col+1;
     int value = data->value;
     int prev_value = data->prev_value;
     if (value != 0 && prev_value != 0) {
@@ -380,8 +380,8 @@ void undo_print(Data *data) {
 /* print a move that was redone in the correct format
  * used by the redo function */
 void redo_print(Data *data) {
-    int x = data->row+1;
-    int y = data->col+1;
+    int y = data->row+1;
+    int x = data->col+1;
     int value = data->value;
     int prev_value = data->prev_value;
     if (value != 0 && prev_value != 0) {
