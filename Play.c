@@ -40,6 +40,11 @@ void save_game(Game *my_game, char *path){
 
 /* change the mark errors option on and off */
 void mark_errors(Game *my_game, int x) {
+    if (x<-1) { /*meaning input was not a number */
+        printf("Error: the value should be 0 or 1\n");
+        return;
+    }
+    x++; /*add 1 because we decrease 1 when we get input to match matrix coordinates */
     if (x==1) {
         my_game->mark_error = 1;
     } else if (x==0){
@@ -96,7 +101,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
 int set(Game *my_game, int x, int y, int z, Node *node){/*changed x and y order */
     Data *data;
     int prev_val;
-    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n) || x==-1 || y==-1 || z==-1) {
+    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n) || x<0 || y<0 || z<0) {
         not_in_range(my_game->m_mult_n);
         return 0;
     }
@@ -206,7 +211,7 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
 
     if (x > (game->m_mult_n * game->m_mult_n) ||
-        y > (game->m_mult_n * game->m_mult_n) || x==-1 || y==-1) { /* checks if x and y valid vualues*/
+        y > (game->m_mult_n * game->m_mult_n) || x<0 || y<0) { /* checks if x and y valid vualues*/
         not_in_range(empty_cells);
         return;
     } else if (empty_cells < game->m_mult_n * game->m_mult_n) { /* if the we  try generate on not empty board */

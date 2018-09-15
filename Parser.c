@@ -9,7 +9,8 @@
 #include "Functionality.h"
 #include "stack.h"
 
-
+/* for the future, if x/y/z is -5, we didnt get it from user
+ * if it's -3 - it was not a number */
 int user_turn(Game *my_game) {
     int x = -5, y = -5, z = -5, i = 0;
     char *command_name;
@@ -78,7 +79,7 @@ int is_number(char *str){
     int number = 0;
     for (i=(int) strlen(str) ; i>0 ;i--){
         if (isdigit(str[i-1])==0) {
-            return -1;
+            return -3;
         }
         number += mult*(str[i-1]-'0');
         mult*=10;
@@ -93,11 +94,10 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     int autofill_change=0, set_complete = 0;
     Node *node;
     if (strcmp(command_name, "mark_errors")==0){
-        x+=1; /*we decrease x by 1 for matrix, so we need to increase */
-        if (x!=0 && x!=1){
+        if (y==-5){
             invalid_command();
         } else {
-            mark_errors(my_game,x);
+            mark_errors(my_game,y);
         }
     } else if (strcmp(command_name, "print_board")==0){
         print_user_board(my_game);
