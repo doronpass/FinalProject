@@ -91,7 +91,7 @@ int is_number(char *str){
  * or informs the user the command is invalid.
  * created mainly due to the length of "user_turn" function */
 int execute_function(Game *my_game, char *command_name, int x, int y, int z){
-    int autofill_change=0, set_complete = 0;
+    int autofill_change=0, set_complete = 0, generate_complete = 0;
     Node *node;
     if (strcmp(command_name, "mark_errors")==0){
         if (y==-5){
@@ -120,9 +120,13 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
         if (x!=-5 && y!=-5){
             node = create_new_node("generate");
-            generate(my_game,node,(y+1),(x+1));
-            append_node_to_list(my_game->doubly_linked_list, node);
-            print_user_board(my_game);
+            generate_complete = generate(my_game,node,(y+1),(x+1));
+            if (generate_complete == 1){
+                append_node_to_list(my_game->doubly_linked_list, node);
+                print_user_board(my_game);
+            } else {
+                free_node(node);
+            }
         } else {
             invalid_command();
             return 0;

@@ -23,14 +23,11 @@ void save_game(Game *my_game, char *path){
         puzzle_solution_erroneus();
         return;
     }
-
-    /*make sure the board is valid before save in edit mode ------ NEED TO BUILD FUNCTION - need gurubi*/
-/*
-     if (!validate(my_game)){
+    /* make sure the board is valid before save in edit mode */
+     if (validate(my_game)==0){
         printf("Error: board validation failed\n");
         return;
     }
-*/
     if (save_to_file(my_game, path)==0){
         printf("Error: File cannot be created or modified\n");
     } else{
