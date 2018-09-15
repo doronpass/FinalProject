@@ -317,7 +317,7 @@ void validate(Game *game){
     }
 }
 
-void hint(Game *game, int row, int cols){
+void hint(Game *game, int row, int cols){ /*Give a hint to the user by showing the solution of a single cell X,Y.*/
     int N  = game->m_mult_n;
     int res;
     if (game->mode==0){ /* check we are in solve mode */
