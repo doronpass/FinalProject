@@ -19,7 +19,7 @@ Node * create_new_node(char* command_name){
     node->node_data_size = 0;
     return node;
 }
-/* create new node data entry, which is the cell we change (row,col), the value after the change
+/* create new node data entry, which is the cell we change (col,row), the value after the change
  * and the value before the change (prev_value) */
 Data* create_new_data (int row ,int col ,int value, int prev_value){
     Data *data = (Data *) malloc(sizeof(Data));
