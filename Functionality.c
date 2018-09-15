@@ -89,7 +89,6 @@ int load_from_file(Game *my_game, char *path) {
         } else {                    /*edit mode*/
             printf("Error: File cannot be opened\n");
         }
-        fclose(file);
         return 0;
     }
     /* read m */
@@ -342,7 +341,7 @@ void undo_without_output(Game *my_game) {
     Node *node_to_undo = my_game->doubly_linked_list->dll_pointer;
     int i;
     for (i=0; i<node_to_undo->node_data_size;i++){
-        set_without_dll(my_game,node_to_undo->node_data[i]->row,node_to_undo->node_data[i]->col,node_to_undo->node_data[i]->prev_value);
+        set_without_dll(my_game,node_to_undo->node_data[i]->col,node_to_undo->node_data[i]->row,node_to_undo->node_data[i]->prev_value);
     }
     my_game->doubly_linked_list->dll_pointer = my_game->doubly_linked_list->dll_pointer->prev;
 }

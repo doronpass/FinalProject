@@ -85,6 +85,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
             free(new_game->doubly_linked_list->first);
             free(new_game->doubly_linked_list);
             new_game->mode = -1; /*indicates an error */
+            return new_game;
         } else {
             mark_error_cells(new_game);
         }
