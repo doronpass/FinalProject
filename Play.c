@@ -6,7 +6,8 @@
 #include "Functionality.h"
 #include "IlpSolver.h"
 
-/* the function used when the user enters the "save" command*/
+/* performs the necessary tests before saving the user's board, since save in edit mode can only
+ * happen if the puzzle is valid and has no errors*/
 void save_game(Game *my_game, char *path){
     /*if game mode is solve, simply save to file*/
     if (my_game->mode == 1) {
@@ -34,7 +35,7 @@ void save_game(Game *my_game, char *path){
     }
 }
 
-/* change the mark errors option on and off */
+/* change the mark_errors value to 0 or 1, or inform the user about a problem in the input */
 void mark_errors(Game *my_game, int x) {
     if (x<-1) { /*meaning input was not a number */
         printf("Error: the value should be 0 or 1\n");
@@ -51,10 +52,8 @@ void mark_errors(Game *my_game, int x) {
 }
 
 /* the function is called after user used the solve/edit command
- * given the command and the path, create a new game and load the board from
- * the file in the path argument */
-
-/* ---------- need to free previous game memory before creating new, maybe another function ----- */
+ * given the command and the path to a file, create a new Game and load the board from
+ * the file in the path argument to the Game user_board */
 Game * init_game(char *command, char *path, Game *new_game, int is_there_old_game) {
     int assert;
     if (is_there_old_game){
@@ -93,8 +92,8 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
 
 
 
-/* executes the set command, after making sure the input numbers are in range and cell is not fixed
- * returns 1 if value was changed, else 0 */
+/* change the value of cell (x,y) to z, after making sure the input numbers are in range and cell is not fixed
+ * returns 1 and append the new data entry to dll node data array if value was changed, else return 0 */
 int set(Game *my_game, int x, int y, int z, Node *node){/*changed x and y order */
     Data *data;
     int prev_val;
@@ -116,7 +115,9 @@ int set(Game *my_game, int x, int y, int z, Node *node){/*changed x and y order 
     return 1;
 }
 
-/* fill cells with only 1 valid option */
+/* fill cells that has only 1 valid option.
+ * note that we check of a cell is valid with a clone Game that holds the user board
+ * of my_game input before executing the command*/
 int autofill(Game *my_game, Node *node) {
     int i,j,k,num_of_valid_nums, new_val=0, changed=0;
     Game *clone;
@@ -131,7 +132,7 @@ int autofill(Game *my_game, Node *node) {
             if (my_game->user_game_board[i][j].value==0){
                 num_of_valid_nums=0;
                 for (k=1;k<=my_game->m_mult_n;k++){
-                    if (is_valid(clone,i,j,k)){
+                    if (is_valid(clone,i,j,k)){ /*check if valid in the clone, meaning the original board, before the command */
                         num_of_valid_nums+=1;
                         new_val = k;
                     }
@@ -149,7 +150,7 @@ int autofill(Game *my_game, Node *node) {
     return changed;
 }
 
-/* undo the current move (accodring to the pointer) */
+/* undo the current move (accodring to the dll pointer) */
 void undo(Game *my_game){
     Node *node_to_undo = my_game->doubly_linked_list->dll_pointer;
     int i;
@@ -168,7 +169,7 @@ void undo(Game *my_game){
     my_game->doubly_linked_list->dll_pointer = my_game->doubly_linked_list->dll_pointer->prev;
 }
 
-/* (re)do the next move on the move list (according to the pointer) */
+/* (re)do the next move on the dll (according to the dll pointer) */
 void redo(Game *my_game){
     Node *node_to_redo = my_game->doubly_linked_list->dll_pointer->next;
     int i;
@@ -187,7 +188,7 @@ void redo(Game *my_game){
 }
 
 /* revert to the original board the user loaded (either from a file or a blank 9x9)
- * clear the moves list */
+ * clear the dll */
 void reset(Game *my_game){
     /* if there is a play to undo, undo it */
     while (strcmp(my_game->doubly_linked_list->dll_pointer->command_name, "start_node")!=0){

@@ -1,3 +1,5 @@
+/* this module include the functions that performs the commands possible during a game (other then backtracking)
+ * this functions may call sub functions, which will be mostly in the Functionality module*/
 #ifndef FINALPROJECT_PLAY_H
 #define FINALPROJECT_PLAY_H
 #include "Game_board.h"

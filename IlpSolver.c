@@ -5,8 +5,8 @@
 #include "Game_board.h"
 #include "IlpSolver.h"
 
-
-int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku puzzle by linear programming , returns 1 if it seccseed , else returns 0*/
+/* this functions use gurubi to solve the sudoku puzzle with linear programming, returns 1 if successful, else returns 0*/
+int ilp_solver(Game *game) {
     GRBenv   *env = NULL;
     GRBmodel *model= NULL;
     int      *ind, *indarr2, optimstatus, i, j, v, ig, jg, count, error = 0, N, temportry_value, flag = 0;
@@ -28,14 +28,14 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
     result_arr = create_matrix (N);
     memo_and_check ( result_arr, sol, vtype, lb, val, ind, valarr2, indarr2);
 
-    GRBsetintparam(env,GRB_INT_PAR_LOGTOCONSOLE,0); /* MAKE TO GUROBI PRINTS AND STATUS TO NOT BE PRINTED */
+    GRBsetintparam(env,GRB_INT_PAR_LOGTOCONSOLE,0);
 
 
     /* Create an empty model before we starts*/
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
             for (v = 0; v < N; v++) {
-                if (game->user_game_board[i][j].value == v + 1) /* to make sure that te plus 1 is needed */
+                if (game->user_game_board[i][j].value == v + 1)
                 {
                     lb[i * N * N + j * N + v] = 1;
                 } else {
@@ -57,7 +57,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
         return flag;
     }
 
-    GRBsetintparam(env,GRB_INT_PAR_LOGTOCONSOLE,0); /* MAKE TO GUROBI PRINTS AND STATUS TO NOT BE PRINTED */
+    GRBsetintparam(env,GRB_INT_PAR_LOGTOCONSOLE,0);
 
     /* Create new model */
     error = GRBnewmodel (env, &model, "sudoku", N * N * N, NULL, lb, NULL, vtype, NULL);
@@ -82,7 +82,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
         }
     }
 
-/* this constraint checks and make sure that every value that was in board stahy in his place*/
+/* this constraint checks and make sure that every value that was in board stay in his place*/
     for (j = 0; j < N; j++) {
         for (i = 0; i < N; i++) {
             temportry_value = game->user_game_board[j][i].value;
@@ -98,7 +98,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
             }
         }
     }
-    /* This constaints make sure that Each value must appear once in each row */
+    /* This constraints make sure that Each value must appear once in each row */
     for (v = 0; v < N; v++) {
         for (j = 0; j < N; j++) {
             for (i = 0; i < N; i++) {
@@ -149,7 +149,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
             }
         }
     }
-    /*Here We Optimize model */
+    /* Optimizing model */
     error  = GRBoptimize (model);
     if (error) {
         printf ("Error: %s\n", GRBgeterrormsg (env));
@@ -176,12 +176,11 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
     error = GRBgetdblattr (model, GRB_DBL_ATTR_OBJVAL,
                            &objval); /* the value of the objective function for the computed solution*/
     if (error) {
-      /*  printf ("Error: %s\n", GRBgeterrormsg (env)); */
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
     /*this routine retrieves the values of an array-valued attribute. The third and fourth arguments indicate the index of the first array element to be retrieved, and the number of elements to retrieve*/
-    error = GRBgetdblattrarray (model, GRB_DBL_ATTR_X, 0, N * N * N, sol); /* func i added from the example */
+    error = GRBgetdblattrarray (model, GRB_DBL_ATTR_X, 0, N * N * N, sol);
     if (error) {
         printf ("Error: %s\n", GRBgeterrormsg (env));
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
@@ -189,7 +188,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
     }
     /* the sol is a good one so we thake it to out solver board in game and make it be the same */
     if (optimstatus == GRB_OPTIMAL) {
-        copy_sol_to_board (sol, result_arr, N); /*maybe without the &, to check it out */
+        copy_sol_to_board (sol, result_arr, N);
         copy_board_to_game (result_arr, N, game);
 
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
@@ -219,8 +218,9 @@ void free_grb (int *ind, int *indarr2, double *val, double *valarr2, double *sol
     GRBfreeenv (env);
 }
 
+/*this functions  checks that all memory allocation don properly*/
 void memo_and_check ( int **result_arr, double *sol, char *vtype, double *lb, double *val, int *ind,
-                      double *valarr2, int *indarr2) { /*this functions  checks that all memory allocation don properly*/
+                      double *valarr2, int *indarr2) {
     if ((result_arr) == NULL) {
         printf ("Error: malloc has failed\n");
         exit (1);

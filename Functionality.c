@@ -8,7 +8,7 @@
 #include "IlpSolver.h"
 
 
-/* the actual process of writing the game board in a text file in the correct format for saving*/
+/* writes the block sizes and the user board to a file according to the given format*/
 int save_to_file(Game *my_game, char *path){
     int i,j,cell_value;
     FILE *file;
@@ -58,7 +58,7 @@ int save_to_file(Game *my_game, char *path){
     return 1;
 }
 
-/* return 1 if there is a cell with an erroneous value in the board, else 0*/
+/* if there is a cell with an erroneous value in the board - return 1, else 0*/
 int has_erroneous_values(Game *my_game) {
     int i,j;
     int N = my_game->m_mult_n;
@@ -73,7 +73,8 @@ int has_erroneous_values(Game *my_game) {
 }
 
 
-/*getting matrix information (size and value) from a formatted file */
+/*read the block sizes of a board and then the board itself from a file, according to given format
+ * the function ignores excess whitespace chars between values in the matrix*/
 int load_from_file(Game *my_game, char *path) {
     FILE *file;
     int value, i, j;
@@ -134,7 +135,7 @@ int load_from_file(Game *my_game, char *path) {
                     }
                     continue;
                 }
-                /*if we read a whitespace char - keep reading */
+                /*if we read a whitespace char - do nothing and read the next char */
                 if (isspace(value) == 0) {
                     break;
                 }
@@ -158,10 +159,8 @@ int load_from_file(Game *my_game, char *path) {
 }
 
 
-
-
-/*returns 1 if the number z is valid for cell (x,y)
- *returns 0 if the number isn't valid for the cell - based on the current solution */
+/*returns 1 if the number z is valid for cell (x,y) on the current user board
+ *returns 0 if the number isn't valid for the cell  */
 int is_valid(Game *my_game, int x, int y, int z) {
     int i, j, block_first_row, block_first_col;
     int m = my_game->m_block_rows;
@@ -170,13 +169,13 @@ int is_valid(Game *my_game, int x, int y, int z) {
     if (z==0) {
         return 1;
     }
-    /* search row (row is x) */
+    /* search col */
     for (i = 0; i < N; i++) {
         if ((i != y) && (my_game->user_game_board[x][i].value == z)) {
             return 0;
         }
     }
-    /* search col (col is y)*/
+    /* search row*/
     for (j = 0; j < N; j++) {
         if ((j != x) && (my_game->user_game_board[j][y].value == z))
             return 0;
@@ -209,8 +208,6 @@ void mark_error_cells(Game *my_game){
         }
     }
 }
-
-
 
 /* go over the board after a value was change, change is_error of all cells that are erroneous
  *  after the change to 1 */
@@ -315,7 +312,7 @@ Game * clone_game(Game *my_game) {
 
 /* same as set, without adding a new data entry to a node data array.
  * used by undo/redo to change values without effecting the dll */
-void set_without_dll(Game *my_game, int y, int x, int z) { /* change here x and y order */
+void set_without_dll(Game *my_game, int y, int x, int z) {
     int prev_val = my_game->user_game_board[x][y].value;
     if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n)) {
         not_in_range(my_game->m_mult_n);
@@ -342,7 +339,7 @@ void undo_without_output(Game *my_game) {
     my_game->doubly_linked_list->dll_pointer = my_game->doubly_linked_list->dll_pointer->prev;
 }
 
-/* free all memory alocated inside Game, including dll and boards (user and solution)
+/* free all memory allocated inside Game, including dll and boards (user and solution)
  * does not free Game itself */
 void free_all_mem(Game *my_game){
     /* free dll */
@@ -398,19 +395,19 @@ void redo_print(Data *data) {
     }
 }
 
+/* change the value of every cell in the user board to 0 */
 void clear_board(Game *game){
     int N = game->m_mult_n;
     int i,j;
     for ( i = 0; i <N ; ++i) {
         for ( j = 0; j <N ; ++j) {
             game->user_game_board[i][j].value = 0 ;
-            /*      game->solved_game_board[i][j].value = 0 ;     */
-
         }
     }
 }
 
-int num_of_empty_cells(Game *game){ /* get game and return the number of empty cells in user_boardv*/
+/* returns the number of empty cells in the user board*/
+int num_of_empty_cells(Game *game){
     int j,i, empty_cells = 0;
     int N = game->m_mult_n;
     for ( i = 0; i <N ; ++i) {
@@ -423,15 +420,8 @@ int num_of_empty_cells(Game *game){ /* get game and return the number of empty c
     return empty_cells;
 }
 
-int num_not_valid(int empty_cells,int x){ /* return 0 if x is valid value , else return 1 */
-    if (x>empty_cells){
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-
+/* randomly selects and returns a valid number for cell (col,row) in the user's board
+ * used by the "generate" function*/
 int get_legal_random_val(Game *game,int row,int col) {
     int N;
     int *valid_arr;
@@ -439,8 +429,7 @@ int get_legal_random_val(Game *game,int row,int col) {
     int x,order;
     N = game->m_mult_n;
     valid_arr = (int*)malloc(sizeof(int)*(N+1));
-    valid_number_counter = create_valid_arr(game,valid_arr,row,col,N); /* create arr of 1 in the valid number and return number of valid numbers*/
-
+    valid_number_counter = create_valid_arr(game,valid_arr,row,col,N);
     if (valid_number_counter == 0) {
         free(valid_arr);
         return 0;
@@ -451,10 +440,10 @@ int get_legal_random_val(Game *game,int row,int col) {
     return x;
 
 }
-
+/* fill the valid_arr with 1 in index i if i is a valid value for cell (col,row), or 0 else */
 int create_valid_arr(Game *game,int *valid_arr, int row , int col,int N) {
     int i,cnt=0;
-    valid_arr[0] = 0; /* not used */
+    valid_arr[0] = 0; /* index 0 is not used */
     for (i = 1; i < (N + 1); ++i) {
         if (is_valid(game, row, col, i) == 1) {
             valid_arr[i] = 1;
@@ -466,7 +455,8 @@ int create_valid_arr(Game *game,int *valid_arr, int row , int col,int N) {
     }
     return cnt;
 }
-
+/* goes over the valid_arr array, count every element in the array with 1 in it (meaning index is valid number)
+ * and return the index of the element after "order" (some number) 1's were found */
 int get_the_order_number_from_arr(int order, int *valid_arr){
     int res,index=1,ones_cnt=0;
     while(ones_cnt<order){
@@ -480,6 +470,7 @@ int get_the_order_number_from_arr(int order, int *valid_arr){
     return res;
 }
 
+/* goes over the user board and counts how many cells are erroneous, return the result */
 int count_invalid_numbers(Game *game){
     int i,j,count_errors=0;
     int N = game->m_mult_n;

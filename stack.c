@@ -95,13 +95,13 @@ void push(Stack *stack, Stack_Node *node) {
 int is_valid_ints(int** board,int m, int n, int x, int y, int z){
     int i, j, block_first_row, block_first_col;
     int N = n * m;
-    /* search row (row is x) */
+    /* search col  */
     for (i = 0; i < N; i++) {
         if ((i != y) && (board[x][i] == z)) {
             return 0;
         }
     }
-    /* search col (col is y)*/
+    /* search row */
     for (j = 0; j < N; j++) {
         if ((j != x) && (board[j][y] == z))
             return 0;
