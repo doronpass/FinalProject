@@ -1,3 +1,7 @@
+/* this module reads the user input and part it into the command and various arguments.
+ * the module handles the parsing of the input and pass the correct arguments to the
+ * function in change of performing the command given by the user */
+
 #ifndef FINALPROJECT_PARSER_H
 #define FINALPROJECT_PARSER_H
 #include "Game_board.h"
