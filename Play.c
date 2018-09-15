@@ -82,7 +82,6 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
         assert = load_from_file(new_game, path);
         if (assert == 0) {
             /* if we failed to load, we want to return the prev game as it was */
-            free_boards(new_game);
             new_game->user_game_board = create_new_board(new_game->m_block_rows, new_game->n_block_cols);
             new_game->solved_game_board = create_new_board(new_game->m_block_rows, new_game->n_block_cols);
             for (i = 0; i < new_game->m_mult_n; i++) {
@@ -111,7 +110,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
             print_user_board(new_game);
             return new_game;
         }
-    } else { /* if (is_there_old_game==0 || is_there_old_game==2) - meaning there is no old game or there was one but it's over */
+    } else { /* checks if is_there_old_game is 0 or 2 - meaning there is no old game or there was one but it's over */
         if (is_there_old_game==0){
             new_game->mark_error = 1; /*default value, else keep value of the old game */
         }
@@ -129,9 +128,6 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
         } else { /* file path given */
             assert = load_from_file(new_game, path);
             if (assert == 0) { /*loading failed */
-                if (new_game->user_game_board != NULL) {
-                    free_boards(new_game);
-                }
                 new_game->mode = -1; /*indicates an error */
                 return new_game;
             }

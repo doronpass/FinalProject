@@ -143,6 +143,7 @@ int load_from_file(Game *my_game, char *path) {
             if (ferror(file)) {      /*test if error, if so return 0) */
                 printf("Error: Unable to read file\n");
                 fclose(file);
+                free_boards(my_game);
                 return 0;
             }
             value-= '0';
