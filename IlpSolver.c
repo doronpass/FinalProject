@@ -52,7 +52,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
     /* Create environment before we starts */
     error = GRBloadenv (&env, "sudoku.log");
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+       /* printf ("Error: %s\n", GRBgeterrormsg (env));*/
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
@@ -62,7 +62,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
     /* Create new model */
     error = GRBnewmodel (env, &model, "sudoku", N * N * N, NULL, lb, NULL, vtype, NULL);
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+       /* printf ("Error: %s\n", GRBgeterrormsg (env)); */
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
@@ -75,7 +75,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
             }
             error = GRBaddconstr (model, N, ind, val, GRB_EQUAL, 1.0, NULL);
             if (error) {
-                printf ("Error: %s\n", GRBgeterrormsg (env));
+             /*   printf ("Error: %s\n", GRBgeterrormsg (env)); */
                 free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
                 return flag;
             }
@@ -91,7 +91,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
                 indarr2[0] = N * j * N + i * N + (temportry_value - 1);
                 error = GRBaddconstr (model, 1, indarr2, valarr2, GRB_EQUAL, 1.0, NULL);
                 if (error) {
-                    printf ("Error: %s\n", GRBgeterrormsg (env));
+                  /*  printf ("Error: %s\n", GRBgeterrormsg (env)); */
                     free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
                     return flag;
                 }
@@ -107,7 +107,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
             }
             error = GRBaddconstr (model, N, ind, val, GRB_EQUAL, 1.0, NULL);
             if (error) {
-                printf ("Error: %s\n", GRBgeterrormsg (env));
+              /*  printf ("Error: %s\n", GRBgeterrormsg (env));*/
                 free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
                 return flag;
             }
@@ -122,7 +122,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
             }
             error = GRBaddconstr (model, N, ind, val, GRB_EQUAL, 1.0, NULL);
             if (error) {
-                printf ("Error: %s\n", GRBgeterrormsg (env));
+               /* printf ("Error: %s\n", GRBgeterrormsg (env)); */
                 free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
                 return flag;
             }
@@ -152,14 +152,14 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
     /*Here We Optimize model */
     error  = GRBoptimize (model);
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+        /* printf ("Error: %s\n", GRBgeterrormsg (env)); */
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
     /* Write model to 'sudoku.lp' */
     error = GRBwrite (model, "sudoku.lp");
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+      /*  printf ("Error: %s\n", GRBgeterrormsg (env));*/
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
@@ -167,7 +167,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
     error = GRBgetintattr (model, GRB_INT_ATTR_STATUS,
                            &optimstatus); /*/query the status of the optimization process by retrieving the value of the Status attribute*/
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+     /*   printf ("Error: %s\n", GRBgeterrormsg (env)); /*
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
@@ -183,7 +183,7 @@ int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku pu
     /*this routine retrieves the values of an array-valued attribute. The third and fourth arguments indicate the index of the first array element to be retrieved, and the number of elements to retrieve*/
     error = GRBgetdblattrarray (model, GRB_DBL_ATTR_X, 0, N * N * N, sol); /* func i added from the example */
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+      /*  printf ("Error: %s\n", GRBgeterrormsg (env)); */
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
