@@ -141,13 +141,13 @@ int** create_matrix(int N){
     int** arr; /* i took the next line out of this one*/
     arr =(int**) calloc(N,sizeof(int*));
     if(arr ==NULL){
-        printf("somthing about that maloc has faild@!#!#!@#!@#!@#!@#\n");
+        printf ("Error: malloc has failed\n");
         exit(1);
     }
     for (i=0; i<N; i++){
         arr[i] = (int*) calloc (N,sizeof(int));
         if((arr[i])== NULL){
-            printf("somthing about that maloc has faild@!#!#!@#!@#!@#!@#\n");
+            printf ("Error: malloc has failed\n");
             exit(1);
         }
     }
