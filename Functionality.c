@@ -501,8 +501,6 @@ void copy_solve_2_user(Game *game){ /* copy solve board to user board */
             game->user_game_board[i][j]=game->solved_game_board[i][j];
         }
     }
-
-
 }
 int generate_x(Game *game,int x){
 
