@@ -1,3 +1,7 @@
+/* this module is used for the exhaustive backtracking algorithm, which counts the number of
+ * valid solutions to the user's board.
+ * the algorithm is implemented with a stack, so all stack related functions are
+ * also included in this module */
 #ifndef FINALPROJECT_STACK_H
 #define FINALPROJECT_STACK_H
 

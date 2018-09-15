@@ -128,7 +128,9 @@ void free_stack_node(Stack_Node *node, int size){
     free(node->board);
     free(node);
 }
-
+/* find the number of valid solutions to the user board, using a stack to save a valid board
+ * option. each time we pop a node from stack, find it's board's next empty cell and push a new node
+ * with every valid number in that cell */
 int exhaustive_backtracking(Game *my_game){
     int i,j,k,num_valid, num_sols = 0;
     Stack *stack = create_stack();
@@ -141,17 +143,15 @@ int exhaustive_backtracking(Game *my_game){
         free(stack);
         return -1;
     }
-    for (j=0;j<my_game->m_mult_n;j++){ /* changed from i to j */
+    for (j=0;j<my_game->m_mult_n;j++){
         if(is_empty(stack)){
             break;
         }
-        for (i=0;i<my_game->m_mult_n;i++){/* changed from j to i */
+        for (i=0;i<my_game->m_mult_n;i++){
             if(is_empty(stack)){
-
                 break;
             }
-            if (stack->top->board[j][i]==0){ /* swiched between i and j */
-
+            if (stack->top->board[j][i]==0){
                 node = pop(stack);
                 num_valid = 0;
                 for (k=1;k<=my_game->m_mult_n;k++){
