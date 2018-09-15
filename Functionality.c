@@ -431,7 +431,7 @@ int num_not_valid(int empty_cells,int x){ /* return 0 if x is valid value , else
         return 0;
     }
 }
-
+/* this function return rendom valid number for the cell if exits, else return 0 */
 int get_legal_random_val(Game *game,int row,int col) {
     int N;
     int *valid_arr;
@@ -451,7 +451,7 @@ int get_legal_random_val(Game *game,int row,int col) {
     return x;
 
 }
-
+/* crate an arr with 1 in the valid number and 0 in the invalid numbers , used for generate*/
 int create_valid_arr(Game *game,int *valid_arr, int row , int col,int N) {
     int i,cnt=0;
     valid_arr[0] = 0; /* not used */
@@ -466,7 +466,7 @@ int create_valid_arr(Game *game,int *valid_arr, int row , int col,int N) {
     }
     return cnt;
 }
-
+/* this function used from generate, finds the order static number that should be choocen for the relevent cell /*
 int get_the_order_number_from_arr(int order, int *valid_arr){
     int res,index=1,ones_cnt=0;
     while(ones_cnt<order){
@@ -479,7 +479,7 @@ int get_the_order_number_from_arr(int order, int *valid_arr){
     res = (index-1);
     return res;
 }
-
+/*used for  generate validation check before the function starts*/
 int count_invalid_numbers(Game *game){
     int i,j,count_errors=0;
     int N = game->m_mult_n;
@@ -493,7 +493,7 @@ int count_invalid_numbers(Game *game){
     return count_errors;
 }
 
-void copy_solve_2_user(Game *game){ /* copy solve board to user board */
+void copy_solve_2_user(Game *game){ /* copy solve board to user board , used by ilp_solver */
     int i,j;
     int N=game->m_mult_n;
     for (i = 0; i <N ; ++i) {
@@ -502,6 +502,7 @@ void copy_solve_2_user(Game *game){ /* copy solve board to user board */
         }
     }
 }
+/*  this function called from generate and choosing x cells ranbdomly and operate ilp for generate goal */
 int generate_x(Game *game,int x){
 
     int N = game->m_mult_n, res_from_ilp = 0;
