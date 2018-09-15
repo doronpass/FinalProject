@@ -6,7 +6,7 @@
 #include "IlpSolver.h"
 
 
-int ilp_solver(Game *game) { /* this functions uses gurobi to solve the sudoku puzzle by linear programming , returns 1 if it seccseed , else returns 0*/
+int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku puzzle by linear programming , returns 1 if it seccseed , else returns 0*/
     GRBenv   *env = NULL;
     GRBmodel *model= NULL;
     int      *ind, *indarr2, optimstatus, i, j, v, ig, jg, count, error = 0, N, temportry_value, flag = 0;
@@ -28,6 +28,8 @@ int ilp_solver(Game *game) { /* this functions uses gurobi to solve the sudoku p
     result_arr = create_matrix (N);
     memo_and_check ( result_arr, sol, vtype, lb, val, ind, valarr2, indarr2);
 
+    GRBsetintparam(env,GRB_INT_PAR_LOGTOCONSOLE,0); /* MAKE TO GUROBI PRINTS AND STATUS TO NOT BE PRINTED */
+
 
     /* Create an empty model before we starts*/
     for (i = 0; i < N; i++) {
@@ -46,6 +48,7 @@ int ilp_solver(Game *game) { /* this functions uses gurobi to solve the sudoku p
             }
         }
     }
+
     /* Create environment before we starts */
     error = GRBloadenv (&env, "sudoku.log");
     if (error) {
@@ -169,10 +172,11 @@ int ilp_solver(Game *game) { /* this functions uses gurobi to solve the sudoku p
         return flag;
     }
     /* this call would return a non-zero error result if no solution was found for this model.*/
+
     error = GRBgetdblattr (model, GRB_DBL_ATTR_OBJVAL,
                            &objval); /* the value of the objective function for the computed solution*/
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+      /*  printf ("Error: %s\n", GRBgeterrormsg (env)); */
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
@@ -195,58 +199,58 @@ int ilp_solver(Game *game) { /* this functions uses gurobi to solve the sudoku p
     return flag;
 }
 /* free all the other stuff we used */     /* Free environment */     /* Free model */
-    void free_grb (int *ind, int *indarr2, double *val, double *valarr2, double *sol, char *vtype, GRBenv *env,
-                   GRBmodel *model, double *lb, int **result_arr, int N) {
-        int i;
-        free (sol);
-        free (vtype);
-        free (lb);
-        free (val);
-        free (ind);
-        free (valarr2);
-        free (indarr2);
-        if (result_arr != NULL) {
-            for (i = 0; i < N; i++) {
-                free (result_arr[i]);
-            }
-            free (result_arr);
+void free_grb (int *ind, int *indarr2, double *val, double *valarr2, double *sol, char *vtype, GRBenv *env,
+               GRBmodel *model, double *lb, int **result_arr, int N) {
+    int i;
+    free (sol);
+    free (vtype);
+    free (lb);
+    free (val);
+    free (ind);
+    free (valarr2);
+    free (indarr2);
+    if (result_arr != NULL) {
+        for (i = 0; i < N; i++) {
+            free (result_arr[i]);
         }
-        GRBfreemodel (model);
-        GRBfreeenv (env);
+        free (result_arr);
     }
+    GRBfreemodel (model);
+    GRBfreeenv (env);
+}
 
 void memo_and_check ( int **result_arr, double *sol, char *vtype, double *lb, double *val, int *ind,
-                        double *valarr2, int *indarr2) { /*this functions  checks that all memory allocation don properly*/
-        if ((result_arr) == NULL) {
-           printf ("Error: malloc has failed\n");
-           exit (1);
-       }
-       if (sol == NULL) {
-           printf ("Error: calloc has failed\n");
-           exit (1);
-       }
-       if (vtype == NULL) {
-           printf ("Error: calloc has failed\n");
-           exit (1);
-       }
-       if (lb == NULL) {
-           printf ("Error: malloc has failed\n");
-           exit (1);
-       }
-       if (val == NULL) {
-           printf ("Error: malloc has failed\n");
-           exit (1);
-       }
-       if (ind == NULL) {
-           printf ("Error: malloc has failed\n");
-           exit (1);
-       }
-       if (valarr2 == NULL) {
-           printf ("Error: malloc has failed\n");
-           exit (1);
-       }
-       if (indarr2 == NULL) {
-           printf ("Error: malloc has failed\n");
-           exit (1);
-       }
-   }
+                      double *valarr2, int *indarr2) { /*this functions  checks that all memory allocation don properly*/
+    if ((result_arr) == NULL) {
+        printf ("Error: malloc has failed\n");
+        exit (1);
+    }
+    if (sol == NULL) {
+        printf ("Error: calloc has failed\n");
+        exit (1);
+    }
+    if (vtype == NULL) {
+        printf ("Error: calloc has failed\n");
+        exit (1);
+    }
+    if (lb == NULL) {
+        printf ("Error: malloc has failed\n");
+        exit (1);
+    }
+    if (val == NULL) {
+        printf ("Error: malloc has failed\n");
+        exit (1);
+    }
+    if (ind == NULL) {
+        printf ("Error: malloc has failed\n");
+        exit (1);
+    }
+    if (valarr2 == NULL) {
+        printf ("Error: malloc has failed\n");
+        exit (1);
+    }
+    if (indarr2 == NULL) {
+        printf ("Error: malloc has failed\n");
+        exit (1);
+    }
+}
