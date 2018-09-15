@@ -6,7 +6,7 @@
 #include "IlpSolver.h"
 
 
-int ilp_solver(Game *game) { /* this functions use gurobi to solve the sudoku puzzle by linear programming , returns 1 if it seccseed , else returns 0*/
+int ilp_solver(Game *game) { /* this functions uses gurobi to solve the sudoku puzzle by linear programming , returns 1 if it seccseed , else returns 0*/
     GRBenv   *env = NULL;
     GRBmodel *model= NULL;
     int      *ind, *indarr2, optimstatus, i, j, v, ig, jg, count, error = 0, N, temportry_value, flag = 0;
