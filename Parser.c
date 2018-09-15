@@ -9,8 +9,9 @@
 #include "Functionality.h"
 #include "stack.h"
 
-/* for the future, if x/y/z is -5, we didnt get it from user
- * if it's -3 - it was not a number */
+/* read the user command and arguments and calls the function that performs the command with
+ * the given arguments. 3 commands are checked inside the function, the rest
+ * are checked inside the "execute_function" function, which is called at the end of this one*/
 int user_turn(Game *my_game) {
     int x = -5, y = -5, z = -5, i = 0;
     char *command_name;
@@ -29,7 +30,8 @@ int user_turn(Game *my_game) {
     }
     command_name = token;
     token = strtok(NULL, delimiter);
-    /* the following commands take a "string", the rest take ints*/
+    /* the following commands take a "string", the rest of them takes int as arguments and will be
+     * handled in another function*/
     if (strcmp(command_name, "save")==0) {
         if (token == NULL) {
             invalid_command();
@@ -72,7 +74,7 @@ int user_turn(Game *my_game) {
     return (execute_function(my_game, command_name, x,y,z));
 }
 
-/* returns the number typed by the user as int, or -1 if not a number */
+/* returns the number typed by the user as int, or -3 if not a number */
 int is_number(char *str){
     int i;
     int mult = 1;
@@ -87,9 +89,8 @@ int is_number(char *str){
     return number;
 }
 
-/* compare the command name and args to valid commands and performs the command
- * or informs the user the command is invalid.
- * created mainly due to the length of "user_turn" function */
+/* compare the command name and args to valid commands and call the correct function to perform the command
+ * or informs the user that the command is invalid. */
 int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     int autofill_change=0, set_complete = 0, generate_complete = 0;
     Node *node;
@@ -221,9 +222,8 @@ int init_user_turn(Game *my_game,int is_there_old_game){
 }
 
 /* checks if the board is full and contains no erroneous values.
- * if not full, does nothing
- * if so, the user won and the game is over
- * returns 1 if the game is over and 0 else. */
+ * if it is, the user won and the game is over
+ * returns 1 so that the user will go back to "init mode" */
 int is_game_over(Game *my_game){
     int i,j, has_errors = 0;
     for (i=0;i<my_game->m_mult_n;i++) {

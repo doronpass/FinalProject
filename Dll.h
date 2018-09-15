@@ -1,3 +1,8 @@
+/* this module includes the structs and functions needed to implement a doubly linked list of moves.
+ * during the game, the user can undo (and then redo) moves he did that changed the board.
+ * note that a "move" is all the changes made to the board by a single command, so undoing (or redoing) a move
+ * can change several values on the board */
+
 #ifndef FINALPROJECT_DLL_H
 #define FINALPROJECT_DLL_H
 #include <stdio.h>
