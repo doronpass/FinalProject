@@ -130,10 +130,12 @@ int load_from_file(Game *my_game, char *path) {
             while ((value = getc(file)) != EOF) {
                 /*if we get '.' - set last cell to fixed and continue to look for next cell's value */
                 if (value == '.') {
-                    if (j==0) { /*fixed cell is last in row */
-                        my_game->user_game_board[i-1][my_game->m_mult_n-1].is_fix = 1;
-                    } else {
-                        my_game->user_game_board[i][j-1].is_fix = 1;
+                    if (my_game->mode==1){
+                        if (j==0) { /*fixed cell is last in row */
+                            my_game->user_game_board[i-1][my_game->m_mult_n-1].is_fix = 1;
+                        } else {
+                            my_game->user_game_board[i][j-1].is_fix = 1;
+                        }
                     }
                     continue;
                 }

@@ -141,7 +141,7 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
         if (exhaustive_backtracking(my_game)==-1){
             puzzle_solution_erroneus();
         }
-    } else if (strcmp(command_name, "autofill")==0) {
+    } else if (strcmp(command_name, "autofill")==0 && my_game->mode==1) {
         node = create_new_node("autofill");
         autofill_change=autofill(my_game, node);
         if (autofill_change==1){
