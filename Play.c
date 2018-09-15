@@ -17,7 +17,6 @@ void save_game(Game *my_game, char *path){
         }
         return;
     }
-
     /*make sure board is not erroneous before save in edit mode*/
     if (has_erroneous_values(my_game)) {
         puzzle_solution_erroneus();
