@@ -166,7 +166,7 @@ void copy_board_to_game(int **result_arr,int N,Game *game){
         }
     }
 }
-void copy_sol_to_board(double *sol,int **result_arr, int N ) {
+void copy_sol_to_board(double *sol,int **result_arr, int N ) {c
     int i, j, v;
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
