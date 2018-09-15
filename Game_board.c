@@ -6,11 +6,12 @@
 #include "Parser.h"
 #define PIPE "|"
 
-/*starts the game and let user type commands
- * first loop takes care if "init mode", inner loop takes care of the rest of the game
+/*starts the game
+ * the first loop will keep going until user exits game, the 2nd loop makes the user initiates a new game
+ * the last loop keeps the game going until it is over or the user exits the game
  * game_status:
- * 0 during the game
- * 1 when the game is over (so the user will return to "init mode" = in the first loop)
+ * 0 during a game
+ * 1 when the game is in init mode
  * 2 when the user enters "exit" command to exit program */
 
 void start_game(){
@@ -42,7 +43,7 @@ void start_game(){
     }
     free(my_game);
 }
-
+/* print a cell in the board according to the given format */
 void print_cell(Cell *cell,int mode, int mark_error) {
     printf("%s", " ");
     if ((cell->value) == 0){
@@ -56,11 +57,11 @@ void print_cell(Cell *cell,int mode, int mark_error) {
         printf("%s", "*");
     }
     else {
-        printf(" "); /* mabye would be better do check if the value is 0 at start and then pring 4 spaces, to check if legal*/
+        printf(" ");
     }
 }
 
-/*allocates dynamic memory space for a game board based on size N*N */
+/*allocates memory for a game board with N*N Cells */
 Cell **create_new_board(int rows_size, int cols_size) {
     int size, i;
     Cell **arr;
@@ -74,7 +75,8 @@ Cell **create_new_board(int rows_size, int cols_size) {
     insert_zero_cells(arr, size);
     return arr;
 }
-
+/* set all values inside every cell in a board to 0
+ * used when creating new board */
 void insert_zero_cells(Cell **arr, int size){
     int i, j;
     for (i = 0; i < size; ++i) {
@@ -85,7 +87,7 @@ void insert_zero_cells(Cell **arr, int size){
         }
     }
 }
-
+/* prints separator row between blocks in the game board */
 void print_separator_row(int size,int m) {
     int i;
     int num_of_dash=(size*4)+m+1;
@@ -94,6 +96,8 @@ void print_separator_row(int size,int m) {
     }
     printf("\n");
 }
+/* goes over the user board and print it according to the given format.
+ * erroneous cells are marked only in edit mode or if the mark_error flag in Game struct is 1 */
 void print_user_board(Game *game){
     int i, j, size;
     if (game == NULL){
@@ -134,11 +138,10 @@ void free_boards(Game *my_game){
     }
 }
 
-/*allocates dynamic memory space for a game board based on size
- *all cells are initialized to 0 */
+/*works the same as create_new_board function, but creates a matrix of ints, not Cells */
 int** create_matrix(int N){
     int i;
-    int** arr; /* i took the next line out of this one*/
+    int** arr;
     arr =(int**) calloc(N,sizeof(int*));
     if(arr ==NULL){
         printf ("Error: malloc has failed\n");
@@ -153,10 +156,9 @@ int** create_matrix(int N){
     }
     return arr;
 }
+/* copy the values of the result_arr input matrix into the input game user board matrix */
 void copy_board_to_game(int **result_arr,int N,Game *game){
     int i,j;
-
-  /*  game->solved_game_board = create_new_board(N,1);  */
     for (i = 0; i <N ;  ++i) {
         for (j = 0; j <N ; ++j) {
             game->solved_game_board[i][j].value = result_arr[i][j];
@@ -165,6 +167,7 @@ void copy_board_to_game(int **result_arr,int N,Game *game){
         }
     }
 }
+
 void copy_sol_to_board(double *sol,int **result_arr, int N ) {
     int i, j, v;
     for (i = 0; i < N; i++) {
