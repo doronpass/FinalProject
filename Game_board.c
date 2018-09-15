@@ -153,7 +153,6 @@ int** create_matrix(int N){
     }
     return arr;
 }
-
 void copy_board_to_game(int **result_arr,int N,Game *game){
     int i,j;
 

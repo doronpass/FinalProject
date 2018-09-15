@@ -23,14 +23,11 @@ void save_game(Game *my_game, char *path){
         puzzle_solution_erroneus();
         return;
     }
-
-    /*make sure the board is valid before save in edit mode ------ NEED TO BUILD FUNCTION - need gurubi*/
-/*
-     if (!validate(my_game)){
+    /* make sure the board is valid before save in edit mode */
+     if (validate(my_game)==0){
         printf("Error: board validation failed\n");
         return;
     }
-*/
     if (save_to_file(my_game, path)==0){
         printf("Error: File cannot be created or modified\n");
     } else{
@@ -40,6 +37,11 @@ void save_game(Game *my_game, char *path){
 
 /* change the mark errors option on and off */
 void mark_errors(Game *my_game, int x) {
+    if (x<-1) { /*meaning input was not a number */
+        printf("Error: the value should be 0 or 1\n");
+        return;
+    }
+    x++; /*add 1 because we decrease 1 when we get input to match matrix coordinates */
     if (x==1) {
         my_game->mark_error = 1;
     } else if (x==0){
@@ -80,6 +82,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
             free(new_game->doubly_linked_list->first);
             free(new_game->doubly_linked_list);
             new_game->mode = -1; /*indicates an error */
+            return new_game;
         } else {
             mark_error_cells(new_game);
         }
@@ -96,7 +99,7 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
 int set(Game *my_game, int x, int y, int z, Node *node){/*changed x and y order */
     Data *data;
     int prev_val;
-    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n) || x==-1 || y==-1 || z==-1) {
+    if (!(x<my_game->m_mult_n && y<my_game->m_mult_n && z<=my_game->m_mult_n) || x<0 || y<0 || z<0) {
         not_in_range(my_game->m_mult_n);
         return 0;
     }
@@ -206,7 +209,7 @@ int generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ran
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
 
     if (x > (game->m_mult_n * game->m_mult_n) ||
-        y > (game->m_mult_n * game->m_mult_n) || x==-1 || y==-1) { /* checks if x and y valid vualues*/
+        y > (game->m_mult_n * game->m_mult_n) || x<0 || y<0) { /* checks if x and y valid vualues*/
         not_in_range(empty_cells);
         return 0;
     } else if (empty_cells < game->m_mult_n * game->m_mult_n) { /* if the we  try generate on not empty board */

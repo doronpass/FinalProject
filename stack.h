@@ -1,3 +1,7 @@
+/* this module is used for the exhaustive backtracking algorithm, which counts the number of
+ * valid solutions to the user's board.
+ * the algorithm is implemented with a stack, so all stack related functions are
+ * also included in this module */
 #ifndef FINALPROJECT_STACK_H
 #define FINALPROJECT_STACK_H
 
@@ -22,7 +26,6 @@ Stack * create_stack();
 int is_empty(Stack *stack);
 Stack_Node * pop(Stack *stack);
 void push(Stack *stack, Stack_Node *node);
-int check_if_erroneous(Game *my_game);
 int is_valid_ints(int** board,int m, int n, int x, int y, int z);
 void free_stack_node(Stack_Node *node, int size);
 int exhaustive_backtracking(Game *my_game);
