@@ -162,7 +162,7 @@ int ilp_solver(Game *game) {
     error = GRBgetintattr (model, GRB_INT_ATTR_STATUS,
                            &optimstatus); /*query the status of the optimization process by retrieving the value of the Status attribute*/
     if (error) {
-        /*   printf ("Error: %s\n", GRBgeterrormsg (env)); /*
+        /*   printf ("Error: %s\n", GRBgeterrormsg (env)); */
            free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
            return flag;
        }
@@ -190,8 +190,8 @@ int ilp_solver(Game *game) {
 
         }
         return flag;
-    }
 }
+
 /* free all the other stuff we used */     /* Free environment */     /* Free model */
 void free_grb (int *ind, int *indarr2, double *val, double *valarr2, double *sol, char *vtype, GRBenv *env,
                GRBmodel *model, double *lb, int **result_arr, int N) {
