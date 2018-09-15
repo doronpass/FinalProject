@@ -198,82 +198,28 @@ void reset(Game *my_game){
     printf("Board reset\n");
 }
 
-void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by randomly filling X cells with random legal values, running ILP to solve the resulting board, and then clearing all but Y random cells.*/
-    int empty_cells = 0, i, res_from_ilp = 0, j;
-    int N = game->m_mult_n;
-    int row = -1, col = -1, rand_value = -1, x_counter = 1;
+int generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by randomly filling X cells with random legal values, running ILP to solve the resulting board, and then clearing all but Y random cells.*/
+    int empty_cells = 0, i, j;
+    int N = game->m_mult_n, flag = 0;
+    int row = -1, col = -1;
     Data *data;
     empty_cells = num_of_empty_cells(game); /* checking the number of empty cells in board*/
 
     if (x > (game->m_mult_n * game->m_mult_n) ||
         y > (game->m_mult_n * game->m_mult_n) || x==-1 || y==-1) { /* checks if x and y valid vualues*/
         not_in_range(empty_cells);
-        return;
+        return 0;
     } else if (empty_cells < game->m_mult_n * game->m_mult_n) { /* if the we  try generate on not empty board */
         board_not_empty();
-        return;
+        return 0 ;
     } else {
-        i = 0;
-        while (i <= 1000) {
-            if (x_counter == x) {
-                res_from_ilp = ilp_solver(game);
-
-
-                if (res_from_ilp == 1) {
-                    break;
-                } else {
-                    i++;
-                    clear_board(game);
-                }
-            }
-            x_counter = 1;
-            while (x_counter <= x) {
-                if (i == 1000) {
-                    puzzle_generator_failed();
-
-                    clear_board(game); /*to add func the returned the board to be all 0 */
-
-
-                    return;
-                }
-
-                row = rand() % N;
-                col = rand() % N;
-
-                if (game->user_game_board[row][col].value != 0) {
-                    /*  i++;  TO CHECK IF NEEDED*/
-
-                    continue;
-                } else {
-                    printf("254\n");
-
-
-                    rand_value = get_legal_random_val(game, row,
-                                                      col); /* function returnes 0 if there isnt a legal value and the right one if there is*/
-                    if (rand_value == 0) {
-                        clear_board(game);
-                        i++;
-                        printf("i = %d", i);
-                        break;
-                    } else {
-                        game->user_game_board[row][col].value = rand_value;
-                        x_counter++;
-                    }
-                }
-            }
-        }
+        flag = generate_x(game,x);
     }
-
-
     /* until here we choose x random places and gave every one an optional number */
     /* from here try to solve the board, and then delete y valuse randomly */
 
-    if (res_from_ilp == 0) {
-        clear_board(game);
-        puzzle_generator_failed(); /* i put this one out! to check with itay its ok, and to check that the ilp solver to prints it by himself */
-        return;
-    }
-    copy_solve_2_user(game); /* this method copy solved board to user board */;
+    copy_solve_2_user(game);
+    /* this method copy solved board to user board */
     for ( j = 0; j < y; ++j) {
         row = rand() % N;
         col = rand() % N;
@@ -282,7 +228,6 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
             col = rand() % N;
         }
         game->user_game_board[row][col].is_error = 1; /* use error for other goal, only to specify what value enter there */
-
     }
     /* here we're going to delete all except y values*/
     for (i = 0; i < N; ++i) {
@@ -295,25 +240,26 @@ void generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ra
                 data = create_new_data (i ,j ,game->user_game_board[i][j].value, 0);
                 append_data_to_node(node, data);
             }
-
         }
-
     }
+    return flag;
 }
 
-void validate(Game *game){
+int validate(Game *game){
     int res;
     if(count_invalid_numbers(game) != 0 ){
         puzzle_solution_erroneus();
-        return;
+        return 0;
     }
     res = ilp_solver(game);
 
     if (res ==1 ){
         validation_passed();
+        return res;
     }
     else {
         validation_failed();
+        return res;
     }
 }
 

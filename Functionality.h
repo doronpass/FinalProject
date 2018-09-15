@@ -25,4 +25,6 @@ int create_valid_arr(Game *game,int *valid_arr, int row , int col,int N) ;
 int get_the_order_number_from_arr(int order, int *valid_arr);
 int count_invalid_numbers(Game *game);
 void copy_solve_2_user(Game *game);
+int generate_x(Game *game,int x);
+
 #endif

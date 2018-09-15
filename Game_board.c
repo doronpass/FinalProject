@@ -141,13 +141,13 @@ int** create_matrix(int N){
     int** arr; /* i took the next line out of this one*/
     arr =(int**) calloc(N,sizeof(int*));
     if(arr ==NULL){
-        printf("somthing about that maloc has faild@!#!#!@#!@#!@#!@#\n");
+        printf ("Error: malloc has failed\n");
         exit(1);
     }
     for (i=0; i<N; i++){
         arr[i] = (int*) calloc (N,sizeof(int));
         if((arr[i])== NULL){
-            printf("somthing about that maloc has faild@!#!#!@#!@#!@#!@#\n");
+            printf ("Error: malloc has failed\n");
             exit(1);
         }
     }
@@ -166,7 +166,7 @@ void copy_board_to_game(int **result_arr,int N,Game *game){
         }
     }
 }
-void copy_sol_to_board(double *sol,int **result_arr, int N ) {c
+void copy_sol_to_board(double *sol,int **result_arr, int N ) {
     int i, j, v;
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
