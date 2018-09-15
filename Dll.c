@@ -4,7 +4,7 @@
 #include "Dll.h"
 
 
-/*crate now dll node ,node data array is empty */
+/*create a new dll node, with command_name value set to the input given */
 Node * create_new_node(char* command_name){
     Node *node;
     node = malloc(sizeof(struct Node));
@@ -21,7 +21,7 @@ Node * create_new_node(char* command_name){
 }
 /* create new node data entry, which is the cell we change (row,col), the value after the change
  * and the value before the change (prev_value) */
-Data* create_new_data (int row ,int col ,int value, int prev_value){ /* no need to chage because get it from set */
+Data* create_new_data (int row ,int col ,int value, int prev_value){
     Data *data = (Data *) malloc(sizeof(Data));
     if (data==NULL){
         printf("Error: malloc has failed\n");
@@ -34,7 +34,7 @@ Data* create_new_data (int row ,int col ,int value, int prev_value){ /* no need 
     return data;
 }
 
-/* delete any node ahead of the node the dll_pointer points to,
+/* remove and free any node ahead of the node the dll_pointer points to,
  * then append the input node to the end of the linked list  */
 void append_node_to_list(Doubly_linked_list *dll, Node *node){
     Node *prev_node = dll->dll_pointer;
@@ -51,7 +51,7 @@ void append_node_to_list(Doubly_linked_list *dll, Node *node){
 }
 
 
-/* remove the last node in the dll */
+/* remove the last node in the dll, freeing all it's allocated memory */
 void remove_last (Doubly_linked_list *dll){
     Node *to_delete;
     to_delete = dll->last;
@@ -63,7 +63,7 @@ void remove_last (Doubly_linked_list *dll){
     }
 }
 
-/*free all memory space assigned to the input node */
+/*free all memory space allocated to the input node */
 void free_node(Node *node){
     int i;
     for(i=node->node_data_size; i>0;i--){
@@ -73,14 +73,15 @@ void free_node(Node *node){
     free(node);
 }
 
-/* add a new data entry ( (row,col) of the cell, new value, old value) to the node data array */
+/* append a new data entry to the node data array */
 void append_data_to_node(Node *node,Data *data){
     node->node_data_size++;
     node->node_data = (Data **) realloc(node->node_data, node->node_data_size* sizeof(Data));
     node->node_data[node->node_data_size-1] = data;
 }
 
-/* create a new dll, and add a "start node" to it */
+/* create a new dll, and add a "start node" to it
+ * the "start node" is an empty node that helps to manage the dll during the program run*/
 Doubly_linked_list* create_new_dll(){
     Node *start_node;
     Doubly_linked_list *new_dll = (Doubly_linked_list*)malloc(sizeof(Doubly_linked_list));

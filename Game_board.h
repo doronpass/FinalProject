@@ -1,3 +1,8 @@
+/* this module defines two structs:
+ * the Game struct, which hold all the relevant information about a user's game
+ * the Cell struct, which is the base we use to create sudoku boards
+ * in addition, this module holds functions related to creating, printing, and copying the sudoku boards*/
+
 #ifndef FINALPROJECT_GAME_BOARD_H
 #define FINALPROJECT_GAME_BOARD_H
 #include "Dll.h"
@@ -20,7 +25,6 @@ typedef struct Game
     Doubly_linked_list *doubly_linked_list;
 } Game;
 
-
 Cell** create_new_board(int rows_size , int cols_size);
 void print_cell(Cell *cell,int mode, int mark_error);
 void insert_zero_cells(Cell **arr,int size);
@@ -30,7 +34,6 @@ void free_boards(Game *my_game);
 int** create_matrix(int N);
 void copy_board_to_game(int **result_arr,int N,Game *game);
 void copy_sol_to_board(double *sol,int **result_arr, int N ) ;
-
 void start_game();
 
 #endif

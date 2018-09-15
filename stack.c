@@ -3,8 +3,8 @@
 #include "Functionality.h"
 #include "Error_handler.h"
 
-/* creates the first stack node, it's board is a duplicate of the user board
- * of the my_game input*/
+/* creates the first stack node, it holds a board that is
+ * a duplicate of the user board of the input Game */
 Stack_Node * create_first_stack_node(Game *my_game){
     int i,j, size = my_game->m_mult_n;
     Stack_Node *node = (Stack_Node *) malloc(sizeof(Stack_Node));
@@ -28,7 +28,7 @@ Stack_Node * create_first_stack_node(Game *my_game){
     return node;
 }
 
-/* creates a new stack node, it's board will be a duplicate of the board of the input node */
+/* creates a new stack node, it's board will be a duplicate of the board in the node given as input  */
 Stack_Node * create_stack_node(int size, Stack_Node *input_node){
     int i,j;
     Stack_Node *node = (Stack_Node *) malloc(sizeof(Stack_Node));
@@ -63,7 +63,7 @@ Stack * create_stack(){
     return stack;
 }
 
-/* if stack is empty, return 1, else return 0 */
+/* if input stack is empty, return 1, else return 0 */
 int is_empty(Stack *stack) {
     if(stack->top == NULL)
         return 1;
@@ -71,7 +71,7 @@ int is_empty(Stack *stack) {
         return 0;
 }
 
-/* remove the item at the top of the stack from the stack, and return it */
+/* remove the item at the top of the stack from the stack, and returns it */
 Stack_Node * pop(Stack *stack) {
     Stack_Node * stack_node = stack->top;
     stack->top = stack->top->prev;
@@ -90,19 +90,6 @@ void push(Stack *stack, Stack_Node *node) {
     stack->top = node;
 }
 
-/* checks if the user board contains erroneous values
- * returns 1 there are erroneous values, else returns 0 */
-int check_if_erroneous(Game *my_game){
-    int i,j;
-    for (i=0;i<my_game->m_mult_n;i++) {
-        for (j = 0; j < my_game->m_mult_n; j++) {
-            if (my_game->user_game_board[i][j].is_error == 1) {
-                return 1;
-            }
-        }
-    }
-    return 0;
-}
 /* same function as "is_valid", but input is a matrix and some ints, rather than
  * a Game struct - used for backtracking */
 int is_valid_ints(int** board,int m, int n, int x, int y, int z){
@@ -141,40 +128,9 @@ void free_stack_node(Stack_Node *node, int size){
     free(node->board);
     free(node);
 }
-
-
-/* function for testing only! -------------------------------------------------------
-void print_test(Game *game, int** matrix){
-    int i, j, size;
-    if (game == NULL){
-        exit(1);
-    }
-    size = game->m_mult_n;
-    for (i = 0; i < size; ++i) {
-        if ((i % (game->n_block_cols)) == 0) {
-            print_separator_row(size,game->n_block_cols);
-        }
-        for ( j = 0; j < size; ++j) {
-            if ((j % (game->m_block_rows)) == 0) {
-                printf(PIPE);
-            }
-            printf("%s", " ");
-            if ((matrix[i][j]) == 0){
-                printf("%s","  ");
-            } else {
-                printf("%2d",matrix[i][j]);
-            }
-        }
-        printf("%s\n",PIPE);
-    }
-    print_separator_row(size,game->n_block_cols);
-    printf("new_board_here\n");
-}
-*/
-
-
-
-/* ------------------------------------ think about the "free()", where it should be for node or new_node -----*/
+/* find the number of valid solutions to the user board, using a stack to save a valid board
+ * option. each time we pop a node from stack, find it's board's next empty cell and push a new node
+ * with every valid number in that cell */
 int exhaustive_backtracking(Game *my_game){
     int i,j,k,num_valid, num_sols = 0;
     Stack *stack = create_stack();
@@ -182,25 +138,20 @@ int exhaustive_backtracking(Game *my_game){
     Stack_Node *new_node;
     push(stack, node);
 
-    if (check_if_erroneous(my_game)){
-
-        puzzle_solution_erroneus();
+    if (has_erroneous_values(my_game)){
         free_stack_node(node,my_game->m_mult_n );
         free(stack);
         return -1;
     }
-    for (j=0;j<my_game->m_mult_n;j++){ /* changed from i to j */
+    for (j=0;j<my_game->m_mult_n;j++){
         if(is_empty(stack)){
-
             break;
         }
-        for (i=0;i<my_game->m_mult_n;i++){/* changed from j to i */
+        for (i=0;i<my_game->m_mult_n;i++){
             if(is_empty(stack)){
-
                 break;
             }
-            if (stack->top->board[j][i]==0){ /* swiched between i and j */
-
+            if (stack->top->board[j][i]==0){
                 node = pop(stack);
                 num_valid = 0;
                 for (k=1;k<=my_game->m_mult_n;k++){

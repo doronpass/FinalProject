@@ -63,7 +63,7 @@ int has_erroneous_values(Game *my_game) {
     int i,j;
     int N = my_game->m_mult_n;
     for (i = 0; i < N; i++) {
-        for (j = 0; j < (N - 1); j++) {
+        for (j = 0; j < N; j++) {
             if (my_game->user_game_board[i][j].is_error == 1) {
                 return 1;
             }
@@ -74,10 +74,6 @@ int has_erroneous_values(Game *my_game) {
 
 
 /*getting matrix information (size and value) from a formatted file */
-
-/* DONT FORGET  to point out erroneous cells if needed - do this in the solve/edit functions
-need to resolve the board after load to get the solved_board for my_game */
-
 int load_from_file(Game *my_game, char *path) {
     FILE *file;
     int value, i, j;
@@ -89,7 +85,6 @@ int load_from_file(Game *my_game, char *path) {
         } else {                    /*edit mode*/
             printf("Error: File cannot be opened\n");
         }
-        fclose(file);
         return 0;
     }
     /* read m */
@@ -342,7 +337,7 @@ void undo_without_output(Game *my_game) {
     Node *node_to_undo = my_game->doubly_linked_list->dll_pointer;
     int i;
     for (i=0; i<node_to_undo->node_data_size;i++){
-        set_without_dll(my_game,node_to_undo->node_data[i]->row,node_to_undo->node_data[i]->col,node_to_undo->node_data[i]->prev_value);
+        set_without_dll(my_game,node_to_undo->node_data[i]->col,node_to_undo->node_data[i]->row,node_to_undo->node_data[i]->prev_value);
     }
     my_game->doubly_linked_list->dll_pointer = my_game->doubly_linked_list->dll_pointer->prev;
 }
@@ -506,8 +501,6 @@ void copy_solve_2_user(Game *game){ /* copy solve board to user board */
             game->user_game_board[i][j]=game->solved_game_board[i][j];
         }
     }
-
-
 }
 int generate_x(Game *game,int x){
 
