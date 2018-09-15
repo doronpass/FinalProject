@@ -55,44 +55,94 @@ void mark_errors(Game *my_game, int x) {
  * given the command and the path to a file, create a new Game and load the board from
  * the file in the path argument to the Game user_board */
 Game * init_game(char *command, char *path, Game *new_game, int is_there_old_game) {
-    int assert;
-    if (is_there_old_game){
-        free_all_mem(new_game); /* free old game boards and dll if there was an old game */
-    } else {
-        new_game->mark_error = 1; /*default value */
-    }
-    if (strcmp(command, "solve") == 0) {
-        new_game->mode = 1;
-    }
-    if (strcmp(command, "edit") == 0) {
-        new_game->mode = 0;
-    }
-    new_game->doubly_linked_list = create_new_dll();
-    if (path == NULL){
-        /* create 9X9 empty board (will only happen on edit, checked by another function */
-        new_game->n_block_cols = 3;
-        new_game->m_block_rows = 3;
-        new_game->m_mult_n = 9;
-        new_game->user_game_board = create_new_board(3,3);
-    } else {
+    int assert, i, j;
+    Game *clone;
+    if (is_there_old_game==1) {
+        if (path == NULL) {
+            /* free all previous game memory and create 9X9 empty board (only on edit mode, checked by another function) */
+            free_all_mem(new_game);
+            new_game->mode=0;
+            new_game->n_block_cols = 3;
+            new_game->m_block_rows = 3;
+            new_game->m_mult_n = 9;
+            new_game->user_game_board = create_new_board(3, 3);
+            new_game->doubly_linked_list = create_new_dll();
+            new_game->solved_game_board = create_new_board(new_game->m_block_rows,new_game->n_block_cols);
+            print_user_board(new_game);
+            return new_game;
+        }
+        /* there is a previous game and file path/name was passed */
+        if (strcmp(command, "solve") == 0) {
+            new_game->mode = 1;
+        } else if (strcmp(command, "edit") == 0) {
+            new_game->mode = 0;
+        }
+        clone = clone_game(new_game); /* clone previous game boards */
+        free_boards(new_game); /* free boards before trying to load new ones */
         assert = load_from_file(new_game, path);
         if (assert == 0) {
-            free(new_game->doubly_linked_list->first);
-            free(new_game->doubly_linked_list);
-            if (new_game->user_game_board != NULL){ /*memory allocated before loading failed */
-                free_boards(new_game);
+            /* if we failed to load, we want to return the prev game as it was */
+            free_boards(new_game);
+            new_game->user_game_board = create_new_board(new_game->m_block_rows, new_game->n_block_cols);
+            new_game->solved_game_board = create_new_board(new_game->m_block_rows, new_game->n_block_cols);
+            for (i = 0; i < new_game->m_mult_n; i++) {
+                for (j = 0; j < new_game->m_mult_n; j++) {
+                    new_game->user_game_board[i][j] = clone->user_game_board[i][j];
+                    new_game->solved_game_board[i][j] = clone->solved_game_board[i][j];
+                }
             }
-            new_game->mode = -1; /*indicates an error */
+            free_boards(clone); /*clone no longer needed, free it */
+            free(clone);
             return new_game;
         } else {
+            /* loaded successfully,free clone boards, clear dll of old game, set new mode and mark erroneous cells in user board */
+            free_boards(clone);
+            free(clone);
+            while (strcmp(new_game->doubly_linked_list->last->command_name, "start_node") != 0) {
+                remove_last(new_game->doubly_linked_list);
+            }
+            if (strcmp(command, "solve") == 0) {
+                new_game->mode = 1;
+            } else if (strcmp(command, "edit") == 0) {
+                new_game->mode = 0;
+            }
+            new_game->solved_game_board = create_new_board(new_game->m_block_rows,new_game->n_block_cols);
             mark_error_cells(new_game);
+            print_user_board(new_game);
+            return new_game;
         }
+    } else { /* if (is_there_old_game==0 || is_there_old_game==2) - meaning there is no old game or there was one but it's over */
+        if (is_there_old_game==0){
+            new_game->mark_error = 1; /*default value, else keep value of the old game */
+        }
+        if (strcmp(command, "solve") == 0) {
+            new_game->mode = 1;
+        } else if (strcmp(command, "edit") == 0) {
+            new_game->mode = 0;
+        }
+        if (path == NULL) { /*file path not given */
+            /* create 9X9 empty board (only on edit mode, checked by another function) */
+            new_game->n_block_cols = 3;
+            new_game->m_block_rows = 3;
+            new_game->m_mult_n = 9;
+            new_game->user_game_board = create_new_board(3, 3);
+        } else { /* file path given */
+            assert = load_from_file(new_game, path);
+            if (assert == 0) { /*loading failed */
+                if (new_game->user_game_board != NULL) {
+                    free_boards(new_game);
+                }
+                new_game->mode = -1; /*indicates an error */
+                return new_game;
+            }
+        }
+        new_game->doubly_linked_list = create_new_dll();
+        new_game->solved_game_board = create_new_board(new_game->m_block_rows,new_game->n_block_cols);
+        mark_error_cells(new_game);
+        print_user_board(new_game);
+        return new_game;
     }
-    new_game->solved_game_board = create_new_board(new_game->m_block_rows,new_game->n_block_cols);
-    print_user_board(new_game);
-    return new_game;
 }
-
 
 
 /* change the value of cell (x,y) to z, after making sure the input numbers are in range and cell is not fixed

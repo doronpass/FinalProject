@@ -12,7 +12,12 @@
  * game_status:
  * 0 during a game
  * 1 when the game is in init mode
- * 2 when the user enters "exit" command to exit program */
+ * 2 when the user enters "exit" command to exit program
+ *
+ * is_there_old_game:
+ * 0 if there is no game
+ * 1 if there is a game
+ * 2 if there was a game but it is over (game over)*/
 
 void start_game(){
     int game_status = 0, is_there_old_game=0;
@@ -37,6 +42,9 @@ void start_game(){
         while(1){
             game_status = user_turn(my_game);
             if (game_status==1 || game_status == 2){
+                if(game_status==1) {/*if game is over */
+                    is_there_old_game=2;
+                }
                 break;
             }
         }
