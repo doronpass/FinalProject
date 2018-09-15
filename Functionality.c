@@ -63,7 +63,7 @@ int has_erroneous_values(Game *my_game) {
     int i,j;
     int N = my_game->m_mult_n;
     for (i = 0; i < N; i++) {
-        for (j = 0; j < (N - 1); j++) {
+        for (j = 0; j < N; j++) {
             if (my_game->user_game_board[i][j].is_error == 1) {
                 return 1;
             }
@@ -74,10 +74,6 @@ int has_erroneous_values(Game *my_game) {
 
 
 /*getting matrix information (size and value) from a formatted file */
-
-/* DONT FORGET  to point out erroneous cells if needed - do this in the solve/edit functions
-need to resolve the board after load to get the solved_board for my_game */
-
 int load_from_file(Game *my_game, char *path) {
     FILE *file;
     int value, i, j;
