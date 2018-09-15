@@ -5,7 +5,7 @@
 #include "Game_board.h"
 #include "IlpSolver.h"
 
-/* this functions use gurubi to solve the sudoku puzzle with linear programming, returns 1 if successful, else returns 0*/
+/* this functions use gurobi to solve the sudoku puzzle with linear programming, returns 1 if successful, else returns 0*/
 int ilp_solver(Game *game) {
     GRBenv   *env = NULL;
     GRBmodel *model= NULL;
@@ -14,23 +14,20 @@ int ilp_solver(Game *game) {
     char     *vtype;
     double   objval;
     int      **result_arr;
-    N = game->m_mult_n;
+    N       = game->m_mult_n;
     /* allocate memory to relevent pointers */
     indarr2 = (int *) malloc (N * sizeof (int));
     valarr2 = (double *) malloc (N * sizeof (double));
-    ind = (int *) malloc (N * sizeof (int));
-    val = (double *) malloc (N * sizeof (double));
-    lb = (double *) malloc (N * N * N * sizeof (double));
-    vtype = (char *) calloc (sizeof (char), N * N * N);
-    sol = (double *) calloc (sizeof (double), N * N * N);
+    ind     = (int *) malloc (N * sizeof (int));
+    val     = (double *) malloc (N * sizeof (double));
+    lb      = (double *) malloc (N * N * N * sizeof (double));
+    vtype   = (char *) calloc (sizeof (char), N * N * N);
+    sol     = (double *) calloc (sizeof (double), N * N * N);
 
     /* initialize arrays and pointer for later use */
     result_arr = create_matrix (N);
-    memo_and_check ( result_arr, sol, vtype, lb, val, ind, valarr2, indarr2);
-
+    memo_and_check (result_arr, sol, vtype, lb, val, ind, valarr2, indarr2);
     GRBsetintparam(env,GRB_INT_PAR_LOGTOCONSOLE,0);
-
-
     /* Create an empty model before we starts*/
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
@@ -52,17 +49,15 @@ int ilp_solver(Game *game) {
     /* Create environment before we starts */
     error = GRBloadenv (&env, "sudoku.log");
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+        /* printf ("Error: %s\n", GRBgeterrormsg (env));*/
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
-
     GRBsetintparam(env,GRB_INT_PAR_LOGTOCONSOLE,0);
-
     /* Create new model */
     error = GRBnewmodel (env, &model, "sudoku", N * N * N, NULL, lb, NULL, vtype, NULL);
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+        /* printf ("Error: %s\n", GRBgeterrormsg (env)); */
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
@@ -75,7 +70,7 @@ int ilp_solver(Game *game) {
             }
             error = GRBaddconstr (model, N, ind, val, GRB_EQUAL, 1.0, NULL);
             if (error) {
-                printf ("Error: %s\n", GRBgeterrormsg (env));
+                /*   printf ("Error: %s\n", GRBgeterrormsg (env)); */
                 free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
                 return flag;
             }
@@ -91,7 +86,7 @@ int ilp_solver(Game *game) {
                 indarr2[0] = N * j * N + i * N + (temportry_value - 1);
                 error = GRBaddconstr (model, 1, indarr2, valarr2, GRB_EQUAL, 1.0, NULL);
                 if (error) {
-                    printf ("Error: %s\n", GRBgeterrormsg (env));
+                    /*  printf ("Error: %s\n", GRBgeterrormsg (env)); */
                     free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
                     return flag;
                 }
@@ -107,7 +102,7 @@ int ilp_solver(Game *game) {
             }
             error = GRBaddconstr (model, N, ind, val, GRB_EQUAL, 1.0, NULL);
             if (error) {
-                printf ("Error: %s\n", GRBgeterrormsg (env));
+                /*  printf ("Error: %s\n", GRBgeterrormsg (env));*/
                 free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
                 return flag;
             }
@@ -122,7 +117,7 @@ int ilp_solver(Game *game) {
             }
             error = GRBaddconstr (model, N, ind, val, GRB_EQUAL, 1.0, NULL);
             if (error) {
-                printf ("Error: %s\n", GRBgeterrormsg (env));
+                /* printf ("Error: %s\n", GRBgeterrormsg (env)); */
                 free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
                 return flag;
             }
@@ -152,26 +147,26 @@ int ilp_solver(Game *game) {
     /* Optimizing model */
     error  = GRBoptimize (model);
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+        /* printf ("Error: %s\n", GRBgeterrormsg (env)); */
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
     /* Write model to 'sudoku.lp' */
     error = GRBwrite (model, "sudoku.lp");
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
+        /*  printf ("Error: %s\n", GRBgeterrormsg (env));*/
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
     /* Capture solution information */
     error = GRBgetintattr (model, GRB_INT_ATTR_STATUS,
-                           &optimstatus); /*/query the status of the optimization process by retrieving the value of the Status attribute*/
+                           &optimstatus); /*query the status of the optimization process by retrieving the value of the Status attribute*/
     if (error) {
-        printf ("Error: %s\n", GRBgeterrormsg (env));
-        free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
-        return flag;
-    }
-    /* this call would return a non-zero error result if no solution was found for this model.*/
+        /*   printf ("Error: %s\n", GRBgeterrormsg (env)); /*
+           free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
+           return flag;
+       }
+       /* this call would return a non-zero error result if no solution was found for this model.*/
 
     error = GRBgetdblattr (model, GRB_DBL_ATTR_OBJVAL,
                            &objval); /* the value of the objective function for the computed solution*/
@@ -186,16 +181,16 @@ int ilp_solver(Game *game) {
         free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
         return flag;
     }
-    /* the sol is a good one so we thake it to out solver board in game and make it be the same */
+    /* the solution is a good one so we take it to out solver board in game and make it be the same */
     if (optimstatus == GRB_OPTIMAL) {
         copy_sol_to_board (sol, result_arr, N);
         copy_board_to_game (result_arr, N, game);
+            free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
+            flag = 1;
 
-        free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
-        flag = 1;
-
+        }
+        return flag;
     }
-    return flag;
 }
 /* free all the other stuff we used */     /* Free environment */     /* Free model */
 void free_grb (int *ind, int *indarr2, double *val, double *valarr2, double *sol, char *vtype, GRBenv *env,

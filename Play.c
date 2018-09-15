@@ -247,7 +247,7 @@ int generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ran
     }
     return flag;
 }
-
+/*Validates the current board using ILP, ensuring it is solvable,the func print if the board solvable or not */
 int validate(Game *game){
     int res;
     if(count_invalid_numbers(game) != 0 ){
@@ -265,8 +265,8 @@ int validate(Game *game){
         return res;
     }
 }
-
-void hint(Game *game, int row, int cols){ /*Give a hint to the user by showing the solution of a single cell X,Y.*/
+/*Give a hint to the user by showing the solution of a single cell X,Y.*/
+void hint(Game *game, int row, int cols){
     int N  = game->m_mult_n;
     int res;
     if (game->mode==0){ /* check we are in solve mode */

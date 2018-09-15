@@ -469,7 +469,6 @@ int get_the_order_number_from_arr(int order, int *valid_arr){
     res = (index-1);
     return res;
 }
-
 /* goes over the user board and counts how many cells are erroneous, return the result */
 int count_invalid_numbers(Game *game){
     int i,j,count_errors=0;
@@ -484,7 +483,7 @@ int count_invalid_numbers(Game *game){
     return count_errors;
 }
 
-void copy_solve_2_user(Game *game){ /* copy solve board to user board */
+void copy_solve_2_user(Game *game){ /* copy solve board to user board , used by ilp_solver */
     int i,j;
     int N=game->m_mult_n;
     for (i = 0; i <N ; ++i) {
@@ -493,6 +492,7 @@ void copy_solve_2_user(Game *game){ /* copy solve board to user board */
         }
     }
 }
+/*  this function called from generate and choosing x cells ranbdomly and operate ilp for generate goal */
 int generate_x(Game *game,int x){
 
     int N = game->m_mult_n, res_from_ilp = 0;
