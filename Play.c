@@ -79,6 +79,9 @@ Game * init_game(char *command, char *path, Game *new_game, int is_there_old_gam
         if (assert == 0) {
             free(new_game->doubly_linked_list->first);
             free(new_game->doubly_linked_list);
+            if (new_game->user_game_board != NULL){ /*memory allocated before loading failed */
+                free_boards(new_game);
+            }
             new_game->mode = -1; /*indicates an error */
             return new_game;
         } else {

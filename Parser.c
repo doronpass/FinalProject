@@ -17,6 +17,10 @@ int user_turn(Game *my_game) {
     char *command_name;
     char *token = NULL, input[1024] = "", delimiter[] = " \t\r\n";
     while (token == NULL) {
+        if (feof(stdin)){
+            free_all_mem(my_game);
+            return 2; /*exiting game */
+        }
         printf("Enter your command:\n");
         fgets(input, 270, stdin);
         if(strlen(input)>256){
@@ -181,8 +185,15 @@ int init_user_turn(Game *my_game,int is_there_old_game){
     char input[1024] = "";
     char delimiter[] = " \t\r\n";
     while (token == NULL) {
+        if (feof(stdin)){
+            return 2; /*exiting game */
+        }
         printf("Enter your command:\n");
         fgets(input, 1024, stdin);
+        if(strlen(input)>256){
+            invalid_command();
+            user_turn(my_game);
+        }
         token = strtok(input, delimiter);
     }
     if (strlen(input) == 1) {
