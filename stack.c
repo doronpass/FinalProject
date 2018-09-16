@@ -153,13 +153,9 @@ int exhaustive_backtracking(Game *my_game){
             }
             if (stack->top->board[j][i]==0){
                 node = pop(stack);
-       /*         printf("empty cell is %d,%d\n", j,i);
-                printf("number is: %d\n", my_game->user_game_board[j][i].value); */
                 num_valid = 0;
                 for (k=1;k<=my_game->m_mult_n;k++){
                     if(is_valid_ints(node->board,my_game->n_block_cols, my_game->m_block_rows,j,i, k)){ /* swiched between i and j  and n with m*/
-                    /*    printf("valid for cell is %d\n", k);
-                        printf("value of 3,2 is %d\n", node->board[3][2]); */
                         num_valid++;
                         new_node=create_stack_node(my_game->m_mult_n, node);
                         new_node->board[j][i] = k; /*change between i and j */
