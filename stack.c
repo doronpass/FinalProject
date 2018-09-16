@@ -3,6 +3,8 @@
 #include "Functionality.h"
 #include "Error_handler.h"
 
+#define PIPE "|"
+
 /* creates the first stack node, it holds a board that is
  * a duplicate of the user board of the input Game */
 Stack_Node * create_first_stack_node(Game *my_game){
@@ -18,9 +20,9 @@ Stack_Node * create_first_stack_node(Game *my_game){
         node->board[i] = (int *) calloc((size_t)size, sizeof(int));
         check_memory_int(node->board[i]);
     }
-    for (i=0;i<my_game->m_mult_n;i++) {
-        for (j = 0; j < my_game->m_mult_n; j++) {
-            node->board[i][j] = my_game->user_game_board[i][j].value;
+    for (i=0;i<size;i++) {
+        for (j = 0; j < size; j++) {
+            node->board[j][i] = my_game->user_game_board[j][i].value;
         }
     }
     node->prev=NULL;
@@ -95,16 +97,17 @@ void push(Stack *stack, Stack_Node *node) {
 int is_valid_ints(int** board,int m, int n, int x, int y, int z){
     int i, j, block_first_row, block_first_col;
     int N = n * m;
-    /* search col  */
+    /* search row  */
     for (i = 0; i < N; i++) {
         if ((i != y) && (board[x][i] == z)) {
             return 0;
         }
     }
-    /* search row */
+    /* search col */
     for (j = 0; j < N; j++) {
-        if ((j != x) && (board[j][y] == z))
+        if ((j != x) && (board[j][y] == z)) {
             return 0;
+        }
     }
     /* search in block - dividing ints returns the floor value of the actual division */
     block_first_row = (x / m) * m;
@@ -115,6 +118,7 @@ int is_valid_ints(int** board,int m, int n, int x, int y, int z){
                 return 0;
             }
         }
+
     }
     return 1;
 }
@@ -128,6 +132,7 @@ void free_stack_node(Stack_Node *node, int size){
     free(node->board);
     free(node);
 }
+
 /* find the number of valid solutions to the user board, using a stack to save a valid board
  * option. each time we pop a node from stack, find it's board's next empty cell and push a new node
  * with every valid number in that cell */
@@ -137,7 +142,6 @@ int exhaustive_backtracking(Game *my_game){
     Stack_Node *node = create_first_stack_node(my_game);
     Stack_Node *new_node;
     push(stack, node);
-
     if (has_erroneous_values(my_game)){
         free_stack_node(node,my_game->m_mult_n );
         free(stack);
@@ -155,10 +159,10 @@ int exhaustive_backtracking(Game *my_game){
                 node = pop(stack);
                 num_valid = 0;
                 for (k=1;k<=my_game->m_mult_n;k++){
-                    if(is_valid_ints(node->board,my_game->n_block_cols, my_game->m_block_rows,j,i, k)){ /* swiched between i and j  and n with m*/
+                    if(is_valid_ints(node->board, my_game->m_block_rows, my_game->n_block_cols,j,i, k)){
                         num_valid++;
                         new_node=create_stack_node(my_game->m_mult_n, node);
-                        new_node->board[j][i] = k; /*change between i and j */
+                        new_node->board[j][i] = k;
                         push(stack,new_node);
                     }
                 }
