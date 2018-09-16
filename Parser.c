@@ -103,7 +103,7 @@ int is_number(char *str){
 int execute_function(Game *my_game, char *command_name, int x, int y, int z){
     int autofill_change=0, set_complete = 0, generate_complete = 0 , val_res=0;
     Node *node;
-    if (strcmp(command_name, "mark_errors")==0){
+    if (strcmp(command_name, "mark_errors")==0 && my_game->mode==1){
         if (y==-5){
             invalid_command();
         } else {

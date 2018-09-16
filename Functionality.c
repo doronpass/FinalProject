@@ -306,7 +306,10 @@ Game * clone_game(Game *my_game) {
     for (i=0;i<my_game->m_mult_n;i++){
         for (j=0;j<my_game->m_mult_n;j++) {
             clone->user_game_board[i][j].value = my_game->user_game_board[i][j].value;
+            clone->user_game_board[i][j].is_error = my_game->user_game_board[i][j].is_error;
+            clone->user_game_board[i][j].is_fix = my_game->user_game_board[i][j].is_fix;
             clone->solved_game_board[i][j].value = my_game->solved_game_board[i][j].value;
+            clone->solved_game_board[i][j].is_fix = my_game->solved_game_board[i][j].is_fix;
         }
     }
     return clone;
