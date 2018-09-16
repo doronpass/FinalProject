@@ -105,11 +105,12 @@ Game * init_during_game(char *command, char *path, Game *new_game) {
         free(clone);
         return new_game;
     }
-    /*after loading successfully, create dll and solved_board */
-    new_game->doubly_linked_list = create_new_dll();
+    /*after loading successfully,  create new dll solved_board */
+    new_game->doubly_linked_list = create_new_dll ();
     new_game->solved_game_board = create_new_board(new_game->m_block_rows, new_game->n_block_cols);
     free_boards(clone); /*clone no longer needed, free it */
     free(clone);
+    mark_error_cells(new_game);
     print_user_board(new_game);
     return new_game;
 }
@@ -264,7 +265,7 @@ int generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ran
 
     if (x > (game->m_mult_n * game->m_mult_n) ||
         y > (game->m_mult_n * game->m_mult_n) || x<0 || y<0) { /* checks if x and y valid vualues*/
-        not_in_range(empty_cells);
+        not_in_range(N*N);
         return 0;
     } else if (empty_cells < game->m_mult_n * game->m_mult_n) { /* if the we  try generate on not empty board */
         board_not_empty();
@@ -299,25 +300,20 @@ int generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ran
             }
         }
     }
+    if(flag==0){
+        clear_board (game);
+    }
     return flag;
 }
-/*Validates the current board using ILP, ensuring it is solvable,the func print if the board solvable or not */
+/*Validates the current board using ILP, ensuring it is solvable,the func returns 2 if there erros, 1 if seccess and 0 if failed */
 int validate(Game *game){
     int res;
     if(count_invalid_numbers(game) != 0 ){
-        puzzle_solution_erroneus();
-        return 0;
+        return 2;
     }
-    res = ilp_solver(game);
+    res = ilp_solver(game); /* res 0 if ilp_solver failed, else it get 1 */
+    return  res;
 
-    if (res ==1 ){
-        validation_passed();
-        return res;
-    }
-    else {
-        validation_failed();
-        return res;
-    }
 }
 /*Give a hint to the user by showing the solution of a single cell X,Y.*/
 void hint(Game *game, int row, int cols){
@@ -328,8 +324,8 @@ void hint(Game *game, int row, int cols){
         return;
 
     }
-    if (row>N || cols>N || row<0 || cols <0){
-        not_in_range(N);
+    if (row>=N || cols>=N || row<0 || cols <0){ /*checks that all the arguments are valid */
+        printf("Error: value not in range 1-%d\n",N);
         return;
     }
     if ( count_invalid_numbers(game) != 0){
