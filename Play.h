@@ -12,6 +12,8 @@ void undo(Game *my_game);
 void redo(Game *my_game);
 void reset(Game *my_game);
 Game * init_game(char *command, char *path, Game *new_game, int is_there_old_game);
+Game * init_during_game(char *command, char *path, Game *new_game);
+Game * init_without_game(char *command, char *path, Game *new_game, int is_there_old_game);
 void hint(Game *game,int row,int cols);
 int generate (Game *game,Node *node, int x,int y);
 int validate(Game *game);
