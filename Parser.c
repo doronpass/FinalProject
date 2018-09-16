@@ -19,6 +19,7 @@ int user_turn(Game *my_game) {
     while (token == NULL) {
         if (feof(stdin)){
             free_all_mem(my_game);
+            printf("Exiting...\n");
             return 2; /*exiting game */
         }
         printf("Enter your command:\n");
