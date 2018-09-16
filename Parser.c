@@ -169,6 +169,7 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
         invalid_command();
     }
     if (my_game->mode==1 && is_game_over(my_game)==1){
+        free_all_mem(my_game);
         return 1;
     }
     return 0;

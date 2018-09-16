@@ -143,6 +143,7 @@ int load_from_file(Game *my_game, char *path) {
             if (ferror(file)) {      /*test if error, if so return 0) */
                 printf("Error: Unable to read file\n");
                 fclose(file);
+                free_boards(my_game);
                 return 0;
             }
             value-= '0';
@@ -285,7 +286,7 @@ void unmark_erroneous_before_change(Game *my_game, int x, int y, int z){ /* not 
 }
 
 /* creates a basic clone of the input Game, copying the cell values and
- *  the fields of the input Game, not including solved_game_board and doubly_linked_list
+ *  the fields of the input Game, not including doubly_linked_list.
  *  used by autofill and backtracking functions */
 Game * clone_game(Game *my_game) {
     int i,j;
@@ -294,7 +295,6 @@ Game * clone_game(Game *my_game) {
         printf("Error: malloc has failed\n");
         exit(0);
     }
-    clone->solved_game_board=NULL;
     clone->mark_error=my_game->mark_error;
     clone->mode=my_game->mode;
     clone->m_block_rows = my_game->m_block_rows;
@@ -302,9 +302,11 @@ Game * clone_game(Game *my_game) {
     clone->m_mult_n=my_game->m_mult_n;
     clone->doubly_linked_list=NULL;
     clone->user_game_board = create_new_board(my_game->m_block_rows,my_game->n_block_cols);
+    clone->solved_game_board= create_new_board(my_game->m_block_rows,my_game->n_block_cols);
     for (i=0;i<my_game->m_mult_n;i++){
         for (j=0;j<my_game->m_mult_n;j++) {
             clone->user_game_board[i][j].value = my_game->user_game_board[i][j].value;
+            clone->solved_game_board[i][j].value = my_game->solved_game_board[i][j].value;
         }
     }
     return clone;
@@ -350,7 +352,6 @@ void free_all_mem(Game *my_game){
     free(my_game->doubly_linked_list);
     /* free both game boards */
     free_boards(my_game);
-
 }
 
 /* print a move that was undone in the correct format
