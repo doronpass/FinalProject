@@ -13,7 +13,7 @@
  * the given arguments. 3 commands are checked inside the function, the rest
  * are checked inside the "execute_function" function, which is called at the end of this one*/
 int user_turn(Game *my_game) {
-    int x = -5, y = -5, z = -5, i = 0;
+    int x = -5, y = -5, z = -5, i = 0,ch;
     char *command_name;
     char *token = NULL, input[1024] = "", delimiter[] = " \t\r\n";
     while (token == NULL) {
@@ -23,9 +23,13 @@ int user_turn(Game *my_game) {
         }
         printf("Enter your command:\n");
         fgets(input, 270, stdin);
-        if(strlen(input)>256){
+        while (strlen(input)>256){
             invalid_command();
-            user_turn(my_game);
+            fflush(stdin);
+            while ((ch = getchar()) != '\n' && ch != EOF) {} /* to clean the buffer */
+            strcpy(input, "");
+            printf("Enter your command:\n");
+            fgets(input, 270, stdin);
         }
         token = strtok(input, delimiter);
     }
@@ -96,7 +100,7 @@ int is_number(char *str){
 /* compare the command name and args to valid commands and call the correct function to perform the command
  * or informs the user that the command is invalid. */
 int execute_function(Game *my_game, char *command_name, int x, int y, int z){
-    int autofill_change=0, set_complete = 0, generate_complete = 0;
+    int autofill_change=0, set_complete = 0, generate_complete = 0 , val_res=0;
     Node *node;
     if (strcmp(command_name, "mark_errors")==0){
         if (y==-5){
@@ -121,7 +125,16 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
             return 0;
         }
     } else if (strcmp(command_name, "validate")==0){
-        validate(my_game);
+        val_res = validate(my_game);
+        if(val_res == 2 ){
+            puzzle_solution_erroneus();
+        }
+        else if (val_res == 1) {
+            validation_passed ();
+        }
+        else if(val_res == 0){
+            validation_failed();
+        }
     } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
         if (x!=-5 && y!=-5){
             node = create_new_node("generate");
@@ -181,6 +194,7 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
  * 1 for invalid command
  * 2 for exit command */
 int init_user_turn(Game *my_game,int is_there_old_game){
+    int ch=0;
     char *command_name;
     char *token = NULL;
     char input[1024] = "";
@@ -191,9 +205,13 @@ int init_user_turn(Game *my_game,int is_there_old_game){
         }
         printf("Enter your command:\n");
         fgets(input, 1024, stdin);
-        if(strlen(input)>256){
+        while (strlen(input)>256){
             invalid_command();
-            user_turn(my_game);
+            fflush(stdin);
+            while ((ch = getchar()) != '\n' && ch != EOF) {} /* to clean the buffer */
+            strcpy(input, "");
+            printf("Enter your command:\n");
+            fgets(input, 270, stdin);
         }
         token = strtok(input, delimiter);
     }
