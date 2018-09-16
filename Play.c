@@ -277,8 +277,8 @@ void hint(Game *game, int row, int cols){
         return;
 
     }
-    if (row>N || cols>N || row<0 || cols <0){
-        not_in_range(N);
+    if (row>=N || cols>=N || row<0 || cols <0){ /*checks that all the arguments are valid */
+        printf("Error: value not in range 1-%d\n",N);
         return;
     }
     if ( count_invalid_numbers(game) != 0){

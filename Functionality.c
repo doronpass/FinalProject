@@ -500,6 +500,7 @@ int generate_x(Game *game,int x){
     while (i <= 1000) {
       if (x_counter == x) {
           res_from_ilp = ilp_solver(game);
+          printf ("503 res from ilp = %d\n", res_from_ilp);
           if (res_from_ilp == 1) {
               break;
        } else {
