@@ -97,8 +97,11 @@ Game * init_during_game(char *command, char *path, Game *new_game) {
         new_game->solved_game_board = create_new_board(new_game->m_block_rows, new_game->n_block_cols);
         for (i = 0; i < new_game->m_mult_n; i++) {
             for (j = 0; j < new_game->m_mult_n; j++) {
-                new_game->user_game_board[i][j] = clone->user_game_board[i][j];
-                new_game->solved_game_board[i][j] = clone->solved_game_board[i][j];
+                new_game->user_game_board[i][j].value = clone->user_game_board[i][j].value;
+                new_game->user_game_board[i][j].is_fix = clone->user_game_board[i][j].is_fix;
+                new_game->user_game_board[i][j].is_error = clone->user_game_board[i][j].is_error;
+                new_game->solved_game_board[i][j].value = clone->solved_game_board[i][j].value;
+                new_game->solved_game_board[i][j].is_fix = clone->solved_game_board[i][j].is_fix;
             }
         }
         free_boards(clone); /*clone no longer needed, free it */
