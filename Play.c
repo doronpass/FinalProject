@@ -264,7 +264,7 @@ int generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ran
 
     if (x > (game->m_mult_n * game->m_mult_n) ||
         y > (game->m_mult_n * game->m_mult_n) || x<0 || y<0) { /* checks if x and y valid vualues*/
-        not_in_range(empty_cells);
+        not_in_range(N*N);
         return 0;
     } else if (empty_cells < game->m_mult_n * game->m_mult_n) { /* if the we  try generate on not empty board */
         board_not_empty();

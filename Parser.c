@@ -13,7 +13,7 @@
  * the given arguments. 3 commands are checked inside the function, the rest
  * are checked inside the "execute_function" function, which is called at the end of this one*/
 int user_turn(Game *my_game) {
-    int x = -5, y = -5, z = -5, i = 0;
+    int x = -5, y = -5, z = -5, i = 0,ch;
     char *command_name;
     char *token = NULL, input[1024] = "", delimiter[] = " \t\r\n";
     while (token == NULL) {
@@ -23,9 +23,13 @@ int user_turn(Game *my_game) {
         }
         printf("Enter your command:\n");
         fgets(input, 270, stdin);
-        if(strlen(input)>256){
+        while (strlen(input)>256){
             invalid_command();
-            user_turn(my_game);
+            fflush(stdin);
+            while ((ch = getchar()) != '\n' && ch != EOF) {} /* to clean the buffer */
+            strcpy(input, "");
+            printf("Enter your command:\n");
+            fgets(input, 270, stdin);
         }
         token = strtok(input, delimiter);
     }
@@ -181,6 +185,7 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
  * 1 for invalid command
  * 2 for exit command */
 int init_user_turn(Game *my_game,int is_there_old_game){
+    int ch=0;
     char *command_name;
     char *token = NULL;
     char input[1024] = "";
@@ -191,9 +196,13 @@ int init_user_turn(Game *my_game,int is_there_old_game){
         }
         printf("Enter your command:\n");
         fgets(input, 1024, stdin);
-        if(strlen(input)>256){
+        while (strlen(input)>256){
             invalid_command();
-            user_turn(my_game);
+            fflush(stdin);
+            while ((ch = getchar()) != '\n' && ch != EOF) {} /* to clean the buffer */
+            strcpy(input, "");
+            printf("Enter your command:\n");
+            fgets(input, 270, stdin);
         }
         token = strtok(input, delimiter);
     }
