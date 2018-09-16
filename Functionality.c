@@ -497,45 +497,54 @@ void copy_solve_2_user(Game *game){ /* copy solve board to user board , used by 
 int generate_x(Game *game,int x){
 
     int N = game->m_mult_n, res_from_ilp = 0;
-    int x_counter =1, rand_value = -1, row = -1, col = -1 , i = 0;
+    int x_counter = 1, rand_value = -1, row = -1, col = -1, i = 0;
     while (i <= 1000) {
-      if (x_counter == x) {
-          res_from_ilp = ilp_solver(game);
-          if (res_from_ilp == 1) {
-              break;
-       } else {
-          i++;
-          clear_board(game);
-          }
-       }
-      x_counter = 1;
-      while (x_counter <= x) {
-          if (i == 1000) {
-             puzzle_generator_failed();
-             clear_board(game); /*to add func the returned the board to be all 0 */
-             return 0;
-    }
-         row = rand() % N;
-         col = rand() % N;
-         if (game->user_game_board[row][col].value != 0) {
-              continue;
-       } else {
-             rand_value = get_legal_random_val(game, row,
-                                      col); /* function returnes 0 if there isnt a legal value and the right one if there is*/
-             if (rand_value == 0) {
-               clear_board(game);
+        if (x_counter == x) {
+            res_from_ilp = ilp_solver (game);
+            if (res_from_ilp == 1) {
+                break;
+            }
+            else {
                 i++;
-               break;
-        } else {
-               game->user_game_board[row][col].value = rand_value;
-               x_counter++;
-              }
-          }
-       }
+                clear_board (game);
+            }
+        }
+        x_counter = 1;
+        while (x_counter <= x) {
+            if (i == 1000) {
+                printf ("i= %d\n",i);
+                clear_board (game);
+                puzzle_generator_failed ();
+                clear_board (game);
+                return 0;
+            }
+            row = rand () % N;
+            col = rand () % N;
+            if (game->user_game_board[row][col].value != 0) {
+                continue;
+            }
+            else {
+
+                rand_value = get_legal_random_val (game, row,
+                                                   col); /* function returnes 0 if there isnt a legal value and the right one if there is*/
+
+                if (rand_value == 0) {
+                    clear_board (game);
+                    i++;
+                    break;
+                }
+                else {
+                    game->user_game_board[row][col].value = rand_value;
+                    x_counter++;
+
+                }
+            }
+        }
     }
     if (res_from_ilp == 0) {
-        clear_board(game);
-        puzzle_generator_failed(); /* i put this one out! to check with itay its ok, and to check that the ilp solver to prints it by himself */
+
+        clear_board (game);
+        puzzle_generator_failed ();
         return 0;
     }
     return 1;

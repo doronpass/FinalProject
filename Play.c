@@ -105,10 +105,8 @@ Game * init_during_game(char *command, char *path, Game *new_game) {
         free(clone);
         return new_game;
     }
-    /*after loading successfully, reset dll and create new solved_board */
-    while (strcmp(new_game->doubly_linked_list->last->command_name, "start_node")!=0){
-        remove_last(new_game->doubly_linked_list);
-    }
+    /*after loading successfully,  create new dll solved_board */
+    new_game->doubly_linked_list = create_new_dll ();
     new_game->solved_game_board = create_new_board(new_game->m_block_rows, new_game->n_block_cols);
     free_boards(clone); /*clone no longer needed, free it */
     free(clone);
@@ -300,6 +298,9 @@ int generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ran
                 append_data_to_node(node, data);
             }
         }
+    }
+    if(flag==0){
+        clear_board (game);
     }
     return flag;
 }
