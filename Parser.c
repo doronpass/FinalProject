@@ -100,7 +100,7 @@ int is_number(char *str){
 /* compare the command name and args to valid commands and call the correct function to perform the command
  * or informs the user that the command is invalid. */
 int execute_function(Game *my_game, char *command_name, int x, int y, int z){
-    int autofill_change=0, set_complete = 0, generate_complete = 0;
+    int autofill_change=0, set_complete = 0, generate_complete = 0 , val_res=0;
     Node *node;
     if (strcmp(command_name, "mark_errors")==0){
         if (y==-5){
@@ -125,7 +125,16 @@ int execute_function(Game *my_game, char *command_name, int x, int y, int z){
             return 0;
         }
     } else if (strcmp(command_name, "validate")==0){
-        validate(my_game);
+        val_res = validate(my_game);
+        if(val_res == 2 ){
+            puzzle_solution_erroneus();
+        }
+        else if (val_res == 1) {
+            validation_passed ();
+        }
+        else if(val_res == 0){
+            validation_failed();
+        }
     } else if (strcmp(command_name, "generate")==0 && my_game->mode==0) {
         if (x!=-5 && y!=-5){
             node = create_new_node("generate");

@@ -137,7 +137,7 @@ int ilp_solver(Game *game) {
                 }
                 error = GRBaddconstr (model, N, ind, val, GRB_EQUAL, 1.0, NULL);
                 if (error) {
-                    printf ("Error: %s\n", GRBgeterrormsg (env));
+                    /* printf ("Error: %s\n", GRBgeterrormsg (env)); */
                     free_grb (ind, indarr2, val, valarr2, sol, vtype, env, model, lb, result_arr, N);
                     return flag;
                 }

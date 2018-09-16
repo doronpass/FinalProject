@@ -105,8 +105,10 @@ Game * init_during_game(char *command, char *path, Game *new_game) {
         free(clone);
         return new_game;
     }
-    /*after loading successfully, create dll and solved_board */
-    new_game->doubly_linked_list = create_new_dll();
+    /*after loading successfully, reset dll and create new solved_board */
+    while (strcmp(new_game->doubly_linked_list->last->command_name, "start_node")!=0){
+        remove_last(new_game->doubly_linked_list);
+    }
     new_game->solved_game_board = create_new_board(new_game->m_block_rows, new_game->n_block_cols);
     free_boards(clone); /*clone no longer needed, free it */
     free(clone);
@@ -301,23 +303,15 @@ int generate(Game *game, Node *node,int x, int y) { /* Generates a puzzle by ran
     }
     return flag;
 }
-/*Validates the current board using ILP, ensuring it is solvable,the func print if the board solvable or not */
+/*Validates the current board using ILP, ensuring it is solvable,the func returns 2 if there erros, 1 if seccess and 0 if failed */
 int validate(Game *game){
     int res;
     if(count_invalid_numbers(game) != 0 ){
-        puzzle_solution_erroneus();
-        return 0;
+        return 2;
     }
-    res = ilp_solver(game);
+    res = ilp_solver(game); /* res 0 if ilp_solver failed, else it get 1 */
+    return  res;
 
-    if (res ==1 ){
-        validation_passed();
-        return res;
-    }
-    else {
-        validation_failed();
-        return res;
-    }
 }
 /*Give a hint to the user by showing the solution of a single cell X,Y.*/
 void hint(Game *game, int row, int cols){
