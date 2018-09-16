@@ -352,7 +352,6 @@ void free_all_mem(Game *my_game){
     free(my_game->doubly_linked_list);
     /* free both game boards */
     free_boards(my_game);
-    printf("ive freed boards too!\n");
 }
 
 /* print a move that was undone in the correct format
