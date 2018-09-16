@@ -152,7 +152,7 @@ int load_from_file(Game *my_game, char *path) {
     }
     /* test if last cell on matrix is fixed  */
     value = getc(file);
-    if (value=='.'){
+    if (value=='.' && my_game->mode==1){
         my_game->user_game_board[my_game->m_mult_n-1][my_game->m_mult_n-1].is_fix = 1;
     }
     fclose(file);

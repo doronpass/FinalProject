@@ -110,6 +110,7 @@ Game * init_during_game(char *command, char *path, Game *new_game) {
     new_game->solved_game_board = create_new_board(new_game->m_block_rows, new_game->n_block_cols);
     free_boards(clone); /*clone no longer needed, free it */
     free(clone);
+    mark_error_cells(new_game);
     print_user_board(new_game);
     return new_game;
 }
